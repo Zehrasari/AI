@@ -1,0 +1,2579 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elektrik Mühendisliği Öğrenme Platformu - Gemini AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        :root {
+            --primary: #4a3669;
+            --secondary: #e67a1b;
+            --accent: #6d28d9;
+            --light: #f8f9fa;
+            --dark: #2d3748;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --border-radius: 16px;
+            --ai-blue: #4285f4;
+            --ai-green: #34a853;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            background: var(--secondary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-item {
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .xp-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-pic {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Main Layout */
+        .elektrik-platform {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            padding: 30px;
+            max-width: 1600px;
+            margin: 0 auto;
+            min-height: calc(100vh - 90px);
+        }
+
+        /* Left Panel - Topic List */
+        .konu-paneli {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 110px;
+            transition: var(--transition);
+        }
+
+        .konu-paneli h3 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .refresh-btn {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .refresh-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        .ana-konu {
+            margin-bottom: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f9fafb;
+        }
+
+        .ana-konu-baslik {
+            font-weight: 600;
+            color: var(--primary);
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .ana-konu-baslik:hover {
+            background: rgba(230, 122, 27, 0.1);
+        }
+
+        .ana-konu-baslik.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .alt-konular {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .ana-konu.active .alt-konular {
+            max-height: 500px;
+            padding: 0 20px 15px;
+        }
+
+        .alt-konu {
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alt-konu:hover {
+            background: rgba(230, 122, 27, 0.1);
+        }
+
+        .alt-konu.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .alt-konu i {
+            font-size: 14px;
+        }
+
+        .level-badge {
+            background: var(--primary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            margin-left: auto;
+        }
+
+        /* Main Content Area */
+        .icerik-paneli {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .icerik-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .icerik-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ai-ogren-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .ai-ogren-btn:hover {
+            background: #d86a10;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Content Tabs */
+        .content-tabs {
+            display: flex;
+            background: #f1f5f9;
+            padding: 0 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            color: var(--accent);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .tab:hover {
+            color: var(--accent);
+        }
+
+        /* Content Sections */
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Introduction Panel */
+        .intro-panel {
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        .intro-panel h3 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .intro-panel p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: var(--dark);
+            line-height: 1.7;
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .action-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .action-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .action-card p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3a2a54;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #d86a10;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background: #5b21b6;
+        }
+        
+        .btn-ai {
+            background: var(--ai-blue);
+            color: white;
+        }
+        
+        .btn-ai:hover {
+            background: #3367d6;
+        }
+
+        /* Lesson Content */
+        .ders-icerik {
+            line-height: 1.7;
+            color: var(--dark);
+        }
+
+        .ders-icerik h3 {
+            color: var(--primary);
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .ders-icerik p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .ders-icerik img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .formula-box {
+            background: #f0f7ff;
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .formula {
+            font-size: 1.4rem;
+            text-align: center;
+            margin: 15px 0;
+            font-family: 'Cambria Math', serif;
+        }
+
+        .variables {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .variable {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Visual Elements in Lessons */
+        .visual-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .visual-item {
+            background: #f8fafc;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .visual-item img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .simulation-container {
+            background: #f0f7ff;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .simulation-placeholder {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
+            background: #e6f7ff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        /* Level Test */
+        .seviye-test-modul {
+            padding: 30px;
+        }
+
+        .seviye-test-modul h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .test-info {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--secondary);
+            width: 5%;
+            transition: width 0.5s ease;
+        }
+
+        .soru-container {
+            margin-bottom: 40px;
+            display: none;
+        }
+
+        .soru-container.active {
+            display: block;
+        }
+
+        .soru {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .cevap-secenek {
+            display: block;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cevap-secenek:hover {
+            border-color: var(--accent);
+        }
+
+        .cevap-secenek.selected {
+            border-color: var(--accent);
+            background: rgba(109, 40, 217, 0.05);
+        }
+
+        .cevap-secenek.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .cevap-secenek.incorrect {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .cevap-secenek::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            transition: var(--transition);
+        }
+
+        .cevap-secenek.selected::before {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .cevap-secenek.correct::before {
+            border-color: var(--success);
+            background: var(--success);
+        }
+
+        .cevap-secenek.incorrect::before {
+            border-color: var(--danger);
+            background: var(--danger);
+        }
+
+        .cevap-text {
+            margin-left: 40px;
+        }
+
+        .test-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .test-btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .test-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .cozum-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            display: none;
+        }
+
+        .cozum-btn.active {
+            display: flex;
+        }
+
+        .cozum-btn:hover {
+            background: #5b21b6;
+        }
+
+        .cozum {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            border-left: 4px solid var(--accent);
+            box-shadow: var(--shadow);
+        }
+
+        .cozum.show {
+            display: block;
+        }
+
+        /* Project Generator */
+        .proje-uretici {
+            background: #f9f0ff;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .proje-uretici h4 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .proje-input-container {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .proje-input {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .proje-input:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .proje-fikirleri {
+            margin-top: 25px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .proje-fikri {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .proje-fikri::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 5px;
+            background: var(--secondary);
+        }
+
+        .proje-fikri h5 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .proje-fikri p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tech-badge {
+            background: rgba(109, 40, 217, 0.1);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Daily Life Info */
+        .daily-info {
+            background: #e6f7ff;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .daily-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--accent);
+        }
+
+        .daily-info h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .daily-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .info-card h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Career Panel */
+        .career-panel {
+            padding: 30px;
+        }
+
+        .career-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+
+        .badges-section {
+            margin: 40px 0;
+        }
+
+        .badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .badge {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .badge i {
+            font-size: 40px;
+            color: white;
+        }
+
+        .badge::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 2px solid var(--secondary);
+            opacity: 0.7;
+        }
+
+        .badge-title {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 500;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .completed-courses {
+            margin: 40px 0;
+        }
+
+        .course-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--success);
+        }
+
+        .course-card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .course-card p {
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        /* AI Chat Panel */
+        .chat-panel {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 380px;
+            height: 500px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .chat-panel.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .chat-title i {
+            color: var(--secondary);
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .close-chat:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ai-message, .user-message {
+            max-width: 80%;
+            padding: 15px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .ai-message {
+            background: #f1f5f9;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: var(--accent);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .send-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .send-btn:hover {
+            background: #5b21b6;
+        }
+
+        .file-upload-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .file-upload-btn {
+            background: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .file-name {
+            font-size: 0.8rem;
+            color: var(--dark);
+        }
+
+        /* New AI Features */
+        .ai-features-section {
+            margin-top: 40px;
+        }
+        
+        .ai-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .ai-feature-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid var(--ai-blue);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .ai-feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(66, 133, 244, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: var(--ai-blue);
+        }
+        
+        .ai-feature-card h4 {
+            color: var(--ai-blue);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .ai-feature-card p {
+            margin-bottom: 20px;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .ai-analysis-panel {
+            background: #f0f7ff;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin: 40px 0;
+            border-left: 4px solid var(--ai-green);
+        }
+        
+        .ai-analysis-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .ai-analysis-header h3 {
+            color: var(--ai-green);
+            font-size: 1.6rem;
+        }
+        
+        .ai-analysis-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .ai-analysis-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .ai-analysis-card h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .ai-skill-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .ai-skill-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .ai-skill-progress {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .ai-skill-progress-bar {
+            height: 100%;
+            background: var(--ai-green);
+            border-radius: 10px;
+        }
+        
+        .ai-recommendation {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--ai-blue);
+        }
+        
+        .ai-recommendation h4 {
+            color: var(--ai-blue);
+            margin-bottom: 15px;
+        }
+        
+        .ai-recommendation-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            transition: var(--transition);
+            margin-bottom: 10px;
+        }
+        
+        .ai-recommendation-item:hover {
+            background: #f1f5f9;
+        }
+        
+        .ai-recommendation-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(66, 133, 244, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--ai-blue);
+        }
+        
+        .ai-voice-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .voice-btn {
+            background: var(--ai-blue);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .voice-btn:hover {
+            background: #3367d6;
+            transform: scale(1.05);
+        }
+        
+        .voice-btn.listening {
+            background: var(--danger);
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .elektrik-platform {
+                grid-template-columns: 1fr;
+            }
+            
+            .konu-paneli {
+                position: static;
+                margin-bottom: 30px;
+            }
+            
+            .ai-analysis-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-panel {
+                width: 90%;
+                right: 5%;
+                height: 70vh;
+            }
+        }
+
+        /* Floating AI Button */
+        .floating-ai-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .floating-ai-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Game elements */
+        .game-element {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .circuit {
+            top: 10%;
+            left: 5%;
+            width: 100px;
+            height: 100px;
+        }
+
+        .resistor {
+            bottom: 10%;
+            right: 5%;
+            width: 80px;
+            height: 80px;
+        }
+
+        .capacitor {
+            top: 40%;
+            right: 10%;
+            width: 70px;
+            height: 70px;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--accent);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <div class="logo-text">ELEKTRO AKADEMİ</div>
+        </div>
+        
+        <div class="nav-menu">
+            <div class="nav-item">Ana Sayfa</div>
+            <div class="nav-item">Dersler</div>
+            <div class="nav-item">Projeler</div>
+            <div class="nav-item">Simülasyonlar</div>
+            <div class="nav-item">Kariyer</div>
+        </div>
+        
+        <div class="user-profile">
+            <div class="xp-badge">
+                <i class="fas fa-star"></i>
+                1,245 XP
+            </div>
+            <div class="profile-pic">KA</div>
+        </div>
+    </header>
+
+    <!-- Game Elements -->
+    <svg class="game-element circuit" viewBox="0 0 100 100">
+        <path d="M10,10 L90,10 L90,30 L70,30 L70,50 L30,50 L30,70 L50,70 L50,90 L10,90 Z" fill="none" stroke="#4a3669" stroke-width="2"/>
+        <circle cx="50" cy="30" r="5" fill="#4a3669"/>
+        <circle cx="30" cy="70" r="5" fill="#4a3669"/>
+    </svg>
+    
+    <svg class="game-element resistor" viewBox="0 0 80 80">
+        <rect x="10" y="35" width="60" height="10" fill="#e67a1b"/>
+        <path d="M10,40 L20,40 M60,40 L70,40" stroke="#4a3669" stroke-width="3"/>
+    </svg>
+    
+    <svg class="game-element capacitor" viewBox="0 0 70 70">
+        <line x1="10" y1="35" x2="30" y2="35" stroke="#4a3669" stroke-width="3"/>
+        <line x1="40" y1="35" x2="60" y2="35" stroke="#4a3669" stroke-width="3"/>
+        <line x1="30" y1="20" x2="30" y2="50" stroke="#4a3669" stroke-width="3"/>
+        <line x1="40" y1="20" x2="40" y2="50" stroke="#4a3669" stroke-width="3"/>
+    </svg>
+
+    <!-- Main Platform -->
+    <div class="elektrik-platform">
+        <!-- Left Panel - Topic List -->
+        <div class="konu-paneli">
+            <h3>Elektrik Mühendisliği Konuları <button class="refresh-btn"><i class="fas fa-sync-alt"></i></button></h3>
+            
+            <div class="ana-konu active">
+                <div class="ana-konu-baslik active">
+                    <span>Temel Kavramlar</span>
+                    <span>▼</span>
+                </div>
+                <div class="alt-konular">
+                    <div class="alt-konu active" data-topic="elektrik-yuku-ve-akim">
+                        <i class="fas fa-bolt"></i> Elektrik Yükü ve Akım
+                        <span class="level-badge">Başlangıç</span>
+                    </div>
+                    <div class="alt-konu" data-topic="ohm-kanunu">
+                        <i class="fas fa-bolt"></i> Ohm Kanunu
+                        <span class="level-badge">Başlangıç</span>
+                    </div>
+                    <div class="alt-konu" data-topic="guc-ve-enerji">
+                        <i class="fas fa-bolt"></i> Güç ve Enerji
+                        <span class="level-badge">Başlangıç</span>
+                    </div>
+                    <div class="alt-konu" data-topic="kirchhoff-kanunlari">
+                        <i class="fas fa-bolt"></i> Kirchhoff Kanunları
+                        <span class="level-badge">Orta</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ana-konu">
+                <div class="ana-konu-baslik">
+                    <span>Devre Analizi</span>
+                    <span>▶</span>
+                </div>
+                <div class="alt-konular">
+                    <div class="alt-konu" data-topic="seri-ve-paralel-devreler">
+                        <i class="fas fa-project-diagram"></i> Seri ve Paralel Devreler
+                        <span class="level-badge">Orta</span>
+                    </div>
+                    <div class="alt-konu" data-topic="thevenin-teoremi">
+                        <i class="fas fa-project-diagram"></i> Thevenin Teoremi
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="norton-teoremi">
+                        <i class="fas fa-project-diagram"></i> Norton Teoremi
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="superpozisyon">
+                        <i class="fas fa-project-diagram"></i> Süperpozisyon
+                        <span class="level-badge">İleri</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ana-konu">
+                <div class="ana-konu-baslik">
+                    <span>Elektromanyetizma</span>
+                    <span>▶</span>
+                </div>
+                <div class="alt-konular">
+                    <div class="alt-konu" data-topic="manyetik-alanlar">
+                        <i class="fas fa-magnet"></i> Manyetik Alanlar
+                        <span class="level-badge">Orta</span>
+                    </div>
+                    <div class="alt-konu" data-topic="faraday-kanunu">
+                        <i class="fas fa-magnet"></i> Faraday Kanunu
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="lenz-kanunu">
+                        <i class="fas fa-magnet"></i> Lenz Kanunu
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="induktans">
+                        <i class="fas fa-magnet"></i> İndüktans
+                        <span class="level-badge">İleri</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ana-konu">
+                <div class="ana-konu-baslik">
+                    <span>Güç Sistemleri</span>
+                    <span>▶</span>
+                </div>
+                <div class="alt-konular">
+                    <div class="alt-konu" data-topic="ac-devreler">
+                        <i class="fas fa-charging-station"></i> AC Devreler
+                        <span class="level-badge">Orta</span>
+                    </div>
+                    <div class="alt-konu" data-topic="3-fazli-sistemler">
+                        <i class="fas fa-charging-station"></i> 3 Fazlı Sistemler
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="transformatörler">
+                        <i class="fas fa-charging-station"></i> Transformatörler
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="guc-dagitimi">
+                        <i class="fas fa-charging-station"></i> Güç Dağıtımı
+                        <span class="level-badge">İleri</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="icerik-paneli">
+            <div class="icerik-header">
+                <h2><i class="fas fa-bolt"></i> Elektrik Mühendisliği Öğrenme Platformu</h2>
+                <button class="ai-ogren-btn" onclick="toggleAIChat()">
+                    <span>🤖</span> Bumble Bee ile Soru Sor
+                </button>
+            </div>
+            
+            <!-- Content Tabs -->
+            <div class="content-tabs">
+                <div class="tab active" data-tab="intro">Giriş</div>
+                <div class="tab" data-tab="lessons">Dersler</div>
+                <div class="tab" data-tab="projects">Projeler</div>
+                <div class="tab" data-tab="simulations">Simülasyonlar</div>
+                <div class="tab" data-tab="career">Kariyer</div>
+                <div class="tab" data-tab="ai">AI Özellikleri</div>
+            </div>
+            
+            <!-- Introduction Panel -->
+            <div class="tab-content active" id="intro-tab">
+                <div class="intro-panel">
+                    <h3>Elektrik Mühendisliği Öğrenme Yolculuğuna Hoş Geldiniz!</h3>
+                    <p>Bu platformda elektrik mühendisliğinin temellerinden ileri konulara kadar tüm alanları keşfedebilir, kişiselleştirilmiş dersler alabilir, projeler geliştirebilir ve kariyerinizi planlayabilirsiniz.</p>
+                    
+                    <div class="action-cards">
+                        <div class="action-card">
+                            <div class="card-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h4>Seviye Testi</h4>
+                            <p>20 soruluk seviye testi ile bilginizi ölçün ve kişiselleştirilmiş bir öğrenme yolu oluşturun.</p>
+                            <button class="btn btn-primary" onclick="startSeviyeTesti()">
+                                <i class="fas fa-play"></i> Teste Başla
+                            </button>
+                        </div>
+                        
+                        <div class="action-card">
+                            <div class="card-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h4>Proje Fikir Üretici</h4>
+                            <p>Yapay zeka destekli proje fikir üretici ile ilgi alanlarınıza uygun projeler keşfedin.</p>
+                            <button class="btn btn-accent" onclick="openProjectsTab()">
+                                <i class="fas fa-rocket"></i> Projeleri Keşfet
+                            </button>
+                        </div>
+                        
+                        <div class="action-card">
+                            <div class="card-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h4>AI Öğrenme Asistanı</h4>
+                            <p>Yapay zeka destekli kişisel asistanla konuları daha hızlı öğrenin ve sorularınıza anında cevap alın.</p>
+                            <button class="btn btn-ai" onclick="openAITab()">
+                                <i class="fas fa-brain"></i> AI Özelliklerini Keşfet
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Content Recommendations -->
+                    <div class="ai-recommendation">
+                        <div class="ai-analysis-header">
+                            <i class="fas fa-lightbulb" style="font-size: 2rem; color: var(--ai-blue);"></i>
+                            <h3>AI Önerileri: Sizin İçin Seçtiklerimiz</h3>
+                        </div>
+                        
+                        <div class="ai-recommendation-item">
+                            <div class="ai-recommendation-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div>
+                                <h5>Akım ve Gerilim İlişkisi</h5>
+                                <p>Ohm Kanunu'nu animasyonlarla öğrenin</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-recommendation-item">
+                            <div class="ai-recommendation-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div>
+                                <h5>Devre Analizinde Temel İlkeler</h5>
+                                <p>Seri ve paralel devreler için kılavuz</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-recommendation-item">
+                            <div class="ai-recommendation-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div>
+                                <h5>Basit Devre Projesi</h5>
+                                <p>LED'li devre kurulumu için adım adım rehber</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Daily Life Information -->
+                    <div class="daily-info">
+                        <h3><i class="fas fa-lightbulb"></i> Günlük Hayatta Elektrik Mühendisliği</h3>
+                        <p>Elektrik mühendisliği sadece teorik bir disiplin değil, günlük hayatımızın her alanında karşımıza çıkan pratik uygulamalarla doludur:</p>
+                        
+                        <div class="daily-info-grid">
+                            <div class="info-card">
+                                <h4><i class="fas fa-plug"></i> Akıllı Şebekeler</h4>
+                                <p>Modern elektrik şebekeleri, enerji tüketimini optimize ederek evlerimizdeki elektrik faturalarını %30'a kadar düşürebiliyor.</p>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4><i class="fas fa-car-battery"></i> Elektrikli Araçlar</h4>
+                                <p>Elektrik motorları %90 verimlilikle çalışırken, içten yanmalı motorlar sadece %20-30 verimlilik sağlayabiliyor.</p>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4><i class="fas fa-solar-panel"></i> Güneş Enerjisi</h4>
+                                <p>Modern güneş panelleri güneş ışığının %22'sini elektriğe dönüştürerek evlerin enerji ihtiyacını karşılayabiliyor.</p>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4><i class="fas fa-microchip"></i> Mikroişlemciler</h4>
+                                <p>Günümüzdeki akıllı telefon işlemcileri, 1969'da Ay'a giden Apollo 11 bilgisayarından 100,000 kat daha güçlüdür.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lessons Panel -->
+            <div class="tab-content" id="lessons-tab">
+                <div class="ders-icerik" id="lesson-content">
+                    <div class="simulation-container">
+                        <div class="simulation-placeholder" id="simulation-placeholder">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--accent);"></i>
+                            <p>Gemini AI ders içeriğini oluşturuyor...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Projects Panel -->
+            <div class="tab-content" id="projects-tab">
+                <div class="proje-uretici">
+                    <h4>AI Destekli Proje Fikir Üretici</h4>
+                    <p>İlgi alanlarınızı yazın, yapay zeka size özel proje fikirleri üretsin:</p>
+                    
+                    <div class="proje-input-container">
+                        <input type="text" class="proje-input" id="projeIlgiInput" placeholder="İlgi alanlarınızı yazın (örn: yenilenebilir enerji, robotik, IoT, akıllı şebekeler...)">
+                        <button class="btn btn-accent" onclick="generateProjectIdeas()">
+                            <i class="fas fa-magic"></i> Fikir Üret
+                        </button>
+                    </div>
+                    
+                    <div class="proje-fikirleri" id="projeFikirleriContainer">
+                        <!-- AI generated projects will appear here -->
+                    </div>
+                    
+                    <div class="proje-uretici" style="margin-top: 40px;">
+                        <h4>Kendi Proje Fikrinizi Geliştirin</h4>
+                        <p>Kendi proje fikrinizi yazın, yapay zeka size geliştirme önerileri sunsun:</p>
+                        
+                        <div class="proje-input-container">
+                            <input type="text" class="proje-input" id="projeFikirInput" placeholder="Proje fikrinizi yazın...">
+                            <button class="btn btn-primary" onclick="generateDevelopmentPlan()">
+                                <i class="fas fa-wand-magic-sparkles"></i> Geliştirme Planı Oluştur
+                            </button>
+                        </div>
+                        
+                        <div class="proje-fikirleri" id="projeGelistirmeContainer">
+                            <!-- AI generated development plan will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Career Panel -->
+            <div class="tab-content" id="career-tab">
+                <div class="career-panel">
+                    <h3>Kariyer Gelişim Paneli</h3>
+                    <p>Öğrenme yolculuğunuzdaki ilerlemeniz ve başarılarınız:</p>
+                    
+                    <div class="career-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-medal" style="font-size: 2rem; color: var(--accent);"></i>
+                            <div class="stat-value">87%</div>
+                            <div class="stat-label">Tamamlanan Dersler</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-trophy" style="font-size: 2rem; color: var(--accent);"></i>
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Kazanılan Rozetler</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-map-marked-alt" style="font-size: 2rem; color: var(--accent);"></i>
+                            <div class="stat-value">7/10</div>
+                            <div class="stat-label">Fethedilen Konular</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--accent);"></i>
+                            <div class="stat-value">#245</div>
+                            <div class="stat-label">Genel Sıralama</div>
+                        </div>
+                    </div>
+                    
+                    <div class="badges-section">
+                        <h4><i class="fas fa-medal"></i> Kazanılan Rozetler</h4>
+                        <div class="badges-container">
+                            <div>
+                                <div class="badge">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <div class="badge-title">Akım Ustası</div>
+                            </div>
+                            
+                            <div>
+                                <div class="badge">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="badge-title">Problem Çözücü</div>
+                            </div>
+                            
+                            <div>
+                                <div class="badge">
+                                    <i class="fas fa-calculator"></i>
+                                </div>
+                                <div class="badge-title">Formül Uzmanı</div>
+                            </div>
+                            
+                            <div>
+                                <div class="badge">
+                                    <i class="fas fa-microchip"></i>
+                                </div>
+                                <div class="badge-title">Devre Kurdu</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-analysis-panel">
+                        <div class="ai-analysis-header">
+                            <i class="fas fa-road" style="font-size: 2rem; color: var(--ai-green);"></i>
+                            <h3>AI Destekli Kariyer Yol Haritası</h3>
+                        </div>
+                        
+                        <p>Yetkinlik analizinize göre şu kariyer yollarını öneriyoruz:</p>
+                        
+                        <div class="ai-analysis-content">
+                            <div class="ai-analysis-card">
+                                <h4><i class="fas fa-bolt"></i> Güç Sistemleri Mühendisliği</h4>
+                                <p>Güçlü yönleriniz: Devre analizi, enerji sistemleri, AC/DC akım</p>
+                                <p>Önerilen adımlar:</p>
+                                <ul>
+                                    <li>Transformatörler ve Şebeke Sistemleri kursu</li>
+                                    <li>Enerji Dağıtımı simülasyon projesi</li>
+                                    <li>Akıllı Şebekeler sertifika programı</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="ai-analysis-card">
+                                <h4><i class="fas fa-microchip"></i> Elektronik Tasarım Mühendisliği</h4>
+                                <p>Güçlü yönleriniz: Devre tasarımı, elektronik bileşenler, problem çözme</p>
+                                <p>Önerilen adımlar:</p>
+                                <ul>
+                                    <li>PCB Tasarımı kursu</li>
+                                    <li>Mikrodenetleyici programlama projesi</li>
+                                    <li>Embedded Systems sertifika programı</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="completed-courses">
+                        <h4><i class="fas fa-book"></i> Tamamlanan Dersler</h4>
+                        <div class="course-list">
+                            <div class="course-card">
+                                <h4>Elektrik Yükü ve Akım</h4>
+                                <p>Tamamlanma Tarihi: 15 Ağustos 2023</p>
+                                <p>Başarı Puanı: 92/100</p>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h4>Ohm Kanunu</h4>
+                                <p>Tamamlanma Tarihi: 22 Ağustos 2023</p>
+                                <p>Başarı Puanı: 88/100</p>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h4>Seri ve Paralel Devreler</h4>
+                                <p>Tamamlanma Tarihi: 5 Eylül 2023</p>
+                                <p>Başarı Puanı: 95/100</p>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h4>AC Devre Analizi</h4>
+                                <p>Tamamlanma Tarihi: 18 Eylül 2023</p>
+                                <p>Başarı Puanı: 85/100</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Features Panel -->
+            <div class="tab-content" id="ai-tab">
+                <div class="intro-panel">
+                    <h3><i class="fas fa-robot"></i> Yapay Zeka Destekli Öğrenme Deneyimi</h3>
+                    <p>Platformumuzdaki gelişmiş AI özellikleri ile elektrik mühendisliğini daha etkili öğrenin. Kişiselleştirilmiş yol haritaları, anında geri bildirimler ve akıllı önerilerle öğrenme sürecinizi optimize edin.</p>
+                    
+                    <div class="ai-features-section">
+                        <div class="ai-feature-grid">
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <h4>Kişiselleştirilmiş Öğrenme Yolu</h4>
+                                <p>AI teknolojisi, seviyenize ve öğrenme stilinize uygun kişiselleştirilmiş bir müfredat oluşturur. Zayıf olduğunuz konulara otomatik odaklanarak verimliliğinizi artırır.</p>
+                                <button class="btn btn-ai">
+                                    <i class="fas fa-road"></i> Öğrenme Yolumu Görüntüle
+                                </button>
+                            </div>
+                            
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <h4>Akıllı İçerik Önerileri</h4>
+                                <p>İlgi alanlarınıza ve öğrenme geçmişinize göre özel olarak seçilmiş makaleler, videolar ve proje fikirleri ile kendinizi geliştirin.</p>
+                                <button class="btn btn-ai">
+                                    <i class="fas fa-book-open"></i> Önerilerimi Görüntüle
+                                </button>
+                            </div>
+                            
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <h4>Gerçek Zamanlı Kod Analizi</h4>
+                                <p>Yazdığınız kodları ve çizdiğiniz devreleri AI ile analiz edin. Hata tespiti, optimizasyon önerileri ve alternatif çözümlerle becerilerinizi geliştirin.</p>
+                                <button class="btn btn-ai">
+                                    <i class="fas fa-flask"></i> Laboratuvara Git
+                                </button>
+                            </div>
+                            
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-microphone"></i>
+                                </div>
+                                <h4>Sesli Asistan Desteği</h4>
+                                <p>Sesli komutlarla sorular sorun, konu anlatımı isteyin veya proje önerileri alın. Öğrenmenin en doğal yoluyla bilgiye erişin.</p>
+                                <div class="ai-voice-controls">
+                                    <button class="voice-btn" id="voiceBtn">
+                                        <i class="fas fa-microphone"></i>
+                                    </button>
+                                    <span>Sesli komut için tıklayın</span>
+                                </div>
+                            </div>
+                            
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <h4>Oyunlaştırılmış Öğrenme</h4>
+                                <p>AI tarafından kişiye özel olarak hazırlanan meydan okumalar, seviyeler ve rozetlerle öğrenmeyi eğlenceli hale getirin.</p>
+                                <button class="btn btn-ai">
+                                    <i class="fas fa-play"></i> Oyunları Keşfet
+                                </button>
+                            </div>
+                            
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <h4>Kariyer Yol Haritası</h4>
+                                <p>Yetkinlik analizinize göre en uygun kariyer yollarını belirleyin, eksiklerinizi tamamlayın ve iş fırsatlarıyla eşleşin.</p>
+                                <button class="btn btn-ai">
+                                    <i class="fas fa-road"></i> Kariyer Yolumu Görüntüle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-analysis-panel">
+                        <div class="ai-analysis-header">
+                            <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--ai-green);"></i>
+                            <h3>Öğrenme Performans Analizi</h3>
+                        </div>
+                        
+                        <div class="ai-analysis-content">
+                            <div class="ai-analysis-card">
+                                <h4>Öğrenme Stiliniz</h4>
+                                <p>Analiz sonuçlarınıza göre öğrenme stiliniz: <strong>Görsel ve Uygulamalı</strong></p>
+                                <p>Bu stile uygun öneriler:</p>
+                                <ul>
+                                    <li>Diğer öğrenme stillerine göre %30 daha fazla görsel içerik</li>
+                                    <li>Karmaşık konular için simülasyonlar ve animasyonlar</li>
+                                    <li>Pratik projelerle teoriyi pekiştirme</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="ai-analysis-card">
+                                <h4>Öğrenme Verimliliği</h4>
+                                <p>En verimli öğrenme saatleriniz: <strong>10:00 - 12:00</strong></p>
+                                <p>Önerilen çalışma planı:</p>
+                                <ul>
+                                    <li>Zor konuları sabah saatlerine planlayın</li>
+                                    <li>Öğleden sonra tekrar ve proje çalışmaları</li>
+                                    <li>Akşam hafif tekrarlar ve testler</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Level Test Module -->
+            <div class="seviye-test-modul" id="seviyeTesti">
+                <h3>Elektrik Mühendisliği Seviye Belirleme Testi</h3>
+                <div class="test-info">
+                    <div>
+                        <p><strong>Soru: <span id="currentQuestion">1</span>/20</strong> | <strong>Kalan Süre:</strong> 25:00</p>
+                    </div>
+                    <div>
+                        <p><strong>Zorluk:</strong> Orta</p>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="testProgress"></div>
+                </div>
+                
+                <div class="soru-container active" id="question1">
+                    <div class="soru">1. Aşağıdakilerden hangisi elektrik akımının birimidir?</div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'b', 1)">
+                        <div class="cevap-text">a) Volt</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'b', 1)">
+                        <div class="cevap-text">b) Amper</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'b', 1)">
+                        <div class="cevap-text">c) Ohm</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'b', 1)">
+                        <div class="cevap-text">d) Watt</div>
+                    </div>
+                    
+                    <button class="cozum-btn" id="solutionBtn1" onclick="toggleTestSolution(1)">
+                        <i class="fas fa-lightbulb"></i> Soru Çözümünü Gör
+                    </button>
+                    <div class="cozum" id="solution1">
+                        <p><strong>Çözüm:</strong></p>
+                        <p>Elektrik akımı, bir iletkenden birim zamanda geçen yük miktarını ifade eder ve birimi amperdir. Amper, Fransız fizikçi André-Marie Ampère'in adından gelmektedir.</p>
+                    </div>
+                </div>
+                
+                <div class="soru-container" id="question2">
+                    <div class="soru">2. Bir iletkenden 10 saniyede 50 coulomb yük geçiyorsa, akım değeri kaç amperdir?</div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">a) 0.2 A</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">b) 2 A</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">c) 5 A</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">d) 50 A</div>
+                    </div>
+                    
+                    <button class="cozum-btn" id="solutionBtn2" onclick="toggleTestSolution(2)">
+                        <i class="fas fa-lightbulb"></i> Soru Çözümünü Gör
+                    </button>
+                    <div class="cozum" id="solution2">
+                        <p><strong>Çözüm:</strong></p>
+                        <p>Akım (I) = Yük (Q) / Zaman (t)</p>
+                        <p>I = 50 C / 10 s = 5 A</p>
+                        <p>Doğru cevap: c) 5 A</p>
+                    </div>
+                </div>
+                
+                <div class="test-navigation">
+                    <button class="test-btn" disabled>
+                        <i class="fas fa-arrow-left"></i> Önceki Soru
+                    </button>
+                    <button class="test-btn btn-primary" onclick="nextQuestion()">
+                        Sonraki Soru <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Panel -->
+    <div class="chat-panel" id="chatPanel">
+        <div class="chat-header">
+            <div class="chat-title">
+                <i class="fas fa-robot"></i> Bumble Bee AI Asistan (Gemini)
+            </div>
+            <button class="close-chat" onclick="closeChat()">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="ai-message">Merhaba! Ben Bumble Bee, Gemini AI teknolojisi ile çalışıyorum. Elektrik Mühendisliği ile ilgili aklına takılan herhangi bir konuda bana soru sorabilirsin. Nasıl yardımcı olabilirim?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Mesajınızı yazın..." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <button class="send-btn" onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        <div class="file-upload-container">
+            <input type="file" id="fileUpload" accept=".pdf" style="display: none;" onchange="handleFileUpload(this)">
+            <button class="file-upload-btn" onclick="document.getElementById('fileUpload').click()">
+                <i class="fas fa-file-pdf"></i> PDF Yükle
+            </button>
+            <span class="file-name" id="fileName"></span>
+        </div>
+    </div>
+
+    <!-- Floating AI Button -->
+    <div class="floating-ai-btn" onclick="toggleAIChat()">
+        <i class="fas fa-robot"></i>
+    </div>
+
+    <script>
+        // API anahtarı - Gerçek uygulamada güvenli bir şekilde saklanmalı
+        const GEMINI_API_KEY = "AIzaSyA0hFf7vYqIxTqJm7n6h1f5U5q6Yd7r8t9"; // Örnek API anahtarı
+        
+        // Initialize the platform
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide level test initially
+            document.getElementById('seviyeTesti').style.display = 'none';
+            
+            // Set up tab switching
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Show corresponding content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Set up topic selection
+            document.querySelectorAll('.alt-konu').forEach(konu => {
+                konu.addEventListener('click', function() {
+                    document.querySelectorAll('.alt-konu').forEach(k => k.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show lessons tab
+                    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                    document.querySelector('.tab[data-tab="lessons"]').classList.add('active');
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById('lessons-tab').classList.add('active');
+                    
+                    // Load lesson content for selected topic
+                    const topic = this.getAttribute('data-topic');
+                    loadLessonContent(topic);
+                });
+            });
+            
+            // Load initial lesson content
+            loadLessonContent('elektrik-yuku-ve-akim');
+        });
+
+        // Topic list interaction
+        document.querySelectorAll('.ana-konu-baslik').forEach(baslik => {
+            baslik.addEventListener('click', function() {
+                const anaKonu = this.parentElement;
+                anaKonu.classList.toggle('active');
+                this.querySelector('span:last-child').textContent = 
+                    anaKonu.classList.contains('active') ? '▼' : '▶';
+            });
+        });
+        
+        // Load lesson content using Gemini AI
+        function loadLessonContent(topic) {
+            const lessonContent = document.getElementById('lesson-content');
+            const placeholder = document.getElementById('simulation-placeholder');
+            
+            // Show loading state
+            placeholder.innerHTML = `
+                <div class="spinner"></div>
+                <p>Gemini AI ders içeriğini oluşturuyor...</p>
+            `;
+            
+            // Generate prompt based on topic
+            const prompt = `Elektrik mühendisliği konusu olan "${topic}" hakkında detaylı bir ders anlatımı oluştur. 
+                Ders içeriği şunları içermeli:
+                1. Konunun temel kavramlarını açık ve anlaşılır bir şekilde açıkla
+                2. İlgili formülleri matematiksel gösterimle ver
+                3. 2-3 örnek problem ve çözümü ekle
+                4. Gerçek hayat uygulamalarından örnekler ver
+                5. Ders sonu için 5 kısa test sorusu oluştur
+                
+                Çıktıyı HTML formatında düzenle.`;
+            
+            // Call Gemini API
+            callGeminiAPI(prompt).then(content => {
+                // Replace placeholder with actual content
+                lessonContent.innerHTML = content;
+            }).catch(error => {
+                console.error("Gemini API hatası:", error);
+                lessonContent.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h3>${topic.replace(/-/g, ' ').toUpperCase()}</h3>
+                        <p>Ders içeriği yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
+                    </div>
+                `;
+            });
+        }
+        
+        // Call Gemini API
+        async function callGeminiAPI(prompt) {
+            // Gerçek uygulamada bu backend üzerinden yapılmalı
+            // Bu örnek için simüle edilmiş bir yanıt döndürüyoruz
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const topic = prompt.match(/"(.+?)"/)[1];
+                    resolve(`
+                        <h3>${topic.replace(/-/g, ' ').toUpperCase()}</h3>
+                        <p>Bu ders içeriği Gemini AI tarafından oluşturulmuştur.</p>
+                        
+                        <div class="formula-box">
+                            <div class="formula">I = ΔQ / Δt</div>
+                            <p>Bu formül elektrik akımını tanımlar:</p>
+                            <div class="variables">
+                                <div class="variable">
+                                    <span>I:</span>
+                                    <span>Akım (Amper)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>ΔQ:</span>
+                                    <span>Yük değişimi (Coulomb)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>Δt:</span>
+                                    <span>Zaman değişimi (saniye)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4>Örnek Problemler</h4>
+                        <p><strong>Problem 1:</strong> Bir iletkenden 10 saniyede 50 coulomb yük geçiyorsa akım kaç amperdir?</p>
+                        <p><strong>Çözüm:</strong> I = ΔQ / Δt = 50 C / 10 s = 5 A</p>
+                        
+                        <h4>Gerçek Hayat Uygulaması</h4>
+                        <p>Elektrik akımı kavramı, evlerimizdeki elektrik tesisatından elektronik cihazlara kadar birçok alanda kullanılır. Örneğin, bir devredeki akım değeri, o devre için uygun kablo kesitinin belirlenmesinde kritik öneme sahiptir.</p>
+                        
+                        <h4>Ders Sonu Testi</h4>
+                        <div class="cevap-secenek">1. Elektrik akımının birimi nedir? a) Volt b) Amper c) Ohm d) Watt</div>
+                        <div class="cevap-secenek">2. 3 amper akım, 10 saniyede kaç coulomb yük taşır? a) 0.3 C b) 3 C c) 30 C d) 300 C</div>
+                    `);
+                }, 1500);
+            });
+            
+            // Gerçek API çağrısı (güvenlik nedeniyle bu kodu kullanmayın)
+            /*
+            try {
+                const response = await axios.post(
+                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
+                    {
+                        contents: [{
+                            parts: [{
+                                text: prompt
+                            }]
+                        }]
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+                
+                return response.data.candidates[0].content.parts[0].text;
+            } catch (error) {
+                throw new Error("Gemini API error");
+            }
+            */
+        }
+        
+        // Start level test
+        function startSeviyeTesti() {
+            // Hide intro panel, show level test
+            document.getElementById('intro-tab').style.display = 'none';
+            document.getElementById('seviyeTesti').style.display = 'block';
+            // Update progress bar
+            document.getElementById('testProgress').style.width = '5%';
+            // Show first question
+            document.querySelectorAll('.soru-container').forEach((container, index) => {
+                container.style.display = index === 0 ? 'block' : 'none';
+            });
+        }
+        
+        // Open projects tab
+        function openProjectsTab() {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector('.tab[data-tab="projects"]').classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('projects-tab').classList.add('active');
+        }
+        
+        // Open AI tab
+        function openAITab() {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector('.tab[data-tab="ai"]').classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('ai-tab').classList.add('active');
+        }
+        
+        // Show/hide solution
+        function toggleCozum(btn) {
+            const cozum = btn.nextElementSibling;
+            cozum.style.display = cozum.style.display === 'block' ? 'none' : 'block';
+            btn.innerHTML = cozum.style.display === 'block' ? 
+                '<i class="fas fa-lightbulb"></i> Çözümü Gizle' : 
+                '<i class="fas fa-lightbulb"></i> Çözümü Göster';
+        }
+        
+        // Toggle test solution
+        function toggleTestSolution(questionNum) {
+            const solution = document.getElementById(`solution${questionNum}`);
+            solution.classList.toggle('show');
+        }
+        
+        // Select answer in lessons
+        function selectAnswer(element, correctAnswer) {
+            const options = element.parentElement.querySelectorAll('.cevap-secenek');
+            const selectedAnswer = element.querySelector('.cevap-text').textContent.trim().charAt(0);
+            
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+                
+                const answerChar = opt.querySelector('.cevap-text').textContent.trim().charAt(0);
+                if (answerChar === correctAnswer) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            element.classList.add('selected');
+            if (selectedAnswer !== correctAnswer) {
+                element.classList.add('incorrect');
+            }
+        }
+        
+        // Select answer in test
+        function selectTestAnswer(element, correctAnswer, questionNum) {
+            const options = element.parentElement.querySelectorAll('.cevap-secenek');
+            const selectedAnswer = element.querySelector('.cevap-text').textContent.trim().charAt(0);
+            
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+                
+                const answerChar = opt.querySelector('.cevap-text').textContent.trim().charAt(0);
+                if (answerChar === correctAnswer) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            element.classList.add('selected');
+            if (selectedAnswer !== correctAnswer) {
+                element.classList.add('incorrect');
+            }
+            
+            // Show solution button
+            document.getElementById(`solutionBtn${questionNum}`).classList.add('active');
+        }
+        
+        // Next question in test
+        function nextQuestion() {
+            const currentQuestion = parseInt(document.getElementById('currentQuestion').textContent);
+            const nextQuestion = currentQuestion + 1;
+            
+            if (nextQuestion <= 20) {
+                document.getElementById('currentQuestion').textContent = nextQuestion;
+                document.querySelectorAll('.soru-container').forEach(container => {
+                    container.style.display = 'none';
+                });
+                document.getElementById(`question${nextQuestion}`).style.display = 'block';
+                
+                // Update progress bar
+                const progress = (nextQuestion / 20) * 100;
+                document.getElementById('testProgress').style.width = `${progress}%`;
+            }
+        }
+        
+        // Generate project ideas with AI
+        function generateProjectIdeas() {
+            const interest = document.getElementById('projeIlgiInput').value || 'elektrik mühendisliği';
+            const container = document.getElementById('projeFikirleriContainer');
+            
+            // Clear previous content
+            container.innerHTML = '';
+            
+            // Show loading
+            container.innerHTML = '<div class="spinner"></div><p>Gemini AI proje fikirlerini oluşturuyor...</p>';
+            
+            // Generate prompt
+            const prompt = `Elektrik mühendisliği alanında "${interest}" konusuyla ilgili 3 proje fikri oluştur. 
+                Her proje için:
+                - Proje adı
+                - Proje açıklaması
+                - Geliştirme ortamı
+                - Kullanılacak teknolojiler
+                içeren bir liste yap.
+                
+                Çıktıyı HTML formatında düzenle.`;
+            
+            // Call Gemini API
+            callGeminiAPI(prompt).then(content => {
+                container.innerHTML = content;
+            }).catch(error => {
+                console.error("Gemini API hatası:", error);
+                container.innerHTML = '<p>Proje fikirleri oluşturulurken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>';
+            });
+        }
+        
+        // Generate development plan with AI
+        function generateDevelopmentPlan() {
+            const idea = document.getElementById('projeFikirInput').value || 'elektrik mühendisliği projesi';
+            const container = document.getElementById('projeGelistirmeContainer');
+            
+            // Clear previous content
+            container.innerHTML = '';
+            
+            // Show loading
+            container.innerHTML = '<div class="spinner"></div><p>Gemini AI geliştirme planını oluşturuyor...</p>';
+            
+            const prompt = `"${idea}" projesi için detaylı bir geliştirme planı oluştur. 
+                Plan şunları içermeli:
+                1. Proje adımları
+                2. Her adımın detaylı açıklaması
+                3. Gerekli kaynaklar ve ekipmanlar
+                4. Tahmini zaman çizelgesi
+                
+                Çıktıyı HTML formatında düzenle.`;
+            
+            // Call Gemini API
+            callGeminiAPI(prompt).then(content => {
+                container.innerHTML = content;
+            }).catch(error => {
+                console.error("Gemini API hatası:", error);
+                container.innerHTML = '<p>Geliştirme planı oluşturulurken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>';
+            });
+        }
+        
+        // Handle file upload for PDF summary
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const fileName = document.getElementById('fileName');
+            fileName.textContent = file.name;
+            
+            // Simulate uploading and processing
+            setTimeout(() => {
+                const messages = document.getElementById('chatMessages');
+                messages.innerHTML += `
+                    <div class="user-message">
+                        <i class="fas fa-file-pdf"></i> ${file.name} dosyası yüklendi
+                    </div>
+                `;
+                
+                // Simulate Gemini processing
+                setTimeout(() => {
+                    messages.innerHTML += `
+                        <div class="ai-message">
+                            PDF dosyası başarıyla yüklendi. İçeriği analiz ediyorum...
+                        </div>
+                    `;
+                    
+                    // Simulate summary
+                    setTimeout(() => {
+                        messages.innerHTML += `
+                            <div class="ai-message">
+                                <strong>PDF Özeti:</strong><br>
+                                Bu PDF dokümanı elektrik mühendisliği temel kavramlarını içermektedir. 
+                                Ana başlıklar: Elektrik yükü, akım, gerilim, direnç ve Ohm Kanunu. 
+                                Dokümanda ayrıca 15 örnek problem ve çözümü bulunmaktadır.
+                            </div>
+                        `;
+                        messages.scrollTop = messages.scrollHeight;
+                    }, 2000);
+                }, 1000);
+                
+                messages.scrollTop = messages.scrollHeight;
+            }, 500);
+        }
+        
+        // AI Chat functions
+        function toggleAIChat() {
+            const chatPanel = document.getElementById('chatPanel');
+            chatPanel.classList.toggle('active');
+            document.getElementById('chatInput').focus();
+        }
+        
+        function closeChat() {
+            document.getElementById('chatPanel').classList.remove('active');
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            const userMsg = input.value.trim();
+            
+            if (userMsg !== "") {
+                // Add user message
+                messages.innerHTML += `<div class="user-message">${userMsg}</div>`;
+                input.value = "";
+                
+                // Show loading indicator
+                const loadingMsg = document.createElement('div');
+                loadingMsg.className = 'ai-message';
+                loadingMsg.innerHTML = '<div class="spinner" style="width:20px;height:20px;"></div> Cevap oluşturuluyor...';
+                messages.appendChild(loadingMsg);
+                messages.scrollTop = messages.scrollHeight;
+                
+                // Call Gemini API
+                const prompt = `Kullanıcı sorusu: "${userMsg}"
+                    Elektrik mühendisliği konusunda uzman bir asistan olarak cevap ver. 
+                    Cevap kısa, net ve anlaşılır olsun. Gerektiğinde formüller ekle.`;
+                
+                // Simulate API call
+                setTimeout(() => {
+                    // Remove loading indicator
+                    messages.removeChild(loadingMsg);
+                    
+                    // Add AI response
+                    messages.innerHTML += `
+                        <div class="ai-message">
+                            Bu sorunuzun cevabı Gemini AI tarafından oluşturuldu. Gerçek uygulamada API kullanılarak dinamik içerik sağlanacaktır.
+                        </div>
+                    `;
+                    messages.scrollTop = messages.scrollHeight;
+                }, 1500);
+            }
+        }
+        
+        // Voice control for AI
+        const voiceBtn = document.getElementById('voiceBtn');
+        voiceBtn.addEventListener('click', function() {
+            this.classList.toggle('listening');
+            
+            if (this.classList.contains('listening')) {
+                // Start voice recognition
+                alert("Sesli komut özelliği aktif. Gerçek uygulamada bu özellik, kullanıcının ses komutlarını dinleyip Gemini'ye iletecektir.");
+            } else {
+                // Stop voice recognition
+            }
+        });
+    </script>
+</body>
+</html>

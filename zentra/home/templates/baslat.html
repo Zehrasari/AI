@@ -1,0 +1,341 @@
+{% extends "home/base.html" %}
+{% block content %}
+<style>
+    body {
+        min-height: 100vh;
+        background: radial-gradient(circle at 20% 40%, #623a75 60%, #ae7944 100%) !important;
+        overflow-x: hidden;
+    }
+    .main-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+        padding: 48px 0 32px 0;
+        position: relative;
+    }
+    .engineer-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 32px;
+        justify-content: center;
+        margin-bottom: 32px;
+    }
+    .engineer-card {
+        background: rgba(255,255,255,0.85);
+        border-radius: 22px;
+        box-shadow: 0 4px 24px rgba(109,40,217,0.13);
+        width: 220px;
+        min-height: 180px;
+        padding: 24px 18px 18px 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s, z-index 0.3s;
+        position: relative;
+        z-index: 1;
+    }
+    .engineer-card.active {
+        transform: scale(1.18);
+        box-shadow: 0 8px 48px 8px rgba(109,40,217,0.18);
+        z-index: 2;
+        background: rgba(255,255,255,0.97);
+    }
+    .engineer-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #623a75;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .engineer-desc {
+        font-size: 1.02rem;
+        color: #ae7944;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+    .continue-btn {
+        padding: 8px 22px;
+        background: linear-gradient(90deg, #6d28d9 0%, #f59e42 100%);
+        color: #fff;
+        border: none;
+        border-radius: 16px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 8px;
+        transition: background 0.2s, transform 0.2s;
+        box-shadow: 0 2px 12px rgba(109,40,217,0.08);
+        display: none;
+    }
+    .engineer-card.active .continue-btn {
+        display: block;
+    }
+    /* Blur arka plan aktif kartta */
+    .blur-bg {
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        backdrop-filter: blur(7px);
+        z-index: 1;
+        pointer-events: none;
+        transition: backdrop-filter 0.3s;
+    }
+    /* Sağ üst AI asistanı */
+    .ai-assistant {
+        position: fixed;
+        top: 32px;
+        right: 48px;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .ai-avatar {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 2px 12px rgba(109,40,217,0.13);
+        overflow: hidden;
+        cursor: pointer;
+        border: 3px solid #ae7944;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: box-shadow 0.2s;
+    }
+    .ai-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .ai-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #623a75;
+        background: rgba(255,255,255,0.85);
+        padding: 6px 14px;
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(109,40,217,0.08);
+    }
+    /* AI chat popup */
+    .ai-chat-popup {
+        position: fixed;
+        top: 100px;
+        right: 48px;
+        width: 340px;
+        max-width: 90vw;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(109,40,217,0.13);
+        padding: 18px 16px 12px 16px;
+        z-index: 101;
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        animation: fadeIn 0.5s;
+    }
+    .ai-chat-popup.active {
+        display: flex;
+    }
+    .ai-chat-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #623a75;
+        margin-bottom: 6px;
+    }
+    .ai-chat-messages {
+        min-height: 80px;
+        max-height: 180px;
+        overflow-y: auto;
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 8px;
+    }
+    .ai-chat-input-row {
+        display: flex;
+        gap: 6px;
+    }
+    .ai-chat-input {
+        flex: 1;
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid #ae7944;
+        font-size: 1rem;
+    }
+    .ai-chat-send {
+        background: linear-gradient(90deg, #6d28d9 0%, #f59e42 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 8px 14px;
+    }
+    /* Arkadaş ekleme ve oyun alanı */
+    .side-panel {
+        position: fixed;
+        left: 32px;
+        top: 100px;
+        width: 260px;
+        max-width: 90vw;
+        background: rgba(255,255,255,0.85);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(109,40,217,0.13);
+        padding: 18px 16px 12px 16px;
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+    .panel-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #623a75;
+        margin-bottom: 6px;
+    }
+    .friend-list, .rank-list {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 8px;
+    }
+    .add-friend-btn {
+        background: linear-gradient(90deg, #f59e42 0%, #6d28d9 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 7px 14px;
+        margin-top: 6px;
+    }
+    .ai-play-btn {
+        background: linear-gradient(90deg, #6d28d9 0%, #f59e42 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 7px 14px;
+        margin-top: 6px;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px);}
+        to { opacity: 1; transform: translateY(0);}
+    }
+</style>
+<div class="main-area">
+    <!-- Sağ üst AI asistanı -->
+    <div class="ai-assistant">
+        <div class="ai-avatar" onclick="toggleAIChat()">
+            <img src="/static/images/bumblebee.jpg" alt="Bumble Bee AI">
+        </div>
+        <div class="ai-name">Bumble Bee</div>
+    </div>
+    <div class="ai-chat-popup" id="aiChatPopup">
+        <div class="ai-chat-title">Bumble Bee Asistan</div>
+        <div class="ai-chat-messages" id="aiChatMessages">
+            Merhaba! Ben Bumble Bee AI. Sorunu bana yazabilirsin.
+        </div>
+        <div class="ai-chat-input-row">
+            <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Sorunu yaz...">
+            <button class="ai-chat-send" onclick="sendAIMessage()">Gönder</button>
+        </div>
+    </div>
+    <!-- Sol panel: Arkadaş ve oyun -->
+    <div class="side-panel">
+        <div class="panel-title">Arkadaşların</div>
+        <div class="friend-list">
+            <div>Ali</div>
+            <div>Ayşe</div>
+            <div>Mehmet</div>
+        </div>
+        <button class="add-friend-btn">Arkadaş Ekle</button>
+        <div class="panel-title">Bil ve Fethet Rank</div>
+        <div class="rank-list">
+            <div>1. Ayşe - 1200 puan</div>
+            <div>2. Ali - 1100 puan</div>
+            <div>3. Mehmet - 900 puan</div>
+        </div>
+        <div class="panel-title">Haftalık Sıralama</div>
+        <div class="rank-list">
+            <div>1. Ayşe</div>
+            <div>2. Ali</div>
+            <div>3. Mehmet</div>
+        </div>
+        <button class="ai-play-btn">AI ile Bil ve Fethet Oyna</button>
+    </div>
+    <!-- Mühendislik kutucukları -->
+    <div class="engineer-grid" id="engineerGrid">
+        <div class="engineer-card" onclick="activateCard(this)">
+            <div class="engineer-title">Elektrik Mühendisliği</div>
+            <div class="engineer-desc">Enerjiyle dünyayı aydınlat, yenilikçi projelerle geleceği tasarla!</div>
+            <button class="continue-btn" onclick="goToNextPage(event)">Devam</button>
+        </div>
+        <div class="engineer-card" onclick="activateCard(this)">
+            <div class="engineer-title">Makine Mühendisliği</div>
+            <div class="engineer-desc">Hareketin ve gücün ustası ol, teknolojiyi şekillendir!</div>
+            <button class="continue-btn" onclick="goToNextPage(event)">Devam</button>
+        </div>
+        <div class="engineer-card" onclick="activateCard(this)">
+            <div class="engineer-title">Yazılım Mühendisliği</div>
+            <div class="engineer-desc">Kodlarla dünyayı yönet, dijital geleceğin mimarı ol!</div>
+            <button class="continue-btn" onclick="goToNextPage(event)">Devam</button>
+        </div>
+        <div class="engineer-card" onclick="activateCard(this)">
+            <div class="engineer-title">Endüstri Mühendisliği</div>
+            <div class="engineer-desc">Verimlilik ve inovasyonun merkezi, süreçleri optimize et!</div>
+            <button class="continue-btn" onclick="goToNextPage(event)">Devam</button>
+        </div>
+        <!-- Diğer mühendislikler eklenebilir -->
+    </div>
+    <div class="blur-bg" id="blurBg" style="display:none;"></div>
+</div>
+<script>
+    // Kart büyütme ve blur efekti
+    function activateCard(card) {
+        document.querySelectorAll('.engineer-card').forEach(function(c) {
+            c.classList.remove('active');
+        });
+        card.classList.add('active');
+        document.getElementById('blurBg').style.display = 'block';
+    }
+    // Devam butonu tıklanınca diğer sayfaya yönlendir
+    function goToNextPage(event) {
+        event.stopPropagation();
+        window.location.href = "/devam/";
+    }
+    // Blur kaldırmak için sayfada boş bir yere tıklayınca
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.engineer-card')) {
+            document.querySelectorAll('.engineer-card').forEach(function(c) {
+                c.classList.remove('active');
+            });
+            document.getElementById('blurBg').style.display = 'none';
+        }
+    });
+    // AI chat popup aç/kapat
+    function toggleAIChat() {
+        document.getElementById('aiChatPopup').classList.toggle('active');
+    }
+    // Basit AI chat simülasyonu
+    function sendAIMessage() {
+        var input = document.getElementById('aiChatInput');
+        var messages = document.getElementById('aiChatMessages');
+        if (input.value.trim() !== "") {
+            messages.innerHTML += "<div style='margin-top:6px;color:#ae7944;'><b>Sen:</b> " + input.value + "</div>";
+            setTimeout(function() {
+                messages.innerHTML += "<div style='margin-top:6px;color:#623a75;'><b>Bumble Bee:</b> Harika bir soru! Daha fazla yardımcı olabilirim.</div>";
+                messages.scrollTop = messages.scrollHeight;
+            }, 600);
+            input.value = "";
+            messages.scrollTop = messages.scrollHeight;
+        }
+    }
+</script>
+{% endblock %}

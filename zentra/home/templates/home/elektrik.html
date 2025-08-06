@@ -1451,6 +1451,452 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        /* New Elements */
+        .simulation-viewer {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+        
+        .simulation-viewer.active {
+            display: block;
+        }
+        
+        .simulation-iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .simulation-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .simulation-btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        
+        .simulation-btn:hover {
+            background: #5b21b6;
+        }
+        
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .simulation-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .simulation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .simulation-thumbnail {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .simulation-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(74, 54, 105, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .simulation-card:hover .simulation-overlay {
+            opacity: 1;
+        }
+        
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .simulation-info {
+            padding: 20px;
+        }
+        
+        .simulation-info h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .simulation-info p {
+            color: var(--dark);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .simulation-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .simulation-tag {
+            background: rgba(109, 40, 217, 0.1);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .ai-detail-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .ai-detail-content {
+            background: white;
+            max-width: 1000px;
+            margin: 50px auto;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ai-detail-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ai-detail-header h3 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .close-detail {
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-detail:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .ai-detail-body {
+            padding: 30px;
+            line-height: 1.7;
+        }
+        
+        .learning-path {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .path-step {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background: #f8fafc;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step-number {
+            min-width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-content h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .resources-list {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        
+        .resources-list li {
+            margin-bottom: 10px;
+        }
+        
+        .recommended-courses {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .course-card-mini {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .course-card-mini h5 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .course-progress {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .course-progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 30%;
+        }
+        
+        .ai-personality-card {
+    background: #f0f7ff;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}
+
+.code-editor-container {
+    margin: 20px 0;
+}
+
+.code-editor-container textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-family: monospace;
+    resize: vertical;
+}
+
+.ai-analysis-result {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.ai-recommendation-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Anket Formu Stilleri */
+.learning-path-form {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.learning-path-form h4 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+/* Sonuç Göstergeci */
+.result-loader {
+    text-align: center;
+    padding: 30px;
+}
+
+.result-loader p {
+    margin-top: 15px;
+    font-size: 1.1rem;
+}
+
+/* Öğrenme Yolu Sonuçları */
+.learning-path-result {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.path-step {
+    background: #f8fafc;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--secondary);
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--secondary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.step-title {
+    color: var(--primary);
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.step-description {
+    margin-bottom: 15px;
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.step-resources h5 {
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+
+.step-resources ul {
+    padding-left: 20px;
+}
+
+.step-resources li {
+    margin-bottom: 8px;
+    color: var(--dark);
+}
+
+/* AI Özellik Butonları */
+.ai-feature-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Gizleme Sınıfı */
+.hidden {
+    display: none;
+}
+
     </style>
 </head>
 <body>
@@ -1460,7 +1906,7 @@
             <div class="logo-icon">
                 <i class="fas fa-bolt"></i>
             </div>
-            <div class="logo-text">ELEKTRO AKADEMİ</div>
+            <div class="logo-text">BUMBLE BEE AKADEMİ</div>
         </div>
         
         <div class="nav-menu">
@@ -1611,7 +2057,7 @@
             <div class="icerik-header">
                 <h2><i class="fas fa-bolt"></i> Elektrik Mühendisliği Öğrenme Platformu</h2>
                 <button class="ai-ogren-btn" onclick="toggleAIChat()">
-                    <span>🤖</span> Bumble Bee ile Soru Sor
+                    <span>🤖</span> Bumble Bee AI
                 </button>
             </div>
             
@@ -1737,10 +2183,170 @@
             <!-- Lessons Panel -->
             <div class="tab-content" id="lessons-tab">
                 <div class="ders-icerik" id="lesson-content">
-                    <div class="simulation-container">
-                        <div class="simulation-placeholder" id="simulation-placeholder">
-                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--accent);"></i>
-                            <p>Gemini AI ders içeriğini oluşturuyor...</p>
+                    <div id="elektrik-yuku-ve-akim" style="display: block;">
+                        <h3>Elektrik Yükü ve Akım</h3>
+                        <p>Elektrik yükü, maddenin temel özelliklerinden biridir ve atom altı parçacıkların taşıdığı bir özelliktir. Doğada iki tür elektrik yükü bulunur: pozitif (+) ve negatif (-) yük.</p>
+                        
+                        <div class="formula-box">
+                            <div class="formula">Q = n × e</div>
+                            <div class="variables">
+                                <div class="variable">
+                                    <span>Q:</span>
+                                    <span>Toplam yük (Coulomb)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>n:</span>
+                                    <span>Yük sayısı</span>
+                                </div>
+                                <div class="variable">
+                                    <span>e:</span>
+                                    <span>Elektron yükü (1.6 × 10⁻¹⁹ C)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4>Elektrik Akımı</h4>
+                        <p>Elektrik akımı, bir iletkenin belirli bir kesitinden birim zamanda geçen yük miktarıdır. Akımın birimi Amper (A) olup, aşağıdaki formülle hesaplanır:</p>
+                        
+                        <div class="formula-box">
+                            <div class="formula">I = Q / t</div>
+                            <div class="variables">
+                                <div class="variable">
+                                    <span>I:</span>
+                                    <span>Akım (Amper)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>Q:</span>
+                                    <span>Yük miktarı (Coulomb)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>t:</span>
+                                    <span>Zaman (saniye)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="visual-container">
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Elektron+Hareketi" alt="Elektron Hareketi">
+                                <p>Elektronların negatif yükleri nedeniyle akım yönünün tersine hareket ettiğini gösteren şema</p>
+                            </div>
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Akım+Yönü" alt="Akım Yönü">
+                                <p>Geleneksel akım yönü (+ yüklerin hareket yönü) ve elektron akış yönü</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="ohm-kanunu" style="display: none;">
+                        <h3>Ohm Kanunu</h3>
+                        <p>Ohm Kanunu, bir elektrik devresinde akım, gerilim ve direnç arasındaki ilişkiyi açıklar. Alman fizikçi Georg Simon Ohm tarafından 1827 yılında formüle edilmiştir.</p>
+                        
+                        <div class="formula-box">
+                            <div class="formula">V = I × R</div>
+                            <div class="variables">
+                                <div class="variable">
+                                    <span>V:</span>
+                                    <span>Gerilim (Volt)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>I:</span>
+                                    <span>Akım (Amper)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>R:</span>
+                                    <span>Direnç (Ohm)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p>Bu formül, bir iletkenin iki ucu arasındaki potansiyel farkın (V), iletkenden geçen akım (I) ile iletkenin direncinin (R) çarpımına eşit olduğunu ifade eder.</p>
+                        
+                        <div class="visual-container">
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Ohm+Kanunu+Formülü" alt="Ohm Kanunu Formülü">
+                                <p>Ohm Kanunu'nun temel formülü ve bileşenleri</p>
+                            </div>
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Ohm+Kanunu+Üçgeni" alt="Ohm Kanunu Üçgeni">
+                                <p>Ohm Kanunu'nun hesaplama için kullanılan üçgen yöntemi</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="guc-ve-enerji" style="display: none;">
+                        <h3>Güç ve Enerji</h3>
+                        <p>Elektrik devrelerinde güç, elektrik enerjisinin birim zamanda tüketilen miktarıdır. Enerji ise gücün zamanla çarpımıdır.</p>
+                        
+                        <div class="formula-box">
+                            <div class="formula">P = V × I</div>
+                            <div class="variables">
+                                <div class="variable">
+                                    <span>P:</span>
+                                    <span>Güç (Watt)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>V:</span>
+                                    <span>Gerilim (Volt)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>I:</span>
+                                    <span>Akım (Amper)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="formula-box">
+                            <div class="formula">E = P × t</div>
+                            <div class="variables">
+                                <div class="variable">
+                                    <span>E:</span>
+                                    <span>Enerji (Joule)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>P:</span>
+                                    <span>Güç (Watt)</span>
+                                </div>
+                                <div class="variable">
+                                    <span>t:</span>
+                                    <span>Zaman (saniye)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p>Güç formülü Ohm Kanunu kullanılarak farklı şekillerde ifade edilebilir:</p>
+                        
+                        <div class="formula-box">
+                            <div class="formula">P = I² × R</div>
+                            <div class="formula">P = V² / R</div>
+                        </div>
+                    </div>
+                    
+                    <div id="kirchhoff-kanunlari" style="display: none;">
+                        <h3>Kirchhoff Kanunları</h3>
+                        <p>Kirchhoff Kanunları, karmaşık elektrik devrelerinin analizinde kullanılan temel kurallardır. Alman fizikçi Gustav Kirchhoff tarafından 1845 yılında geliştirilmiştir.</p>
+                        
+                        <h4>1. Kirchhoff Akım Kanunu (KCL)</h4>
+                        <p>Bir düğüm noktasına giren akımların toplamı, o düğüm noktasından çıkan akımların toplamına eşittir.</p>
+                        <div class="formula-box">
+                            <div class="formula">ΣI<sub>giren</sub> = ΣI<sub>çıkan</sub></div>
+                        </div>
+                        
+                        <h4>2. Kirchhoff Gerilim Kanunu (KVL)</h4>
+                        <p>Kapalı bir devre çevresindeki gerilim düşüşlerinin toplamı, o çevredeki elektromotor kuvvetlerin (EMK) toplamına eşittir.</p>
+                        <div class="formula-box">
+                            <div class="formula">ΣV = ΣEMK</div>
+                        </div>
+                        
+                        <div class="visual-container">
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Kirchhoff+Akım+Kanunu" alt="Kirchhoff Akım Kanunu">
+                                <p>Bir düğüm noktasına giren ve çıkan akımlar</p>
+                            </div>
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Kirchhoff+Gerilim+Kanunu" alt="Kirchhoff Gerilim Kanunu">
+                                <p>Kapalı bir devre çevresindeki gerilimler</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1776,6 +2382,107 @@
                         
                         <div class="proje-fikirleri" id="projeGelistirmeContainer">
                             <!-- AI generated development plan will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Simulations Panel -->
+            <div class="tab-content" id="simulations-tab">
+                <h3 style="padding: 20px 30px 0;">Elektrik Mühendisliği Simülasyonları</h3>
+                <p style="padding: 0 30px 20px;">Aşağıdaki simülasyonları kullanarak elektrik devrelerini sanal ortamda deneyebilir, teorik bilgilerinizi pratiğe dökebilirsiniz.</p>
+                
+                <div class="simulation-viewer" id="simulationViewer">
+                    <h4 id="simulationTitle">Devre Simülasyonu</h4>
+                    <p id="simulationDescription">Devre elemanlarını sürükleyip bırakarak kendi devrenizi oluşturun ve ölçümler yapın.</p>
+                    <iframe class="simulation-iframe" id="simulationFrame" src="https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_tr.html" allowfullscreen></iframe>
+                    <div class="simulation-controls">
+                        <button class="simulation-btn">
+                            <i class="fas fa-play"></i> Başlat
+                        </button>
+                        <button class="simulation-btn">
+                            <i class="fas fa-redo"></i> Sıfırla
+                        </button>
+                        <button class="simulation-btn">
+                            <i class="fas fa-download"></i> İndir
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="simulation-grid">
+                    <div class="simulation-card" onclick="openSimulation('Devre Simülasyonu', 'DC ve AC devreleri oluşturma ve analiz etme', 'https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_tr.html')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Devre+Simülasyonu');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Devre Simülasyonu</h4>
+                            <p>DC ve AC devreleri oluşturma ve analiz etme</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">DC Devreler</span>
+                                <span class="simulation-tag">AC Devreler</span>
+                                <span class="simulation-tag">Ohm Kanunu</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-card" onclick="openSimulation('Manyetik Alan Simülasyonu', 'İletkenler etrafındaki manyetik alanları görselleştirme', 'https://phet.colorado.edu/sims/html/faradays-law/latest/faradays-law_tr.html')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Manyetik+Alan+Simülasyonu');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Manyetik Alan Simülasyonu</h4>
+                            <p>İletkenler etrafındaki manyetik alanları görselleştirme</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">Manyetizma</span>
+                                <span class="simulation-tag">Elektromanyetizma</span>
+                                <span class="simulation-tag">Faraday Kanunu</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-card" onclick="openSimulation('Güneş Paneli Simülasyonu', 'Güneş paneli verimliliğini analiz etme', 'https://phet.colorado.edu/sims/html/energy-forms-and-changes/latest/energy-forms-and-changes_tr.html')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Güneş+Paneli+Simülasyonu');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Güneş Paneli Simülasyonu</h4>
+                            <p>Güneş paneli verimliliğini analiz etme</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">Yenilenebilir Enerji</span>
+                                <span class="simulation-tag">Güneş Enerjisi</span>
+                                <span class="simulation-tag">Enerji Dönüşümü</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-card" onclick="openSimulation('Transformatör Simülasyonu', 'Gerilim dönüşüm oranlarını keşfetme', 'https://phet.colorado.edu/sims/html/generator/latest/generator_tr.html')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Transformatör+Simülasyonu');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Transformatör Simülasyonu</h4>
+                            <p>Gerilim dönüşüm oranlarını keşfetme</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">Transformatör</span>
+                                <span class="simulation-tag">Gerilim Dönüşümü</span>
+                                <span class="simulation-tag">İndüksiyon</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1914,7 +2621,7 @@
             <div class="tab-content" id="ai-tab">
                 <div class="intro-panel">
                     <h3><i class="fas fa-robot"></i> Yapay Zeka Destekli Öğrenme Deneyimi</h3>
-                    <p>Platformumuzdaki gelişmiş AI özellikleri ile elektrik mühendisliğini daha etkili öğrenin. Kişiselleştirilmiş yol haritaları, anında geri bildirimler ve akıllı önerilerle öğrenme sürecinizi optimize edin.</p>
+                    <p>Platformumuzdaki gelişmiş AI özellikleri ile elektrik mühendisliğini daha etkili öğrenin. Gemini entegrasyonu sayesinde kişiselleştirilmiş yol haritaları, anında geri bildirimler ve akıllı önerilerle öğrenme sürecinizi optimize edin.</p>
                     
                     <div class="ai-features-section">
                         <div class="ai-feature-grid">
@@ -1923,10 +2630,13 @@
                                     <i class="fas fa-user-graduate"></i>
                                 </div>
                                 <h4>Kişiselleştirilmiş Öğrenme Yolu</h4>
-                                <p>AI teknolojisi, seviyenize ve öğrenme stilinize uygun kişiselleştirilmiş bir müfredat oluşturur. Zayıf olduğunuz konulara otomatik odaklanarak verimliliğinizi artırır.</p>
-                                <button class="btn btn-ai">
-                                    <i class="fas fa-road"></i> Öğrenme Yolumu Görüntüle
+                                <p>Gemini AI, seviyenize ve öğrenme stilinize uygun kişiselleştirilmiş bir müfredat oluşturur. Zayıf olduğunuz konulara otomatik odaklanarak verimliliğinizi artırır.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="startLearningPathQuestionnaire()">
+                                    <i class="fas fa-road"></i> Yolu Oluştur
                                 </button>
+                                <div id="learningPathContainer" class="hidden">
+                                    <!-- Öğrenme yolu sonuçları buraya gelecek -->
+                                </div>
                             </div>
                             
                             <div class="ai-feature-card">
@@ -1934,10 +2644,11 @@
                                     <i class="fas fa-lightbulb"></i>
                                 </div>
                                 <h4>Akıllı İçerik Önerileri</h4>
-                                <p>İlgi alanlarınıza ve öğrenme geçmişinize göre özel olarak seçilmiş makaleler, videolar ve proje fikirleri ile kendinizi geliştirin.</p>
-                                <button class="btn btn-ai">
-                                    <i class="fas fa-book-open"></i> Önerilerimi Görüntüle
+                                <p>Gemini'nin analizleriyle ilgi alanlarınıza ve öğrenme geçmişinize göre özel olarak seçilmiş makaleler, videolar ve proje fikirleri.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="getContentRecommendations()">
+                                    <i class="fas fa-book-open"></i> Önerileri Göster
                                 </button>
+                                <div id="recommendationsContainer" class="hidden"></div>
                             </div>
                             
                             <div class="ai-feature-card">
@@ -1945,10 +2656,11 @@
                                     <i class="fas fa-code"></i>
                                 </div>
                                 <h4>Gerçek Zamanlı Kod Analizi</h4>
-                                <p>Yazdığınız kodları ve çizdiğiniz devreleri AI ile analiz edin. Hata tespiti, optimizasyon önerileri ve alternatif çözümlerle becerilerinizi geliştirin.</p>
-                                <button class="btn btn-ai">
+                                <p>Gemini ile yazdığınız kodları ve çizdiğiniz devreleri analiz edin. Hata tespiti, optimizasyon önerileri ve alternatif çözümler.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="launchCodeLab()">
                                     <i class="fas fa-flask"></i> Laboratuvara Git
                                 </button>
+                                <div class="code-lab-feedback hidden" id="codeFeedback"></div>
                             </div>
                             
                             <div class="ai-feature-card">
@@ -1956,12 +2668,13 @@
                                     <i class="fas fa-microphone"></i>
                                 </div>
                                 <h4>Sesli Asistan Desteği</h4>
-                                <p>Sesli komutlarla sorular sorun, konu anlatımı isteyin veya proje önerileri alın. Öğrenmenin en doğal yoluyla bilgiye erişin.</p>
+                                <p>Gemini sesli asistan ile sorular sorun, konu anlatımı isteyin veya proje önerileri alın.</p>
                                 <div class="ai-voice-controls">
-                                    <button class="voice-btn" id="voiceBtn">
+                                    <button class="voice-btn" id="voiceBtn" onclick="startVoiceAssistant()">
                                         <i class="fas fa-microphone"></i>
                                     </button>
                                     <span>Sesli komut için tıklayın</span>
+                                    <div class="voice-status" id="voiceStatus"></div>
                                 </div>
                             </div>
                             
@@ -1970,10 +2683,11 @@
                                     <i class="fas fa-gamepad"></i>
                                 </div>
                                 <h4>Oyunlaştırılmış Öğrenme</h4>
-                                <p>AI tarafından kişiye özel olarak hazırlanan meydan okumalar, seviyeler ve rozetlerle öğrenmeyi eğlenceli hale getirin.</p>
-                                <button class="btn btn-ai">
-                                    <i class="fas fa-play"></i> Oyunları Keşfet
+                                <p>Gemini tarafından kişiye özel hazırlanan meydan okumalar, seviyeler ve rozetlerle öğrenin.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="showGamificationPanel()">
+                                    <i class="fas fa-play"></i> Oyunları Başlat
                                 </button>
+                                <div class="game-levels hidden" id="gameLevels"></div>
                             </div>
                             
                             <div class="ai-feature-card">
@@ -1981,10 +2695,11 @@
                                     <i class="fas fa-briefcase"></i>
                                 </div>
                                 <h4>Kariyer Yol Haritası</h4>
-                                <p>Yetkinlik analizinize göre en uygun kariyer yollarını belirleyin, eksiklerinizi tamamlayın ve iş fırsatlarıyla eşleşin.</p>
-                                <button class="btn btn-ai">
-                                    <i class="fas fa-road"></i> Kariyer Yolumu Görüntüle
+                                <p>Gemini'nin yetkinlik analizine göre en uygun kariyer yollarını keşfedin.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="generateCareerPath()">
+                                    <i class="fas fa-road"></i> Kariyer Yolumu Göster
                                 </button>
+                                <div class="career-path hidden" id="careerPath"></div>
                             </div>
                         </div>
                     </div>
@@ -1992,31 +2707,36 @@
                     <div class="ai-analysis-panel">
                         <div class="ai-analysis-header">
                             <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--ai-green);"></i>
-                            <h3>Öğrenme Performans Analizi</h3>
+                            <h3>Gemini Öğrenme Performans Analizi</h3>
                         </div>
                         
                         <div class="ai-analysis-content">
                             <div class="ai-analysis-card">
                                 <h4>Öğrenme Stiliniz</h4>
-                                <p>Analiz sonuçlarınıza göre öğrenme stiliniz: <strong>Görsel ve Uygulamalı</strong></p>
-                                <p>Bu stile uygun öneriler:</p>
-                                <ul>
-                                    <li>Diğer öğrenme stillerine göre %30 daha fazla görsel içerik</li>
-                                    <li>Karmaşık konular için simülasyonlar ve animasyonlar</li>
-                                    <li>Pratik projelerle teoriyi pekiştirme</li>
-                                </ul>
+                                <div id="learningStyleAnalysis">
+                                    <p>Gemini analizine göre öğrenme stiliniz: <strong id="learningStyle">Hesaplanıyor...</strong></p>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="learningStyleProgress"></div>
+                                    </div>
+                                    <div id="learningStyleRecommendations"></div>
+                                </div>
                             </div>
                             
                             <div class="ai-analysis-card">
                                 <h4>Öğrenme Verimliliği</h4>
-                                <p>En verimli öğrenme saatleriniz: <strong>10:00 - 12:00</strong></p>
-                                <p>Önerilen çalışma planı:</p>
-                                <ul>
-                                    <li>Zor konuları sabah saatlerine planlayın</li>
-                                    <li>Öğleden sonra tekrar ve proje çalışmaları</li>
-                                    <li>Akşam hafif tekrarlar ve testler</li>
-                                </ul>
+                                <div id="efficiencyAnalysis">
+                                    <p>Gemini'nin belirlediği verimli saatler: <strong id="efficientHours">Hesaplanıyor...</strong></p>
+                                    <div class="heatmap" id="learningHeatmap"></div>
+                                    <div id="efficiencyRecommendations"></div>
+                                </div>
                             </div>
+                        </div>
+                        
+                        <div class="ai-update-section">
+                            <button class="btn btn-refresh" onclick="refreshGeminiAnalysis()">
+                                <i class="fas fa-sync-alt"></i> Analizi Güncelle
+                            </button>
+                            <p class="last-updated">Son güncelleme: <span id="lastUpdated">-</span></p>
                         </div>
                     </div>
                 </div>
@@ -2125,6 +2845,143 @@
             <span class="file-name" id="fileName"></span>
         </div>
     </div>
+    
+    <!-- AI Detail Panels -->
+    <div class="ai-detail-panel" id="learningPathDetail">
+        <div class="ai-detail-content">
+            <div class="ai-detail-header">
+                <h3><i class="fas fa-road"></i> Kişiselleştirilmiş Öğrenme Yolunuz</h3>
+                <div class="close-detail" onclick="closeDetailPanel('learningPathDetail')">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="ai-detail-body">
+                <div id="learningPathFormContainer">
+                    <div class="learning-path-form">
+                        <h4>Öğrenme Yolu Anketi</h4>
+                        <p>Lütfen aşağıdaki soruları cevaplayın. Cevaplarınıza göre Gemini AI sizin için özel bir öğrenme yolu oluşturacaktır.</p>
+                        
+                        <div class="form-group">
+                            <label for="level">Mevcut Bilgi Seviyeniz:</label>
+                            <select id="level" class="form-control">
+                                <option value="beginner">Başlangıç (Temel kavramları öğreniyorum)</option>
+                                <option value="intermediate">Orta (Temel konuları biliyorum)</option>
+                                <option value="advanced">İleri (Karmaşık konulara hakimim)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interests">İlgi Alanlarınız:</label>
+                            <input type="text" id="interests" class="form-control" placeholder="Devre analizi, güç sistemleri, elektronik...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="hours">Haftalık Çalışma Süresi:</label>
+                            <select id="hours" class="form-control">
+                                <option value="1-3">1-3 saat</option>
+                                <option value="4-6">4-6 saat</option>
+                                <option value="7-10">7-10 saat</option>
+                                <option value="10+">10 saat ve üzeri</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="style">Öğrenme Stiliniz:</label>
+                            <select id="style" class="form-control">
+                                <option value="visual">Görsel (Diğramlar, animasyonlar)</option>
+                                <option value="auditory">İşitsel (Sesli anlatımlar)</option>
+                                <option value="kinesthetic">Uygulamalı (Projeler, simülasyonlar)</option>
+                                <option value="reading">Okuyarak (Dokümanlar, kitaplar)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="goals">Hedefleriniz:</label>
+                            <textarea id="goals" class="form-control" rows="3" placeholder="Örnek: Devre tasarımı öğrenmek, güç sistemleri uzmanı olmak..."></textarea>
+                        </div>
+                        
+                        <button class="btn btn-ai" onclick="generateLearningPath()">
+                            <i class="fas fa-cogs"></i> Öğrenme Yolumu Oluştur
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="learningPathResult" class="hidden">
+                    <div class="result-loader">
+                        <div class="spinner"></div>
+                        <p>Gemini AI öğrenme yolunuzu oluşturuyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Content Recommendations Panel -->
+    <div class="ai-detail-panel" id="contentRecommendationsDetail">
+        <div class="ai-detail-content">
+            <div class="ai-detail-header">
+                <h3><i class="fas fa-lightbulb"></i> İçerik Önerileriniz</h3>
+                <div class="close-detail" onclick="closeDetailPanel('contentRecommendationsDetail')">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="ai-detail-body">
+                <p>Öğrenme geçmişinize ve ilgi alanlarınıza göre özel olarak seçilmiş içerikler:</p>
+                
+                <div class="ai-recommendation-item" style="margin-top: 20px;">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div>
+                        <h5>AC Devre Analizi: Fazörler ve Empedans</h5>
+                        <p>Alternatif akım devrelerinde fazör kullanımını ve empedans kavramını detaylı anlatan video ders</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-play"></i> İzle
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-recommendation-item">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <h5>Transistörler ve Yükselteç Devreleri</h5>
+                        <p>BJT ve FET transistörlerin çalışma prensipleri ve temel yükselteç devreleri</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-book-open"></i> Oku
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-recommendation-item">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div>
+                        <h5>Arduino ile Akıllı Ev Projesi</h5>
+                        <p>Sensörler, aktüatörler ve IoT teknolojileri kullanarak akıllı ev sistemi tasarımı</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-download"></i> Proje Dosyalarını İndir
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-recommendation-item">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div>
+                        <h5>Güç Sistemleri Optimizasyonu</h5>
+                        <p>Şebeke verimliliğini artırmak için optimizasyon teknikleri ve akıllı şebeke uygulamaları</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-file-pdf"></i> Makaleyi Oku
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Floating AI Button -->
     <div class="floating-ai-btn" onclick="toggleAIChat()">
@@ -2132,9 +2989,9 @@
     </div>
 
     <script>
-        // API anahtarı - Gerçek uygulamada güvenli bir şekilde saklanmalı
-        const GEMINI_API_KEY = "AIzaSyA0hFf7vYqIxTqJm7n6h1f5U5q6Yd7r8t9"; // Örnek API anahtarı
-        
+
+//const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`;
+
         // Initialize the platform
         document.addEventListener('DOMContentLoaded', function() {
             // Hide level test initially
@@ -2176,12 +3033,12 @@
                     
                     // Load lesson content for selected topic
                     const topic = this.getAttribute('data-topic');
-                    loadLessonContent(topic);
+                    showLessonContent(topic);
                 });
             });
             
-            // Load initial lesson content
-            loadLessonContent('elektrik-yuku-ve-akim');
+            // Pre-load lesson content
+            preloadLessonContent();
         });
 
         // Topic list interaction
@@ -2194,111 +3051,22 @@
             });
         });
         
-        // Load lesson content using Gemini AI
-        function loadLessonContent(topic) {
-            const lessonContent = document.getElementById('lesson-content');
-            const placeholder = document.getElementById('simulation-placeholder');
-            
-            // Show loading state
-            placeholder.innerHTML = `
-                <div class="spinner"></div>
-                <p>Gemini AI ders içeriğini oluşturuyor...</p>
-            `;
-            
-            // Generate prompt based on topic
-            const prompt = `Elektrik mühendisliği konusu olan "${topic}" hakkında detaylı bir ders anlatımı oluştur. 
-                Ders içeriği şunları içermeli:
-                1. Konunun temel kavramlarını açık ve anlaşılır bir şekilde açıkla
-                2. İlgili formülleri matematiksel gösterimle ver
-                3. 2-3 örnek problem ve çözümü ekle
-                4. Gerçek hayat uygulamalarından örnekler ver
-                5. Ders sonu için 5 kısa test sorusu oluştur
-                
-                Çıktıyı HTML formatında düzenle.`;
-            
-            // Call Gemini API
-            callGeminiAPI(prompt).then(content => {
-                // Replace placeholder with actual content
-                lessonContent.innerHTML = content;
-            }).catch(error => {
-                console.error("Gemini API hatası:", error);
-                lessonContent.innerHTML = `
-                    <div class="alert alert-danger">
-                        <h3>${topic.replace(/-/g, ' ').toUpperCase()}</h3>
-                        <p>Ders içeriği yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>
-                    </div>
-                `;
-            });
+        // Pre-load lesson content
+        function preloadLessonContent() {
+            // Content for all lessons is already in the HTML
+            // We just need to show the active one
+            showLessonContent('elektrik-yuku-ve-akim');
         }
         
-        // Call Gemini API
-        async function callGeminiAPI(prompt) {
-            // Gerçek uygulamada bu backend üzerinden yapılmalı
-            // Bu örnek için simüle edilmiş bir yanıt döndürüyoruz
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    const topic = prompt.match(/"(.+?)"/)[1];
-                    resolve(`
-                        <h3>${topic.replace(/-/g, ' ').toUpperCase()}</h3>
-                        <p>Bu ders içeriği Gemini AI tarafından oluşturulmuştur.</p>
-                        
-                        <div class="formula-box">
-                            <div class="formula">I = ΔQ / Δt</div>
-                            <p>Bu formül elektrik akımını tanımlar:</p>
-                            <div class="variables">
-                                <div class="variable">
-                                    <span>I:</span>
-                                    <span>Akım (Amper)</span>
-                                </div>
-                                <div class="variable">
-                                    <span>ΔQ:</span>
-                                    <span>Yük değişimi (Coulomb)</span>
-                                </div>
-                                <div class="variable">
-                                    <span>Δt:</span>
-                                    <span>Zaman değişimi (saniye)</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <h4>Örnek Problemler</h4>
-                        <p><strong>Problem 1:</strong> Bir iletkenden 10 saniyede 50 coulomb yük geçiyorsa akım kaç amperdir?</p>
-                        <p><strong>Çözüm:</strong> I = ΔQ / Δt = 50 C / 10 s = 5 A</p>
-                        
-                        <h4>Gerçek Hayat Uygulaması</h4>
-                        <p>Elektrik akımı kavramı, evlerimizdeki elektrik tesisatından elektronik cihazlara kadar birçok alanda kullanılır. Örneğin, bir devredeki akım değeri, o devre için uygun kablo kesitinin belirlenmesinde kritik öneme sahiptir.</p>
-                        
-                        <h4>Ders Sonu Testi</h4>
-                        <div class="cevap-secenek">1. Elektrik akımının birimi nedir? a) Volt b) Amper c) Ohm d) Watt</div>
-                        <div class="cevap-secenek">2. 3 amper akım, 10 saniyede kaç coulomb yük taşır? a) 0.3 C b) 3 C c) 30 C d) 300 C</div>
-                    `);
-                }, 1500);
+        // Show lesson content
+        function showLessonContent(topic) {
+            // Hide all lesson content
+            document.querySelectorAll('#lesson-content > div').forEach(div => {
+                div.style.display = 'none';
             });
             
-            // Gerçek API çağrısı (güvenlik nedeniyle bu kodu kullanmayın)
-            /*
-            try {
-                const response = await axios.post(
-                    `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`,
-                    {
-                        contents: [{
-                            parts: [{
-                                text: prompt
-                            }]
-                        }]
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                );
-                
-                return response.data.candidates[0].content.parts[0].text;
-            } catch (error) {
-                throw new Error("Gemini API error");
-            }
-            */
+            // Show selected lesson
+            document.getElementById(topic).style.display = 'block';
         }
         
         // Start level test
@@ -2409,10 +3177,157 @@
                 document.getElementById('testProgress').style.width = `${progress}%`;
             }
         }
+
+        // Start learning path questionnaire
+        function startLearningPathQuestionnaire() {
+            document.getElementById('learningPathDetail').style.display = 'block';
+            document.getElementById('learningPathFormContainer').classList.remove('hidden');
+            document.getElementById('learningPathResult').classList.add('hidden');
+        }
         
-        // Generate project ideas with AI
+        // Generate learning path with Gemini AI
+        function generateLearningPath() {
+            // Get form values
+            const level = document.getElementById('level').value;
+            const interests = document.getElementById('interests').value;
+            const hours = document.getElementById('hours').value;
+            const style = document.getElementById('style').value;
+            const goals = document.getElementById('goals').value;
+            
+            // Show loading
+            document.getElementById('learningPathFormContainer').classList.add('hidden');
+            document.getElementById('learningPathResult').classList.remove('hidden');
+            
+            // Simulate Gemini API call
+            setTimeout(() => {
+                // Create learning path based on user responses
+                const learningPath = createLearningPath(level, interests, hours, style, goals);
+                
+                // Display the learning path
+                displayLearningPath(learningPath);
+            }, 2000);
+        }
+        
+        // Create learning path based on user responses
+        function createLearningPath(level, interests, hours, style, goals) {
+            const steps = [];
+            
+            // Step 1: Fundamentals
+            steps.push({
+                title: "Temel Elektrik Kavramları",
+                description: "Elektrik yükü, akım, gerilim ve direnç kavramlarını öğrenin. Ohm Kanunu'nu uygulayarak basit devre problemlerini çözün.",
+                resources: [
+                    "📚 Ders: Elektrik Yükü ve Akım",
+                    "🎬 Video: Ohm Kanunu Animasyonu",
+                    "🧪 Simülasyon: DC Devre Laboratuvarı"
+                ]
+            });
+            
+            // Step 2: Circuit Analysis
+            steps.push({
+                title: "Devre Analiz Teknikleri",
+                description: "Seri ve paralel devreleri analiz edin. Kirchhoff Kanunları'nı kullanarak karmaşık devre problemlerini çözün.",
+                resources: [
+                    "📚 Ders: Kirchhoff Kanunları",
+                    "🎬 Video: Devre Analiz Yöntemleri",
+                    "💻 Proje: Çok Kaynaklı Devre Tasarımı"
+                ]
+            });
+            
+            // Step 3: AC Circuits
+            if (interests.includes("AC") || interests.includes("güç") || level === "intermediate" || level === "advanced") {
+                steps.push({
+                    title: "Alternatif Akım Devreleri",
+                    description: "AC devrelerde empedans kavramını öğrenin. Kapasitör ve indüktörlerin AC davranışlarını analiz edin.",
+                    resources: [
+                        "📚 Ders: AC Devre Analizi",
+                        "🧪 Simülasyon: RLC Devre Simülatörü",
+                        "📝 Test: AC Devreler Seviye Testi"
+                    ]
+                });
+            }
+            
+            // Step 4: Electromagnetism
+            if (interests.includes("elektromanyetizma") || interests.includes("manyetik") || level === "advanced") {
+                steps.push({
+                    title: "Elektromanyetizma ve İndüksiyon",
+                    description: "Manyetik alanlar, Faraday ve Lenz kanunlarını öğrenin. Transformatörlerin çalışma prensiplerini anlayın.",
+                    resources: [
+                        "📚 Ders: Elektromanyetik İndüksiyon",
+                        "🎬 Video: Manyetik Alan Animasyonları",
+                        "💻 Proje: Basit Transformatör Tasarımı"
+                    ]
+                });
+            }
+            
+            // Step 5: Power Systems
+            if (interests.includes("güç sistemleri") || interests.includes("enerji") || goals.includes("güç sistemleri")) {
+                steps.push({
+                    title: "Güç Sistemleri Temelleri",
+                    description: "3 fazlı sistemler, güç dağıtımı ve transformatörler hakkında bilgi edinin. Akıllı şebeke kavramlarını keşfedin.",
+                    resources: [
+                        "📚 Ders: Güç Sistemleri Mühendisliği",
+                        "🧪 Simülasyon: Güç Dağıtım Şebekesi",
+                        "📝 Makale: Yenilenebilir Enerji Entegrasyonu"
+                    ]
+                });
+            }
+            
+            return {
+                title: "Kişiselleştirilmiş Öğrenme Yolu",
+                description: "Gemini AI tarafından ilgi alanlarınıza ve seviyenize göre oluşturulmuş öğrenme yolunuz.",
+                steps: steps
+            };
+        }
+        
+        // Display learning path result
+        function displayLearningPath(pathData) {
+            const resultContainer = document.getElementById('learningPathResult');
+            
+            let html = `
+                <div class="learning-path-result">
+                    <h3>${pathData.title}</h3>
+                    <p>${pathData.description}</p>
+                    <div class="learning-path">
+            `;
+            
+            pathData.steps.forEach((step, index) => {
+                html += `
+                    <div class="path-step">
+                        <div class="step-header">
+                            <div class="step-number">${index + 1}</div>
+                            <h4 class="step-title">${step.title}</h4>
+                        </div>
+                        <p class="step-description">${step.description}</p>
+                        <div class="step-resources">
+                            <h5>Kaynaklar:</h5>
+                            <ul>
+                                ${step.resources.map(resource => `<li>${resource}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                    <button class="btn btn-ai" onclick="downloadLearningPath()" style="margin-top: 20px;">
+                        <i class="fas fa-download"></i> Yol Haritasını İndir
+                    </button>
+                </div>
+            `;
+            
+            resultContainer.innerHTML = html;
+        }
+        
+        // Download learning path
+        function downloadLearningPath() {
+            alert("Öğrenme yolu indiriliyor... Gerçek uygulamada bu özellik PDF oluşturup indirecektir.");
+        }
+        
+        // Generate project ideas with AI simulation
         function generateProjectIdeas() {
-            const interest = document.getElementById('projeIlgiInput').value || 'elektrik mühendisliği';
+            const interest = document.getElementById('projeIlgiInput').value.toLowerCase();
             const container = document.getElementById('projeFikirleriContainer');
             
             // Clear previous content
@@ -2421,29 +3336,91 @@
             // Show loading
             container.innerHTML = '<div class="spinner"></div><p>Gemini AI proje fikirlerini oluşturuyor...</p>';
             
-            // Generate prompt
-            const prompt = `Elektrik mühendisliği alanında "${interest}" konusuyla ilgili 3 proje fikri oluştur. 
-                Her proje için:
-                - Proje adı
-                - Proje açıklaması
-                - Geliştirme ortamı
-                - Kullanılacak teknolojiler
-                içeren bir liste yap.
+            // Simulate AI response after a short delay
+            setTimeout(() => {
+                let projectsHTML = '';
                 
-                Çıktıyı HTML formatında düzenle.`;
-            
-            // Call Gemini API
-            callGeminiAPI(prompt).then(content => {
-                container.innerHTML = content;
-            }).catch(error => {
-                console.error("Gemini API hatası:", error);
-                container.innerHTML = '<p>Proje fikirleri oluşturulurken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>';
-            });
+                if (interest.includes('yenilenebilir') || interest.includes('enerji')) {
+                    projectsHTML = `
+                        <div class="proje-fikri">
+                            <h5>Akıllı Rüzgar Enerjisi Sistemi</h5>
+                            <p>Rüzgar türbinlerinin verimliliğini artıran ve enerji üretimini optimize eden bir sistem geliştirin. Proje, rüzgar yönü ve hızına göre türbin açısını otomatik ayarlayan bir mekanizma içerir.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Arduino</span>
+                                <span class="tech-badge">Anemometre</span>
+                                <span class="tech-badge">Servo Motor</span>
+                                <span class="tech-badge">IoT</span>
+                            </div>
+                        </div>
+                        
+                        <div class="proje-fikri">
+                            <h5>Güneş Takip Sistemli Şarj İstasyonu</h5>
+                            <p>Güneşin konumuna göre yönünü otomatik ayarlayan ve elektrikli araçlar için şarj istasyonu olarak kullanılabilen bir sistem tasarlayın.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Solar Panel</span>
+                                <span class="tech-badge">LDR Sensör</span>
+                                <span class="tech-badge">Raspberry Pi</span>
+                                <span class="tech-badge">Type 2 Konnektör</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (interest.includes('robotik') || interest.includes('otomasyon')) {
+                    projectsHTML = `
+                        <div class="proje-fikri">
+                            <h5>Otonom Malzeme Taşıma Robotu</h5>
+                            <p>Fabrika ortamlarında malzeme taşıma işlemlerini otomatikleştiren bir robot tasarlayın. Robot, çizgi izleme ve engelden kaçınma özelliklerine sahip olacak.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Arduino</span>
+                                <span class="tech-badge">Motor Sürücü</span>
+                                <span class="tech-badge">Ultrasonik Sensör</span>
+                                <span class="tech-badge">Kızılötesi Sensör</span>
+                            </div>
+                        </div>
+                        
+                        <div class="proje-fikri">
+                            <h5>Akıllı Tarım Robotu</h5>
+                            <p>Bitki sağlığını izleyen, sulama yapan ve zararlılarla mücadele eden otonom bir tarım robotu geliştirin.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Raspberry Pi</span>
+                                <span class="tech-badge">Nem Sensörü</span>
+                                <span class="tech-badge">Kamera Modülü</span>
+                                <span class="tech-badge">GPS Modülü</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    projectsHTML = `
+                        <div class="proje-fikri">
+                            <h5>Akıllı Ev Enerji İzleme Sistemi</h5>
+                            <p>Evdeki elektrik tüketimini gerçek zamanlı olarak izleyen ve analiz eden bir sistem geliştirin. Sistem, hangi cihazların ne kadar enerji tükettiğini belirleyerek enerji tasarrufu sağlayacak öneriler sunacak.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Arduino</span>
+                                <span class="tech-badge">ACS712 Akım Sensörü</span>
+                                <span class="tech-badge">ESP8266 WiFi Modülü</span>
+                                <span class="tech-badge">Blynk Uygulaması</span>
+                            </div>
+                        </div>
+                        
+                        <div class="proje-fikri">
+                            <h5>Güvenlik Sistemli Akıllı Kilit</h5>
+                            <p>Parmak izi ve RFID teknolojisi kullanarak gelişmiş bir akıllı kilit sistemi tasarlayın. Sistem, yetkisiz girişimleri algıladığında mobil uygulamaya bildirim gönderecek.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Arduino</span>
+                                <span class="tech-badge">Parmak İzi Sensörü</span>
+                                <span class="tech-badge">RFID Okuyucu</span>
+                                <span class="tech-badge">Bluetooth Modülü</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = projectsHTML;
+            }, 1000);
         }
         
-        // Generate development plan with AI
+        // Generate development plan with AI simulation
         function generateDevelopmentPlan() {
-            const idea = document.getElementById('projeFikirInput').value || 'elektrik mühendisliği projesi';
+            const idea = document.getElementById('projeFikirInput').value;
             const container = document.getElementById('projeGelistirmeContainer');
             
             // Clear previous content
@@ -2452,23 +3429,66 @@
             // Show loading
             container.innerHTML = '<div class="spinner"></div><p>Gemini AI geliştirme planını oluşturuyor...</p>';
             
-            const prompt = `"${idea}" projesi için detaylı bir geliştirme planı oluştur. 
-                Plan şunları içermeli:
-                1. Proje adımları
-                2. Her adımın detaylı açıklaması
-                3. Gerekli kaynaklar ve ekipmanlar
-                4. Tahmini zaman çizelgesi
+            // Simulate AI response after a short delay
+            setTimeout(() => {
+                let planHTML = `
+                    <div class="proje-fikri">
+                        <h5>"${idea}" Projesi Geliştirme Planı</h5>
+                        <p>Projeniz için aşağıdaki adımları takip edebilirsiniz:</p>
+                        
+                        <ol>
+                            <li><strong>Konsept ve Tasarım:</strong> Proje amacını ve kapsamını belirleyin. Sistem bileşenlerini ve mimarisini tasarlayın.</li>
+                            <li><strong>Bileşen Seçimi:</strong> Gerekli elektronik bileşenleri, sensörleri ve mikrodenetleyicileri seçin.</li>
+                            <li><strong>Devre Tasarımı:</strong> Temel devre şemasını çizin ve PCB tasarımını yapın.</li>
+                            <li><strong>Yazılım Geliştirme:</strong> Mikrodenetleyici için gerekli kodu yazın ve test edin.</li>
+                            <li><strong>Prototip Oluşturma:</strong> Devre kartını üretin ve bileşenleri lehimleyin.</li>
+                            <li><strong>Test ve Optimizasyon:</strong> Prototipi test edin, hataları giderin ve performansı optimize edin.</li>
+                            <li><strong>Dokümantasyon:</strong> Proje sürecini ve sonuçlarını belgeleyin.</li>
+                        </ol>
+                        
+                        <p><strong>Önerilen Kaynaklar:</strong></p>
+                        <ul>
+                            <li>📚 "Elektronik Devre Tasarımının Temelleri" kitabı</li>
+                            <li>🎬 "Arduino ile Proje Geliştirme" video serisi</li>
+                            <li>💻 "Devre Simülasyonu için Fritzing" yazılımı</li>
+                        </ul>
+                    </div>
+                `;
                 
-                Çıktıyı HTML formatında düzenle.`;
-            
-            // Call Gemini API
-            callGeminiAPI(prompt).then(content => {
-                container.innerHTML = content;
-            }).catch(error => {
-                console.error("Gemini API hatası:", error);
-                container.innerHTML = '<p>Geliştirme planı oluşturulurken bir hata oluştu. Lütfen daha sonra tekrar deneyin.</p>';
-            });
+                container.innerHTML = planHTML;
+            }, 1000);
         }
+
+-
+
+// Geliştirme planını formatlayan fonksiyon
+function formatDevPlan(text) {
+  const steps = text.split('\n\n');
+  let html = '<div class="proje-fikri"><h5>Geliştirme Planı</h5><ol>';
+  
+  steps.forEach(step => {
+    const lines = step.split('\n').filter(line => line.trim() !== '');
+    
+    if (lines.length < 3) return;
+    
+    const title = lines[0].replace(/^\d+\.\s*/, '');
+    const desc = lines[1].replace(/^\d+\.\s*/, '');
+    const resources = lines[2].replace(/^\d+\.\s*/, '').split(',').map(r => r.trim());
+    
+    html += `
+      <li>
+        <strong>${title}</strong>
+        <p>${desc}</p>
+        <p><strong>Kaynaklar:</strong></p>
+        <ul>
+          ${resources.map(r => `<li>${r}</li>`).join('')}
+        </ul>
+      </li>
+    `;
+  });
+  
+  return html + '</ol></div>';
+}
         
         // Handle file upload for PDF summary
         function handleFileUpload(input) {
@@ -2524,7 +3544,7 @@
             document.getElementById('chatPanel').classList.remove('active');
         }
         
-        function sendMessage() {
+        async function sendMessage() {
             const input = document.getElementById('chatInput');
             const messages = document.getElementById('chatMessages');
             const userMsg = input.value.trim();
@@ -2534,46 +3554,102 @@
                 messages.innerHTML += `<div class="user-message">${userMsg}</div>`;
                 input.value = "";
                 
-                // Show loading indicator
+                // Add loading indicator
                 const loadingMsg = document.createElement('div');
                 loadingMsg.className = 'ai-message';
                 loadingMsg.innerHTML = '<div class="spinner" style="width:20px;height:20px;"></div> Cevap oluşturuluyor...';
                 messages.appendChild(loadingMsg);
                 messages.scrollTop = messages.scrollHeight;
                 
-                // Call Gemini API
-                const prompt = `Kullanıcı sorusu: "${userMsg}"
-                    Elektrik mühendisliği konusunda uzman bir asistan olarak cevap ver. 
-                    Cevap kısa, net ve anlaşılır olsun. Gerektiğinde formüller ekle.`;
-                
-                // Simulate API call
-                setTimeout(() => {
-                    // Remove loading indicator
+                try {
+                    // Simulate Gemini API call
+                    setTimeout(() => {
+                        // Remove loading indicator
+                        messages.removeChild(loadingMsg);
+                        
+                        // Add AI response
+                        messages.innerHTML += `
+                            <div class="ai-message">
+                                <strong>Bumble Bee:</strong><br>
+                                ${generateAIResponse(userMsg)}
+                            </div>
+                        `;
+                        messages.scrollTop = messages.scrollHeight;
+                    }, 1500);
+                } catch (error) {
                     messages.removeChild(loadingMsg);
-                    
-                    // Add AI response
                     messages.innerHTML += `
-                        <div class="ai-message">
-                            Bu sorunuzun cevabı Gemini AI tarafından oluşturuldu. Gerçek uygulamada API kullanılarak dinamik içerik sağlanacaktır.
+                        <div class="ai-message" style="color: var(--danger)">
+                            Hata: ${error.message}
                         </div>
                     `;
                     messages.scrollTop = messages.scrollHeight;
-                }, 1500);
+                }
             }
         }
         
-        // Voice control for AI
-        const voiceBtn = document.getElementById('voiceBtn');
-        voiceBtn.addEventListener('click', function() {
-            this.classList.toggle('listening');
+        // Generate AI response based on user message
+        function generateAIResponse(userMsg) {
+            const lowerMsg = userMsg.toLowerCase();
             
-            if (this.classList.contains('listening')) {
-                // Start voice recognition
-                alert("Sesli komut özelliği aktif. Gerçek uygulamada bu özellik, kullanıcının ses komutlarını dinleyip Gemini'ye iletecektir.");
+            if (lowerMsg.includes("ohm") || lowerMsg.includes("kanunu")) {
+                return "Ohm Kanunu, bir elektrik devresinde gerilim (V), akım (I) ve direnç (R) arasındaki ilişkiyi açıklar. Formülü: V = I × R. Bu formül, devredeki herhangi iki parametre bilindiğinde üçüncüsünü hesaplamak için kullanılır.";
+            } else if (lowerMsg.includes("kırchhoff") || lowerMsg.includes("kanun")) {
+                return "Kirchhoff'un iki temel kanunu vardır: Akım Kanunu (KCL) ve Gerilim Kanunu (KVL). KCL: Bir düğüm noktasına giren akımların toplamı, çıkan akımların toplamına eşittir. KVL: Kapalı bir devre çevresindeki gerilim düşüşlerinin toplamı sıfırdır.";
+            } else if (lowerMsg.includes("direnç") || lowerMsg.includes("seri") || lowerMsg.includes("paralel")) {
+                return "Seri bağlı dirençlerde toplam direnç: R_toplam = R1 + R2 + ... + Rn. Paralel bağlı dirençlerde toplam direnç: 1/R_toplam = 1/R1 + 1/R2 + ... + 1/Rn.";
+            } else if (lowerMsg.includes("proje") || lowerMsg.includes("fikir")) {
+                return "İşte size bir proje fikri: Akıllı Enerji İzleyici. Bu projede, evdeki elektrik tüketimini gerçek zamanlı olarak izleyen bir sistem geliştirebilirsiniz. Gerekli malzemeler: Arduino, akım sensörü, LCD ekran ve WiFi modülü.";
             } else {
-                // Stop voice recognition
+                return "Elektrik mühendisliği ile ilgili sorunuzu daha detaylı açıklayabilir misiniz? Size en iyi şekilde yardımcı olmak istiyorum.";
             }
-        });
+        }
+        
+        // Close detail panel
+        function closeDetailPanel(panelId) {
+            document.getElementById(panelId).style.display = 'none';
+        }
+        
+        // Open simulation
+        function openSimulation(title, description, url) {
+            document.getElementById('simulationTitle').textContent = title;
+            document.getElementById('simulationDescription').textContent = description;
+            document.getElementById('simulationFrame').src = url;
+            document.getElementById('simulationViewer').classList.add('active');
+            
+            // Scroll to top
+            document.getElementById('simulations-tab').scrollTop = 0;
+        }
+        
+        // Get content recommendations
+        function getContentRecommendations() {
+            document.getElementById('contentRecommendationsDetail').style.display = 'block';
+        }
+        
+        // Launch code lab
+        function launchCodeLab() {
+            alert("Kod analiz laboratuvarı başlatılıyor... Gerçek uygulamada bu özellik kod editörü açacaktır.");
+        }
+        
+        // Start voice assistant
+        function startVoiceAssistant() {
+            alert("Sesli asistan başlatılıyor... Gerçek uygulamada bu özellik ses tanıma özelliğini aktif edecektir.");
+        }
+        
+        // Show gamification panel
+        function showGamificationPanel() {
+            alert("Oyunlaştırılmış öğrenme paneli başlatılıyor...");
+        }
+        
+        // Generate career path
+        function generateCareerPath() {
+            alert("Kariyer yol haritası oluşturuluyor...");
+        }
+        
+        // Refresh Gemini analysis
+        function refreshGeminiAnalysis() {
+            alert("Öğrenme analizi güncelleniyor...");
+        }
     </script>
 </body>
 </html>

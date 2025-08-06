@@ -1,0 +1,83 @@
+{% extends "home/base.html" %}
+{% block content %}
+<style>
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle at 20% 40%, #623a75 60%, #ae7944 100%) !important;
+}
+.about-container {
+    min-height: 100vh;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+    padding: 40px 20px;
+}
+.about-content {
+    max-width: 900px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    animation: fadeIn 1s;
+}
+.about-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.about-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    color: #e2e2e2;
+}
+.highlight {
+    color: #f59e42;
+    font-weight: 600;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 768px) {
+    .about-content {
+        padding: 30px 20px;
+    }
+    .about-title {
+        font-size: 2rem;
+    }
+    .about-text {
+        font-size: 1rem;
+    }
+}
+</style>
+
+<div class="about-container">
+    <div class="about-content">
+        <h1 class="about-title">Bumble Bee <span class="highlight">Hakkında</span></h1>
+        
+        <p class="about-text"><span class="highlight">Bumble Bee</span>, yapay zeka teknolojilerini kullanarak kullanıcılarına benzersiz bir dijital asistan deneyimi sunmayı amaçlayan yenilikçi bir platformdur.</p>
+        
+        <p class="about-text">2025 yılında kurulan projemiz, doğal dil işleme ve makine öğrenimi alanındaki en son gelişmeleri kullanarak günlük hayatınızı kolaylaştırmak için tasarlandı.</p>
+
+        <p class="about-text"><span class="highlight">Bumble Bee</span>,kullanıcıların sorularına anında yanıtlar verebilir, görevlerini organize edebilir ve kişisel asistanlık hizmetleri sunabilir.</p>
+
+        <p class="about-text"><span class="highlight">Bumble Bee Asistanı</span>, günlük görevlerinizi organize etmenize, sorularınıza anında yanıt vermenize ve dijital deneyiminizi kişiselleştirmenize yardımcı olur.</p>
+        
+    </div>
+</div>
+{% endblock %}

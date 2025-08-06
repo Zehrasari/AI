@@ -1,0 +1,3575 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endüstri Mühendisliği Öğrenme Platformu - Gemini AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e67e22;
+            --accent: #3498db;
+            --light: #f8f9fa;
+            --dark: #2d3748;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #2980b9;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --border-radius: 16px;
+            --ai-blue: #4285f4;
+            --ai-green: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            background: var(--secondary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-item {
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .xp-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-pic {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Main Layout */
+        .endustri-platform {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            padding: 30px;
+            max-width: 1600px;
+            margin: 0 auto;
+            min-height: calc(100vh - 90px);
+        }
+
+        /* Left Panel - Topic List */
+        .konu-paneli {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 110px;
+            transition: var(--transition);
+        }
+
+        .konu-paneli h3 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .refresh-btn {
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .refresh-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        .ana-konu {
+            margin-bottom: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f9fafb;
+        }
+
+        .ana-konu-baslik {
+            font-weight: 600;
+            color: var(--primary);
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .ana-konu-baslik:hover {
+            background: rgba(230, 122, 27, 0.1);
+        }
+
+        .ana-konu-baslik.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .alt-konular {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .ana-konu.active .alt-konular {
+            max-height: 500px;
+            padding: 0 20px 15px;
+        }
+
+        .alt-konu {
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alt-konu:hover {
+            background: rgba(230, 122, 27, 0.1);
+        }
+
+        .alt-konu.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .alt-konu i {
+            font-size: 14px;
+        }
+
+        .level-badge {
+            background: var(--primary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            margin-left: auto;
+        }
+
+        /* Main Content Area */
+        .icerik-paneli {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .icerik-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .icerik-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ai-ogren-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .ai-ogren-btn:hover {
+            background: #d86a10;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Content Tabs */
+        .content-tabs {
+            display: flex;
+            background: #f1f5f9;
+            padding: 0 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            color: var(--accent);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .tab:hover {
+            color: var(--accent);
+        }
+
+        /* Content Sections */
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Introduction Panel */
+        .intro-panel {
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        .intro-panel h3 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .intro-panel p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: var(--dark);
+            line-height: 1.7;
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .action-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .action-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .action-card p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3a2a54;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #d86a10;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background: #5b21b6;
+        }
+        
+        .btn-ai {
+            background: var(--ai-blue);
+            color: white;
+        }
+        
+        .btn-ai:hover {
+            background: #3367d6;
+        }
+
+        /* Lesson Content */
+        .ders-icerik {
+            line-height: 1.7;
+            color: var(--dark);
+        }
+
+        .ders-icerik h3 {
+            color: var(--primary);
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .ders-icerik p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .ders-icerik img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .formula-box {
+            background: #f0f7ff;
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .formula {
+            font-size: 1.4rem;
+            text-align: center;
+            margin: 15px 0;
+            font-family: 'Cambria Math', serif;
+        }
+
+        .variables {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .variable {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Visual Elements in Lessons */
+        .visual-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .visual-item {
+            background: #f8fafc;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .visual-item img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .simulation-container {
+            background: #f0f7ff;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .simulation-placeholder {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
+            background: #e6f7ff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        /* Level Test */
+        .seviye-test-modul {
+            padding: 30px;
+        }
+
+        .seviye-test-modul h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .test-info {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--secondary);
+            width: 5%;
+            transition: width 0.5s ease;
+        }
+
+        .soru-container {
+            margin-bottom: 40px;
+            display: none;
+        }
+
+        .soru-container.active {
+            display: block;
+        }
+
+        .soru {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .cevap-secenek {
+            display: block;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid #e2e8f0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cevap-secenek:hover {
+            border-color: var(--accent);
+        }
+
+        .cevap-secenek.selected {
+            border-color: var(--accent);
+            background: rgba(109, 40, 217, 0.05);
+        }
+
+        .cevap-secenek.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .cevap-secenek.incorrect {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .cevap-secenek::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            transition: var(--transition);
+        }
+
+        .cevap-secenek.selected::before {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .cevap-secenek.correct::before {
+            border-color: var(--success);
+            background: var(--success);
+        }
+
+        .cevap-secenek.incorrect::before {
+            border-color: var(--danger);
+            background: var(--danger);
+        }
+
+        .cevap-text {
+            margin-left: 40px;
+        }
+
+        .test-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .test-btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .test-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .cozum-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            display: none;
+        }
+
+        .cozum-btn.active {
+            display: flex;
+        }
+
+        .cozum-btn:hover {
+            background: #5b21b6;
+        }
+
+        .cozum {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            border-left: 4px solid var(--accent);
+            box-shadow: var(--shadow);
+        }
+
+        .cozum.show {
+            display: block;
+        }
+
+        /* Project Generator */
+        .proje-uretici {
+            background: #f9f0ff;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .proje-uretici h4 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .proje-input-container {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .proje-input {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .proje-input:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .proje-fikirleri {
+            margin-top: 25px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .proje-fikri {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .proje-fikri::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 5px;
+            background: var(--secondary);
+        }
+
+        .proje-fikri h5 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .proje-fikri p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tech-badge {
+            background: rgba(109, 40, 217, 0.1);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Daily Life Info */
+        .daily-info {
+            background: #e6f7ff;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .daily-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--accent);
+        }
+
+        .daily-info h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .daily-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .info-card h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Career Panel */
+        .career-panel {
+            padding: 30px;
+        }
+
+        .career-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+
+        .badges-section {
+            margin: 40px 0;
+        }
+
+        .badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .badge {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .badge i {
+            font-size: 40px;
+            color: white;
+        }
+
+        .badge::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 50%;
+            border: 2px solid var(--secondary);
+            opacity: 0.7;
+        }
+
+        .badge-title {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 500;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .completed-courses {
+            margin: 40px 0;
+        }
+
+        .course-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--success);
+        }
+
+        .course-card h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .course-card p {
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        /* AI Chat Panel */
+        .chat-panel {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 380px;
+            height: 500px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .chat-panel.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .chat-title i {
+            color: var(--secondary);
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .close-chat:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .ai-message, .user-message {
+            max-width: 80%;
+            padding: 15px;
+            border-radius: 18px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .ai-message {
+            background: #f1f5f9;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: var(--accent);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .send-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .send-btn:hover {
+            background: #5b21b6;
+        }
+
+        .file-upload-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .file-upload-btn {
+            background: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .file-name {
+            font-size: 0.8rem;
+            color: var(--dark);
+        }
+
+        /* New AI Features */
+        .ai-features-section {
+            margin-top: 40px;
+        }
+        
+        .ai-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .ai-feature-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid var(--ai-blue);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .ai-feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(66, 133, 244, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: var(--ai-blue);
+        }
+        
+        .ai-feature-card h4 {
+            color: var(--ai-blue);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .ai-feature-card p {
+            margin-bottom: 20px;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .ai-analysis-panel {
+            background: #f0f7ff;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            margin: 40px 0;
+            border-left: 4px solid var(--ai-green);
+        }
+        
+        .ai-analysis-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .ai-analysis-header h3 {
+            color: var(--ai-green);
+            font-size: 1.6rem;
+        }
+        
+        .ai-analysis-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .ai-analysis-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .ai-analysis-card h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .ai-skill-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .ai-skill-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .ai-skill-progress {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .ai-skill-progress-bar {
+            height: 100%;
+            background: var(--ai-green);
+            border-radius: 10px;
+        }
+        
+        .ai-recommendation {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--ai-blue);
+        }
+        
+        .ai-recommendation h4 {
+            color: var(--ai-blue);
+            margin-bottom: 15px;
+        }
+        
+        .ai-recommendation-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            transition: var(--transition);
+            margin-bottom: 10px;
+        }
+        
+        .ai-recommendation-item:hover {
+            background: #f1f5f9;
+        }
+        
+        .ai-recommendation-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(66, 133, 244, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--ai-blue);
+        }
+        
+        .ai-voice-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .voice-btn {
+            background: var(--ai-blue);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .voice-btn:hover {
+            background: #3367d6;
+            transform: scale(1.05);
+        }
+        
+        .voice-btn.listening {
+            background: var(--danger);
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .endustri-platform {
+                grid-template-columns: 1fr;
+            }
+            
+            .konu-paneli {
+                position: static;
+                margin-bottom: 30px;
+            }
+            
+            .ai-analysis-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-panel {
+                width: 90%;
+                right: 5%;
+                height: 70vh;
+            }
+        }
+
+        /* Floating AI Button */
+        .floating-ai-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 999;
+            transition: var(--transition);
+        }
+
+        .floating-ai-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Game elements */
+        .game-element {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .circuit {
+            top: 10%;
+            left: 5%;
+            width: 100px;
+            height: 100px;
+        }
+
+        .resistor {
+            bottom: 10%;
+            right: 5%;
+            width: 80px;
+            height: 80px;
+        }
+
+        .capacitor {
+            top: 40%;
+            right: 10%;
+            width: 70px;
+            height: 70px;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--accent);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* New Elements */
+        .simulation-viewer {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+        
+        .simulation-viewer.active {
+            display: block;
+        }
+        
+        .simulation-iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .simulation-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .simulation-btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        
+        .simulation-btn:hover {
+            background: #5b21b6;
+        }
+        
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .simulation-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .simulation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .simulation-thumbnail {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .simulation-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(44, 62, 80, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .simulation-card:hover .simulation-overlay {
+            opacity: 1;
+        }
+        
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .simulation-info {
+            padding: 20px;
+        }
+        
+        .simulation-info h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .simulation-info p {
+            color: var(--dark);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .simulation-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .simulation-tag {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .ai-detail-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .ai-detail-content {
+            background: white;
+            max-width: 1000px;
+            margin: 50px auto;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ai-detail-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ai-detail-header h3 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .close-detail {
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-detail:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .ai-detail-body {
+            padding: 30px;
+            line-height: 1.7;
+        }
+        
+        .learning-path {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .path-step {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background: #f8fafc;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step-number {
+            min-width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-content h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .resources-list {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        
+        .resources-list li {
+            margin-bottom: 10px;
+        }
+        
+        .recommended-courses {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .course-card-mini {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .course-card-mini h5 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .course-progress {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .course-progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 30%;
+        }
+        
+        .ai-personality-card {
+    background: #f0f7ff;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}
+
+.code-editor-container {
+    margin: 20px 0;
+}
+
+.code-editor-container textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-family: monospace;
+    resize: vertical;
+}
+
+.ai-analysis-result {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.ai-recommendation-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Anket Formu Stilleri */
+.learning-path-form {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.learning-path-form h4 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+/* Sonuç Göstergeci */
+.result-loader {
+    text-align: center;
+    padding: 30px;
+}
+
+.result-loader p {
+    margin-top: 15px;
+    font-size: 1.1rem;
+}
+
+/* Öğrenme Yolu Sonuçları */
+.learning-path-result {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.path-step {
+    background: #f8fafc;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--secondary);
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--secondary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.step-title {
+    color: var(--primary);
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.step-description {
+    margin-bottom: 15px;
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.step-resources h5 {
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+
+.step-resources ul {
+    padding-left: 20px;
+}
+
+.step-resources li {
+    margin-bottom: 8px;
+    color: var(--dark);
+}
+
+/* AI Özellik Butonları */
+.ai-feature-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Gizleme Sınıfı */
+.hidden {
+    display: none;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-cogs"></i>
+            </div>
+            <div class="logo-text">BUMBLE BEE AKADEMİ</div>
+        </div>
+        
+        <div class="nav-menu">
+            <div class="nav-item">Ana Sayfa</div>
+            <div class="nav-item">Dersler</div>
+            <div class="nav-item">Projeler</div>
+            <div class="nav-item">Simülasyonlar</div>
+            <div class="nav-item">Kariyer</div>
+        </div>
+        
+        <div class="user-profile">
+            <div class="xp-badge">
+                <i class="fas fa-star"></i>
+                1,245 XP
+            </div>
+            <div class="profile-pic">KA</div>
+        </div>
+    </header>
+
+    <!-- Game Elements -->
+    <svg class="game-element circuit" viewBox="0 0 100 100">
+        <path d="M10,10 L90,10 L90,30 L70,30 L70,50 L30,50 L30,70 L50,70 L50,90 L10,90 Z" fill="none" stroke="#2c3e50" stroke-width="2"/>
+        <circle cx="50" cy="30" r="5" fill="#2c3e50"/>
+        <circle cx="30" cy="70" r="5" fill="#2c3e50"/>
+    </svg>
+    
+    <svg class="game-element resistor" viewBox="0 0 80 80">
+        <rect x="10" y="35" width="60" height="10" fill="#e67e22"/>
+        <path d="M10,40 L20,40 M60,40 L70,40" stroke="#2c3e50" stroke-width="3"/>
+    </svg>
+    
+    <svg class="game-element capacitor" viewBox="0 0 70 70">
+        <line x1="10" y1="35" x2="30" y2="35" stroke="#2c3e50" stroke-width="3"/>
+        <line x1="40" y1="35" x2="60" y2="35" stroke="#2c3e50" stroke-width="3"/>
+        <line x1="30" y1="20" x2="30" y2="50" stroke="#2c3e50" stroke-width="3"/>
+        <line x1="40" y1="20" x2="40" y2="50" stroke="#2c3e50" stroke-width="3"/>
+    </svg>
+
+    <!-- Main Platform -->
+    <div class="endustri-platform">
+        <!-- Left Panel - Topic List -->
+        <div class="konu-paneli">
+            <h3>Endüstri Mühendisliği Konuları <button class="refresh-btn"><i class="fas fa-sync-alt"></i></button></h3>
+            
+            <div class="ana-konu active">
+                <div class="ana-konu-baslik active">
+                    <span>Temel Kavramlar</span>
+                    <span>▼</span>
+                </div>
+                <div class="alt-konular">
+                    <div class="alt-konu active" data-topic="sistem-muhendisligi">
+                        <i class="fas fa-project-diagram"></i> Sistem Mühendisliği
+                        <span class="level-badge">Başlangıç</span>
+                    </div>
+                    <div class="alt-konu" data-topic="uretim-sistemleri">
+                        <i class="fas fa-industry"></i> Üretim Sistemleri
+                        <span class="level-badge">Başlangıç</span>
+                    </div>
+                    <div class="alt-konu" data-topic="insan-faktorleri">
+                        <i class="fas fa-users"></i> İnsan Faktörleri
+                        <span class="level-badge">Başlangıç</span>
+                    </div>
+                    <div class="alt-konu" data-topic="kalite-yonetimi">
+                        <i class="fas fa-chart-line"></i> Kalite Yönetimi
+                        <span class="level-badge">Orta</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ana-konu">
+                <div class="ana-konu-baslik">
+                    <span>Operasyon Yönetimi</span>
+                    <span>▶</span>
+                </div>
+                <div class="alt-konular">
+                    <div class="alt-konu" data-topic="tedarik-zinciri">
+                        <i class="fas fa-truck"></i> Tedarik Zinciri Yönetimi
+                        <span class="level-badge">Orta</span>
+                    </div>
+                    <div class="alt-konu" data-topic="envanter-kontrol">
+                        <i class="fas fa-boxes"></i> Envanter Kontrol
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="uretim-planlama">
+                        <i class="fas fa-calendar-alt"></i> Üretim Planlama
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="proje-yonetimi">
+                        <i class="fas fa-tasks"></i> Proje Yönetimi
+                        <span class="level-badge">İleri</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ana-konu">
+                <div class="ana-konu-baslik">
+                    <span>Optimizasyon</span>
+                    <span>▶</span>
+                </div>
+                <div class="alt-konular">
+                    <div class="alt-konu" data-topic="dogrusal-programlama">
+                        <i class="fas fa-chart-bar"></i> Doğrusal Programlama
+                        <span class="level-badge">Orta</span>
+                    </div>
+                    <div class="alt-konu" data-topic="tamsayili-programlama">
+                        <i class="fas fa-calculator"></i> Tamsayılı Programlama
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="cok-kriterli-karar">
+                        <i class="fas fa-balance-scale"></i> Çok Kriterli Karar Verme
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="benzetim">
+                        <i class="fas fa-laptop-code"></i> Benzetim ve Modelleme
+                        <span class="level-badge">İleri</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ana-konu">
+                <div class="ana-konu-baslik">
+                    <span>Veri Analizi</span>
+                    <span>▶</span>
+                </div>
+                <div class="alt-konular">
+                    <div class="alt-konu" data-topic="istatistik">
+                        <i class="fas fa-chart-pie"></i> İstatistiksel Analiz
+                        <span class="level-badge">Orta</span>
+                    </div>
+                    <div class="alt-konu" data-topic="veri-madenciligi">
+                        <i class="fas fa-database"></i> Veri Madenciliği
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="makine-ogrenmesi">
+                        <i class="fas fa-brain"></i> Makine Öğrenmesi
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="is-zekasi">
+                        <i class="fas fa-lightbulb"></i> İş Zekası
+                        <span class="level-badge">İleri</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="icerik-paneli">
+            <div class="icerik-header">
+                <h2><i class="fas fa-cogs"></i> Endüstri Mühendisliği Öğrenme Platformu</h2>
+                <button class="ai-ogren-btn" onclick="toggleAIChat()">
+                    <span>🤖</span> Bumble Bee AI
+                </button>
+            </div>
+            
+            <!-- Content Tabs -->
+            <div class="content-tabs">
+                <div class="tab active" data-tab="intro">Giriş</div>
+                <div class="tab" data-tab="lessons">Dersler</div>
+                <div class="tab" data-tab="projects">Projeler</div>
+                <div class="tab" data-tab="simulations">Simülasyonlar</div>
+                <div class="tab" data-tab="career">Kariyer</div>
+                <div class="tab" data-tab="ai">AI Özellikleri</div>
+            </div>
+            
+            <!-- Introduction Panel -->
+            <div class="tab-content active" id="intro-tab">
+                <div class="intro-panel">
+                    <h3>Endüstri Mühendisliği Öğrenme Yolculuğuna Hoş Geldiniz!</h3>
+                    <p>Bu platformda endüstri mühendisliğinin temellerinden ileri konulara kadar tüm alanları keşfedebilir, kişiselleştirilmiş dersler alabilir, projeler geliştirebilir ve kariyerinizi planlayabilirsiniz.</p>
+                    
+                    <div class="action-cards">
+                        <div class="action-card">
+                            <div class="card-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h4>Seviye Testi</h4>
+                            <p>20 soruluk seviye testi ile bilginizi ölçün ve kişiselleştirilmiş bir öğrenme yolu oluşturun.</p>
+                            <button class="btn btn-primary" onclick="startSeviyeTesti()">
+                                <i class="fas fa-play"></i> Teste Başla
+                            </button>
+                        </div>
+                        
+                        <div class="action-card">
+                            <div class="card-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h4>Proje Fikir Üretici</h4>
+                            <p>Yapay zeka destekli proje fikir üretici ile ilgi alanlarınıza uygun projeler keşfedin.</p>
+                            <button class="btn btn-accent" onclick="openProjectsTab()">
+                                <i class="fas fa-rocket"></i> Projeleri Keşfet
+                            </button>
+                        </div>
+                        
+                        <div class="action-card">
+                            <div class="card-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h4>AI Öğrenme Asistanı</h4>
+                            <p>Yapay zeka destekli kişisel asistanla konuları daha hızlı öğrenin ve sorularınıza anında cevap alın.</p>
+                            <button class="btn btn-ai" onclick="openAITab()">
+                                <i class="fas fa-brain"></i> AI Özelliklerini Keşfet
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Content Recommendations -->
+                    <div class="ai-recommendation">
+                        <div class="ai-analysis-header">
+                            <i class="fas fa-lightbulb" style="font-size: 2rem; color: var(--ai-blue);"></i>
+                            <h3>AI Önerileri: Sizin İçin Seçtiklerimiz</h3>
+                        </div>
+                        
+                        <div class="ai-recommendation-item">
+                            <div class="ai-recommendation-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div>
+                                <h5>Süreç İyileştirme Teknikleri</h5>
+                                <p>Lean ve Altı Sigma metodolojileriyle verimlilik artırma</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-recommendation-item">
+                            <div class="ai-recommendation-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div>
+                                <h5>Operasyon Yönetimi Temelleri</h5>
+                                <p>Tedarik zinciri ve envanter yönetimi için kılavuz</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-recommendation-item">
+                            <div class="ai-recommendation-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div>
+                                <h5>Optimizasyon Projesi</h5>
+                                <p>Doğrusal programlama ile kaynak optimizasyonu</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Daily Life Information -->
+                    <div class="daily-info">
+                        <h3><i class="fas fa-lightbulb"></i> Günlük Hayatta Endüstri Mühendisliği</h3>
+                        <p>Endüstri mühendisliği sadece teorik bir disiplin değil, günlük hayatımızın her alanında karşımıza çıkan pratik uygulamalarla doludur:</p>
+                        
+                        <div class="daily-info-grid">
+                            <div class="info-card">
+                                <h4><i class="fas fa-shopping-cart"></i> Tedarik Zinciri</h4>
+                                <p>Modern tedarik zinciri yönetimi, ürün maliyetlerini %25'e kadar düşürebiliyor ve teslimat sürelerini kısaltıyor.</p>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4><i class="fas fa-chart-line"></i> Verimlilik</h4>
+                                <p>Endüstri mühendisliği teknikleriyle üretim hatlarında verimlilik %40'a kadar artırılabiliyor.</p>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4><i class="fas fa-hospital"></i> Sağlık Sistemleri</h4>
+                                <p>Hastane akışlarının optimize edilmesi, hasta bekleme sürelerini %60 azaltabiliyor.</p>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4><i class="fas fa-robot"></i> Otomasyon</h4>
+                                <p>Akıllı otomasyon sistemleri, üretim hatalarını %90'a varan oranlarda azaltabiliyor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lessons Panel -->
+            <div class="tab-content" id="lessons-tab">
+                <div class="ders-icerik" id="lesson-content">
+                    <div id="sistem-muhendisligi" style="display: block;">
+                        <h3>Sistem Mühendisliği</h3>
+                        <p>Sistem mühendisliği, karmaşık sistemlerin tasarımı, uygulanması ve yönetimi ile ilgilenen disiplinler arası bir yaklaşımdır. Sistem mühendisleri, bir sistemin tüm bileşenlerinin birlikte çalışmasını sağlar.</p>
+                        
+                        <div class="formula-box">
+                            <div class="formula">Sistem Verimliliği = Çıktı / Girdi</div>
+                            <div class="variables">
+                                <div class="variable">
+                                    <span>Çıktı:</span>
+                                    <span>Üretilen ürün/hizmet miktarı</span>
+                                </div>
+                                <div class="variable">
+                                    <span>Girdi:</span>
+                                    <span>Kullanılan kaynak miktarı</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4>Sistem Yaklaşımı</h4>
+                        <p>Sistem yaklaşımı, bir organizasyonu birbiriyle ilişkili ve birbirine bağımlı parçalardan oluşan bütünsel bir yapı olarak ele alır. Bu yaklaşımda:</p>
+                        <ul>
+                            <li>Sistemler alt sistemlerden oluşur</li>
+                            <li>Alt sistemler birbiriyle etkileşim halindedir</li>
+                            <li>Sistemler çevreleriyle sürekli etkileşim halindedir</li>
+                            <li>Sistemler belirli bir amaca yönelik çalışır</li>
+                        </ul>
+                        
+                        <div class="visual-container">
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Sistem+Yaklaşımı" alt="Sistem Yaklaşımı">
+                                <p>Sistem yaklaşımının temel bileşenleri ve etkileşimleri</p>
+                            </div>
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Sistem+Analizi" alt="Sistem Analizi">
+                                <p>Sistem analizi aşamaları: Tanımlama, analiz, tasarım, uygulama</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="dogrusal-programlama" style="display: none;">
+                        <h3>Doğrusal Programlama</h3>
+                        <p>Doğrusal programlama, sınırlı kaynakların en uygun şekilde dağıtılması için kullanılan matematiksel modelleme tekniğidir. Amaç fonksiyonunu maksimize veya minimize ederken kısıtlar dahilinde çözüm arar.</p>
+                        
+                        <div class="formula-box">
+                            <div class="formula">Maksimize Z = c₁x₁ + c₂x₂ + ... + cₙxₙ</div>
+                            <div class="formula">a₁₁x₁ + a₁₂x₂ + ... + a₁ₙxₙ ≤ b₁</div>
+                            <div class="formula">...</div>
+                            <div class="formula">aₘ₁x₁ + aₘ₂x₂ + ... + aₘₙxₙ ≤ bₘ</div>
+                            <div class="formula">x₁, x₂, ..., xₙ ≥ 0</div>
+                        </div>
+                        
+                        <p>Bu modelde:
+                            <ul>
+                                <li>Z: Amaç fonksiyonu (kâr, maliyet vb.)</li>
+                                <li>xᵢ: Karar değişkenleri</li>
+                                <li>cᵢ: Amaç fonksiyonu katsayıları</li>
+                                <li>aᵢⱼ: Kısıt katsayıları</li>
+                                <li>bᵢ: Kısıt sağ taraf değerleri</li>
+                            </ul>
+                        </p>
+                        
+                        <div class="visual-container">
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Uygun+Bölge" alt="Uygun Bölge">
+                                <p>Doğrusal programlamada uygun çözüm bölgesi</p>
+                            </div>
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Simpleks+Yöntemi" alt="Simpleks Yöntemi">
+                                <p>Simpleks yöntemi ile çözüm adımları</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="kalite-yonetimi" style="display: none;">
+                        <h3>Kalite Yönetimi</h3>
+                        <p>Kalite yönetimi, bir ürün veya hizmetin müşteri beklentilerini karşılama derecesini sürekli iyileştirmek için uygulanan sistematik bir yaklaşımdır.</p>
+                        
+                        <div class="formula-box">
+                            <div class="formula">Toplam Kalite Yönetimi = Müşteri Odaklılık + Sürekli İyileştirme + Tam Katılım</div>
+                        </div>
+                        
+                        <h4>Altı Sigma Metodolojisi</h4>
+                        <p>Altı Sigma, hata oranını milyonda 3.4'e düşürmeyi hedefleyen veriye dayalı bir iyileştirme metodolojisidir. DMAIC süreci:</p>
+                        <ol>
+                            <li><strong>Tanımla (Define):</strong> Problem ve hedeflerin belirlenmesi</li>
+                            <li><strong>Ölç (Measure):</strong> Mevcut performansın ölçülmesi</li>
+                            <li><strong>Analiz Et (Analyze):</strong> Kök nedenlerin analizi</li>
+                            <li><strong>İyileştir (Improve):</strong> Çözümlerin uygulanması</li>
+                            <li><strong>Kontrol Et (Control):</strong> Kazanımların sürdürülmesi</li>
+                        </ol>
+                    </div>
+                    
+                    <div id="benzetim" style="display: none;">
+                        <h3>Benzetim ve Modelleme</h3>
+                        <p>Benzetim, gerçek sistemlerin bilgisayar ortamında modellenerek davranışlarının incelenmesi ve performans tahminlerinin yapılmasıdır.</p>
+                        
+                        <h4>Benzetim Türleri</h4>
+                        <div class="visual-container">
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Ayrık+Olay" alt="Ayrık Olay Benzetimi">
+                                <p>Ayrık Olay Benzetimi: Olayların belirli zamanlarda gerçekleştiği sistemler</p>
+                            </div>
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Sürekli+Benzetim" alt="Sürekli Benzetim">
+                                <p>Sürekli Benzetim: Değişkenlerin sürekli değiştiği sistemler</p>
+                            </div>
+                        </div>
+                        
+                        <p>Benzetim proje adımları:
+                            <ol>
+                                <li>Problem tanımı</li>
+                                <li>Veri toplama ve analiz</li>
+                                <li>Model tasarımı</li>
+                                <li>Model doğrulama ve geçerleme</li>
+                                <li>Deney tasarımı ve çalıştırma</li>
+                                <li>Sonuç analizi ve raporlama</li>
+                            </ol>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Projects Panel -->
+            <div class="tab-content" id="projects-tab">
+                <div class="proje-uretici">
+                    <h4>AI Destekli Proje Fikir Üretici</h4>
+                    <p>İlgi alanlarınızı yazın, yapay zeka size özel proje fikirleri üretsin:</p>
+                    
+                    <div class="proje-input-container">
+                        <input type="text" class="proje-input" id="projeIlgiInput" placeholder="İlgi alanlarınızı yazın (örn: tedarik zinciri, optimizasyon, verimlilik, kalite...)">
+                        <button class="btn btn-accent" onclick="generateProjectIdeas()">
+                            <i class="fas fa-magic"></i> Fikir Üret
+                        </button>
+                    </div>
+                    
+                    <div class="proje-fikirleri" id="projeFikirleriContainer">
+                        <!-- AI generated projects will appear here -->
+                    </div>
+                    
+                    <div class="proje-uretici" style="margin-top: 40px;">
+                        <h4>Kendi Proje Fikrinizi Geliştirin</h4>
+                        <p>Kendi proje fikrinizi yazın, yapay zeka size geliştirme önerileri sunsun:</p>
+                        
+                        <div class="proje-input-container">
+                            <input type="text" class="proje-input" id="projeFikirInput" placeholder="Proje fikrinizi yazın...">
+                            <button class="btn btn-primary" onclick="generateDevelopmentPlan()">
+                                <i class="fas fa-wand-magic-sparkles"></i> Geliştirme Planı Oluştur
+                            </button>
+                        </div>
+                        
+                        <div class="proje-fikirleri" id="projeGelistirmeContainer">
+                            <!-- AI generated development plan will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Simulations Panel -->
+            <div class="tab-content" id="simulations-tab">
+                <h3 style="padding: 20px 30px 0;">Endüstri Mühendisliği Simülasyonları</h3>
+                <p style="padding: 0 30px 20px;">Aşağıdaki simülasyonları kullanarak üretim hatlarını, tedarik zincirlerini ve servis sistemlerini sanal ortamda modelleyebilirsiniz.</p>
+                
+                <div class="simulation-viewer" id="simulationViewer">
+                    <h4 id="simulationTitle">Üretim Hattı Simülasyonu</h4>
+                    <p id="simulationDescription">Üretim hattı elemanlarını sürükleyip bırakarak kendi sisteminizi oluşturun ve verimliliği analiz edin.</p>
+                    <iframe class="simulation-iframe" id="simulationFrame" src="https://www.flexsim.com/try/" allowfullscreen></iframe>
+                    <div class="simulation-controls">
+                        <button class="simulation-btn">
+                            <i class="fas fa-play"></i> Başlat
+                        </button>
+                        <button class="simulation-btn">
+                            <i class="fas fa-redo"></i> Sıfırla
+                        </button>
+                        <button class="simulation-btn">
+                            <i class="fas fa-download"></i> İndir
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="simulation-grid">
+                    <div class="simulation-card" onclick="openSimulation('Tedarik Zinciri Simülasyonu', 'Tedarik zinciri ağını modelleme ve optimizasyon', 'https://www.anylogic.com/')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Tedarik+Zinciri+Simülasyonu');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Tedarik Zinciri Simülasyonu</h4>
+                            <p>Tedarik zinciri ağını modelleme ve optimizasyon</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">Lojistik</span>
+                                <span class="simulation-tag">Envanter</span>
+                                <span class="simulation-tag">Optimizasyon</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-card" onclick="openSimulation('Kuyruk Teorisi Simülasyonu', 'Servis sistemlerinde bekleme sürelerinin analizi', 'https://www.queuing-simulator.com/')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Kuyruk+Teorisi+Simülasyonu');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Kuyruk Teorisi Simülasyonu</h4>
+                            <p>Servis sistemlerinde bekleme sürelerinin analizi</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">Servis Sistemleri</span>
+                                <span class="simulation-tag">Bekleme Süreleri</span>
+                                <span class="simulation-tag">Verimlilik</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-card" onclick="openSimulation('Üretim Planlama Simülasyonu', 'Üretim kaynaklarının planlanması ve optimizasyonu', 'https://www.simul8.com/')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Üretim+Planlama+Simülasyonu');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Üretim Planlama Simülasyonu</h4>
+                            <p>Üretim kaynaklarının planlanması ve optimizasyonu</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">Planlama</span>
+                                <span class="simulation-tag">Kaynak Yönetimi</span>
+                                <span class="simulation-tag">Optimizasyon</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-card" onclick="openSimulation('Stok Yönetimi Simülasyonu', 'Envanter politikalarının karşılaştırılması', 'https://www.inventorysim.com/')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Stok+Yönetimi+Simülasyonu');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Stok Yönetimi Simülasyonu</h4>
+                            <p>Envanter politikalarının karşılaştırılması</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">Envanter</span>
+                                <span class="simulation-tag">Stok Kontrol</span>
+                                <span class="simulation-tag">Maliyet Analizi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Career Panel -->
+            <div class="tab-content" id="career-tab">
+                <div class="career-panel">
+                    <h3>Kariyer Gelişim Paneli</h3>
+                    <p>Öğrenme yolculuğunuzdaki ilerlemeniz ve başarılarınız:</p>
+                    
+                    <div class="career-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-medal" style="font-size: 2rem; color: var(--accent);"></i>
+                            <div class="stat-value">87%</div>
+                            <div class="stat-label">Tamamlanan Dersler</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-trophy" style="font-size: 2rem; color: var(--accent);"></i>
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Kazanılan Rozetler</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-map-marked-alt" style="font-size: 2rem; color: var(--accent);"></i>
+                            <div class="stat-value">7/10</div>
+                            <div class="stat-label">Fethedilen Konular</div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--accent);"></i>
+                            <div class="stat-value">#245</div>
+                            <div class="stat-label">Genel Sıralama</div>
+                        </div>
+                    </div>
+                    
+                    <div class="badges-section">
+                        <h4><i class="fas fa-medal"></i> Kazanılan Rozetler</h4>
+                        <div class="badges-container">
+                            <div>
+                                <div class="badge">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div class="badge-title">Sistem Optimizasyonu</div>
+                            </div>
+                            
+                            <div>
+                                <div class="badge">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="badge-title">Veri Analisti</div>
+                            </div>
+                            
+                            <div>
+                                <div class="badge">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                                <div class="badge-title">Lojistik Uzmanı</div>
+                            </div>
+                            
+                            <div>
+                                <div class="badge">
+                                    <i class="fas fa-industry"></i>
+                                </div>
+                                <div class="badge-title">Üretim Yöneticisi</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-analysis-panel">
+                        <div class="ai-analysis-header">
+                            <i class="fas fa-road" style="font-size: 2rem; color: var(--ai-green);"></i>
+                            <h3>AI Destekli Kariyer Yol Haritası</h3>
+                        </div>
+                        
+                        <p>Yetkinlik analizinize göre şu kariyer yollarını öneriyoruz:</p>
+                        
+                        <div class="ai-analysis-content">
+                            <div class="ai-analysis-card">
+                                <h4><i class="fas fa-chart-line"></i> Veri Analisti</h4>
+                                <p>Güçlü yönleriniz: Veri analizi, istatistik, raporlama</p>
+                                <p>Önerilen adımlar:</p>
+                                <ul>
+                                    <li>Veri Analizi ve Görselleştirme kursu</li>
+                                    <li>Python ile Veri Bilimi projesi</li>
+                                    <li>SQL ve Veritabanı Yönetimi sertifikası</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="ai-analysis-card">
+                                <h4><i class="fas fa-truck"></i> Tedarik Zinciri Uzmanı</h4>
+                                <p>Güçlü yönleriniz: Lojistik, envanter yönetimi, optimizasyon</p>
+                                <p>Önerilen adımlar:</p>
+                                <ul>
+                                    <li>Tedarik Zinciri Yönetimi kursu</li>
+                                    <li>Envanter Optimizasyonu simülasyon projesi</li>
+                                    <li>APICS CPIM sertifikasyonu</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="completed-courses">
+                        <h4><i class="fas fa-book"></i> Tamamlanan Dersler</h4>
+                        <div class="course-list">
+                            <div class="course-card">
+                                <h4>Sistem Mühendisliği</h4>
+                                <p>Tamamlanma Tarihi: 15 Ağustos 2023</p>
+                                <p>Başarı Puanı: 92/100</p>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h4>Doğrusal Programlama</h4>
+                                <p>Tamamlanma Tarihi: 22 Ağustos 2023</p>
+                                <p>Başarı Puanı: 88/100</p>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h4>Tedarik Zinciri Yönetimi</h4>
+                                <p>Tamamlanma Tarihi: 5 Eylül 2023</p>
+                                <p>Başarı Puanı: 95/100</p>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h4>Kalite Yönetimi</h4>
+                                <p>Tamamlanma Tarihi: 18 Eylül 2023</p>
+                                <p>Başarı Puanı: 85/100</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Features Panel -->
+            <div class="tab-content" id="ai-tab">
+                <div class="intro-panel">
+                    <h3><i class="fas fa-robot"></i> Yapay Zeka Destekli Öğrenme Deneyimi</h3>
+                    <p>Platformumuzdaki gelişmiş AI özellikleri ile endüstri mühendisliğini daha etkili öğrenin. Gemini entegrasyonu sayesinde kişiselleştirilmiş yol haritaları, anında geri bildirimler ve akıllı önerilerle öğrenme sürecinizi optimize edin.</p>
+                    
+                    <div class="ai-features-section">
+                        <div class="ai-feature-grid">
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <h4>Kişiselleştirilmiş Öğrenme Yolu</h4>
+                                <p>Gemini AI, seviyenize ve öğrenme stilinize uygun kişiselleştirilmiş bir müfredat oluşturur. Zayıf olduğunuz konulara otomatik odaklanarak verimliliğinizi artırır.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="startLearningPathQuestionnaire()">
+                                    <i class="fas fa-road"></i> Yolu Oluştur
+                                </button>
+                                <div id="learningPathContainer" class="hidden">
+                                    <!-- Öğrenme yolu sonuçları buraya gelecek -->
+                                </div>
+                            </div>
+                            
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <h4>Akıllı İçerik Önerileri</h4>
+                                <p>Gemini'nin analizleriyle ilgi alanlarınıza ve öğrenme geçmişinize göre özel olarak seçilmiş makaleler, videolar ve proje fikirleri.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="getContentRecommendations()">
+                                    <i class="fas fa-book-open"></i> Önerileri Göster
+                                </button>
+                                <div id="recommendationsContainer" class="hidden"></div>
+                            </div>
+                            
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <h4>Optimizasyon Modeli Analizi</h4>
+                                <p>Gemini ile geliştirdiğiniz optimizasyon modellerini analiz edin. Hata tespiti, alternatif çözümler ve iyileştirme önerileri alın.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="launchCodeLab()">
+                                    <i class="fas fa-flask"></i> Laboratuvara Git
+                                </button>
+                                <div class="code-lab-feedback hidden" id="codeFeedback"></div>
+                            </div>
+                            
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-microphone"></i>
+                                </div>
+                                <h4>Sesli Asistan Desteği</h4>
+                                <p>Gemini sesli asistan ile sorular sorun, konu anlatımı isteyin veya proje önerileri alın.</p>
+                                <div class="ai-voice-controls">
+                                    <button class="voice-btn" id="voiceBtn" onclick="startVoiceAssistant()">
+                                        <i class="fas fa-microphone"></i>
+                                    </button>
+                                    <span>Sesli komut için tıklayın</span>
+                                    <div class="voice-status" id="voiceStatus"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <h4>Oyunlaştırılmış Öğrenme</h4>
+                                <p>Gemini tarafından kişiye özel hazırlanan meydan okumalar, seviyeler ve rozetlerle öğrenin.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="showGamificationPanel()">
+                                    <i class="fas fa-play"></i> Oyunları Başlat
+                                </button>
+                                <div class="game-levels hidden" id="gameLevels"></div>
+                            </div>
+                            
+                            <div class="ai-feature-card">
+                                <div class="ai-feature-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <h4>Kariyer Yol Haritası</h4>
+                                <p>Gemini'nin yetkinlik analizine göre en uygun kariyer yollarını keşfedin.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="generateCareerPath()">
+                                    <i class="fas fa-road"></i> Kariyer Yolumu Göster
+                                </button>
+                                <div class="career-path hidden" id="careerPath"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-analysis-panel">
+                        <div class="ai-analysis-header">
+                            <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--ai-green);"></i>
+                            <h3>Gemini Öğrenme Performans Analizi</h3>
+                        </div>
+                        
+                        <div class="ai-analysis-content">
+                            <div class="ai-analysis-card">
+                                <h4>Öğrenme Stiliniz</h4>
+                                <div id="learningStyleAnalysis">
+                                    <p>Gemini analizine göre öğrenme stiliniz: <strong id="learningStyle">Hesaplanıyor...</strong></p>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="learningStyleProgress"></div>
+                                    </div>
+                                    <div id="learningStyleRecommendations"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="ai-analysis-card">
+                                <h4>Öğrenme Verimliliği</h4>
+                                <div id="efficiencyAnalysis">
+                                    <p>Gemini'nin belirlediği verimli saatler: <strong id="efficientHours">Hesaplanıyor...</strong></p>
+                                    <div class="heatmap" id="learningHeatmap"></div>
+                                    <div id="efficiencyRecommendations"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-update-section">
+                            <button class="btn btn-refresh" onclick="refreshGeminiAnalysis()">
+                                <i class="fas fa-sync-alt"></i> Analizi Güncelle
+                            </button>
+                            <p class="last-updated">Son güncelleme: <span id="lastUpdated">-</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Level Test Module -->
+            <div class="seviye-test-modul" id="seviyeTesti">
+                <h3>Endüstri Mühendisliği Seviye Belirleme Testi</h3>
+                <div class="test-info">
+                    <div>
+                        <p><strong>Soru: <span id="currentQuestion">1</span>/20</strong> | <strong>Kalan Süre:</strong> 25:00</p>
+                    </div>
+                    <div>
+                        <p><strong>Zorluk:</strong> Orta</p>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="testProgress"></div>
+                </div>
+                
+                <div class="soru-container active" id="question1">
+                    <div class="soru">1. Aşağıdakilerden hangisi endüstri mühendisliğinin temel odak noktasıdır?</div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'd', 1)">
+                        <div class="cevap-text">a) Elektrik devreleri tasarımı</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'd', 1)">
+                        <div class="cevap-text">b) Yazılım geliştirme</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'd', 1)">
+                        <div class="cevap-text">c) Kimyasal reaksiyonlar</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'd', 1)">
+                        <div class="cevap-text">d) Sistem optimizasyonu</div>
+                    </div>
+                    
+                    <button class="cozum-btn" id="solutionBtn1" onclick="toggleTestSolution(1)">
+                        <i class="fas fa-lightbulb"></i> Soru Çözümünü Gör
+                    </button>
+                    <div class="cozum" id="solution1">
+                        <p><strong>Çözüm:</strong></p>
+                        <p>Endüstri mühendisliği, insan, malzeme, makine ve enerjiden oluşan bütünleşik sistemlerin tasarımı, kuruluşu ve yönetimi ile ilgilenir. Temel amacı, bu sistemlerin verimliliğini ve etkinliğini artırmaktır.</p>
+                    </div>
+                </div>
+                
+                <div class="soru-container" id="question2">
+                    <div class="soru">2. Doğrusal programlamada amaç fonksiyonu nedir?</div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">a) Kısıtları tanımlayan fonksiyon</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">b) Değişkenleri sınırlayan fonksiyon</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">c) Maksimize veya minimize edilmek istenen fonksiyon</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">d) Modelin geçerliliğini test eden fonksiyon</div>
+                    </div>
+                    
+                    <button class="cozum-btn" id="solutionBtn2" onclick="toggleTestSolution(2)">
+                        <i class="fas fa-lightbulb"></i> Soru Çözümünü Gör
+                    </button>
+                    <div class="cozum" id="solution2">
+                        <p><strong>Çözüm:</strong></p>
+                        <p>Doğrusal programlamada amaç fonksiyonu, maksimize veya minimize edilmek istenen fonksiyondur. Örneğin kârın maksimizasyonu veya maliyetin minimizasyonu gibi.</p>
+                        <p>Doğru cevap: c) Maksimize veya minimize edilmek istenen fonksiyon</p>
+                    </div>
+                </div>
+                
+                <div class="test-navigation">
+                    <button class="test-btn" disabled>
+                        <i class="fas fa-arrow-left"></i> Önceki Soru
+                    </button>
+                    <button class="test-btn btn-primary" onclick="nextQuestion()">
+                        Sonraki Soru <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Panel -->
+    <div class="chat-panel" id="chatPanel">
+        <div class="chat-header">
+            <div class="chat-title">
+                <i class="fas fa-robot"></i> Bumble Bee AI Asistan (Gemini)
+            </div>
+            <button class="close-chat" onclick="closeChat()">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="ai-message">Merhaba! Ben Bumble Bee, Gemini AI teknolojisi ile çalışıyorum. Endüstri Mühendisliği ile ilgili aklına takılan herhangi bir konuda bana soru sorabilirsin. Nasıl yardımcı olabilirim?</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Mesajınızı yazın..." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <button class="send-btn" onclick="sendMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        <div class="file-upload-container">
+            <input type="file" id="fileUpload" accept=".pdf" style="display: none;" onchange="handleFileUpload(this)">
+            <button class="file-upload-btn" onclick="document.getElementById('fileUpload').click()">
+                <i class="fas fa-file-pdf"></i> PDF Yükle
+            </button>
+            <span class="file-name" id="fileName"></span>
+        </div>
+    </div>
+    
+    <!-- AI Detail Panels -->
+    <div class="ai-detail-panel" id="learningPathDetail">
+        <div class="ai-detail-content">
+            <div class="ai-detail-header">
+                <h3><i class="fas fa-road"></i> Kişiselleştirilmiş Öğrenme Yolunuz</h3>
+                <div class="close-detail" onclick="closeDetailPanel('learningPathDetail')">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="ai-detail-body">
+                <div id="learningPathFormContainer">
+                    <div class="learning-path-form">
+                        <h4>Öğrenme Yolu Anketi</h4>
+                        <p>Lütfen aşağıdaki soruları cevaplayın. Cevaplarınıza göre Gemini AI sizin için özel bir öğrenme yolu oluşturacaktır.</p>
+                        
+                        <div class="form-group">
+                            <label for="level">Mevcut Bilgi Seviyeniz:</label>
+                            <select id="level" class="form-control">
+                                <option value="beginner">Başlangıç (Temel kavramları öğreniyorum)</option>
+                                <option value="intermediate">Orta (Temel konuları biliyorum)</option>
+                                <option value="advanced">İleri (Karmaşık konulara hakimim)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interests">İlgi Alanlarınız:</label>
+                            <input type="text" id="interests" class="form-control" placeholder="Sistem optimizasyonu, tedarik zinciri, veri analizi...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="hours">Haftalık Çalışma Süresi:</label>
+                            <select id="hours" class="form-control">
+                                <option value="1-3">1-3 saat</option>
+                                <option value="4-6">4-6 saat</option>
+                                <option value="7-10">7-10 saat</option>
+                                <option value="10+">10 saat ve üzeri</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="style">Öğrenme Stiliniz:</label>
+                            <select id="style" class="form-control">
+                                <option value="visual">Görsel (Diğramlar, animasyonlar)</option>
+                                <option value="auditory">İşitsel (Sesli anlatımlar)</option>
+                                <option value="kinesthetic">Uygulamalı (Projeler, simülasyonlar)</option>
+                                <option value="reading">Okuyarak (Dokümanlar, kitaplar)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="goals">Hedefleriniz:</label>
+                            <textarea id="goals" class="form-control" rows="3" placeholder="Örnek: Tedarik zinciri uzmanı olmak, veri analisti olmak..."></textarea>
+                        </div>
+                        
+                        <button class="btn btn-ai" onclick="generateLearningPath()">
+                            <i class="fas fa-cogs"></i> Öğrenme Yolumu Oluştur
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="learningPathResult" class="hidden">
+                    <div class="result-loader">
+                        <div class="spinner"></div>
+                        <p>Gemini AI öğrenme yolunuzu oluşturuyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Content Recommendations Panel -->
+    <div class="ai-detail-panel" id="contentRecommendationsDetail">
+        <div class="ai-detail-content">
+            <div class="ai-detail-header">
+                <h3><i class="fas fa-lightbulb"></i> İçerik Önerileriniz</h3>
+                <div class="close-detail" onclick="closeDetailPanel('contentRecommendationsDetail')">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="ai-detail-body">
+                <p>Öğrenme geçmişinize ve ilgi alanlarınıza göre özel olarak seçilmiş içerikler:</p>
+                
+                <div class="ai-recommendation-item" style="margin-top: 20px;">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div>
+                        <h5>Lean Üretim Teknikleri</h5>
+                        <p>İsrafı azaltma ve verimliliği artırma yöntemleri</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-play"></i> İzle
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-recommendation-item">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <h5>Python ile Veri Analizi</h5>
+                        <p>Pandas, NumPy ve Matplotlib kullanarak veri analizi</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-book-open"></i> Oku
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-recommendation-item">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div>
+                        <h5>Tedarik Zinciri Optimizasyon Projesi</h5>
+                        <p>Envanter maliyetlerini minimize eden model geliştirme</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-download"></i> Proje Dosyalarını İndir
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-recommendation-item">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div>
+                        <h5>Altı Sigma Uygulamaları</h5>
+                        <p>DMAIC metodolojisi ile süreç iyileştirme</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-file-pdf"></i> Makaleyi Oku
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating AI Button -->
+    <div class="floating-ai-btn" onclick="toggleAIChat()">
+        <i class="fas fa-robot"></i>
+    </div>
+
+    <script>
+        // Initialize the platform
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide level test initially
+            document.getElementById('seviyeTesti').style.display = 'none';
+            
+            // Set up tab switching
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Show corresponding content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Set up topic selection
+            document.querySelectorAll('.alt-konu').forEach(konu => {
+                konu.addEventListener('click', function() {
+                    document.querySelectorAll('.alt-konu').forEach(k => k.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show lessons tab
+                    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                    document.querySelector('.tab[data-tab="lessons"]').classList.add('active');
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById('lessons-tab').classList.add('active');
+                    
+                    // Load lesson content for selected topic
+                    const topic = this.getAttribute('data-topic');
+                    showLessonContent(topic);
+                });
+            });
+            
+            // Pre-load lesson content
+            preloadLessonContent();
+        });
+
+        // Topic list interaction
+        document.querySelectorAll('.ana-konu-baslik').forEach(baslik => {
+            baslik.addEventListener('click', function() {
+                const anaKonu = this.parentElement;
+                anaKonu.classList.toggle('active');
+                this.querySelector('span:last-child').textContent = 
+                    anaKonu.classList.contains('active') ? '▼' : '▶';
+            });
+        });
+        
+        // Pre-load lesson content
+        function preloadLessonContent() {
+            // Content for all lessons is already in the HTML
+            // We just need to show the active one
+            showLessonContent('sistem-muhendisligi');
+        }
+        
+        // Show lesson content
+        function showLessonContent(topic) {
+            // Hide all lesson content
+            document.querySelectorAll('#lesson-content > div').forEach(div => {
+                div.style.display = 'none';
+            });
+            
+            // Show selected lesson
+            document.getElementById(topic).style.display = 'block';
+        }
+        
+        // Start level test
+        function startSeviyeTesti() {
+            // Hide intro panel, show level test
+            document.getElementById('intro-tab').style.display = 'none';
+            document.getElementById('seviyeTesti').style.display = 'block';
+            // Update progress bar
+            document.getElementById('testProgress').style.width = '5%';
+            // Show first question
+            document.querySelectorAll('.soru-container').forEach((container, index) => {
+                container.style.display = index === 0 ? 'block' : 'none';
+            });
+        }
+        
+        // Open projects tab
+        function openProjectsTab() {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector('.tab[data-tab="projects"]').classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('projects-tab').classList.add('active');
+        }
+        
+        // Open AI tab
+        function openAITab() {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector('.tab[data-tab="ai"]').classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById('ai-tab').classList.add('active');
+        }
+        
+        // Show/hide solution
+        function toggleCozum(btn) {
+            const cozum = btn.nextElementSibling;
+            cozum.style.display = cozum.style.display === 'block' ? 'none' : 'block';
+            btn.innerHTML = cozum.style.display === 'block' ? 
+                '<i class="fas fa-lightbulb"></i> Çözümü Gizle' : 
+                '<i class="fas fa-lightbulb"></i> Çözümü Göster';
+        }
+        
+        // Toggle test solution
+        function toggleTestSolution(questionNum) {
+            const solution = document.getElementById(`solution${questionNum}`);
+            solution.classList.toggle('show');
+        }
+        
+        // Select answer in lessons
+        function selectAnswer(element, correctAnswer) {
+            const options = element.parentElement.querySelectorAll('.cevap-secenek');
+            const selectedAnswer = element.querySelector('.cevap-text').textContent.trim().charAt(0);
+            
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+                
+                const answerChar = opt.querySelector('.cevap-text').textContent.trim().charAt(0);
+                if (answerChar === correctAnswer) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            element.classList.add('selected');
+            if (selectedAnswer !== correctAnswer) {
+                element.classList.add('incorrect');
+            }
+        }
+        
+        // Select answer in test
+        function selectTestAnswer(element, correctAnswer, questionNum) {
+            const options = element.parentElement.querySelectorAll('.cevap-secenek');
+            const selectedAnswer = element.querySelector('.cevap-text').textContent.trim().charAt(0);
+            
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+                
+                const answerChar = opt.querySelector('.cevap-text').textContent.trim().charAt(0);
+                if (answerChar === correctAnswer) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            element.classList.add('selected');
+            if (selectedAnswer !== correctAnswer) {
+                element.classList.add('incorrect');
+            }
+            
+            // Show solution button
+            document.getElementById(`solutionBtn${questionNum}`).classList.add('active');
+        }
+        
+        // Next question in test
+        function nextQuestion() {
+            const currentQuestion = parseInt(document.getElementById('currentQuestion').textContent);
+            const nextQuestion = currentQuestion + 1;
+            
+            if (nextQuestion <= 20) {
+                document.getElementById('currentQuestion').textContent = nextQuestion;
+                document.querySelectorAll('.soru-container').forEach(container => {
+                    container.style.display = 'none';
+                });
+                document.getElementById(`question${nextQuestion}`).style.display = 'block';
+                
+                // Update progress bar
+                const progress = (nextQuestion / 20) * 100;
+                document.getElementById('testProgress').style.width = `${progress}%`;
+            }
+        }
+
+        // Start learning path questionnaire
+        function startLearningPathQuestionnaire() {
+            document.getElementById('learningPathDetail').style.display = 'block';
+            document.getElementById('learningPathFormContainer').classList.remove('hidden');
+            document.getElementById('learningPathResult').classList.add('hidden');
+        }
+        
+        // Generate learning path with Gemini AI
+        function generateLearningPath() {
+            // Get form values
+            const level = document.getElementById('level').value;
+            const interests = document.getElementById('interests').value;
+            const hours = document.getElementById('hours').value;
+            const style = document.getElementById('style').value;
+            const goals = document.getElementById('goals').value;
+            
+            // Show loading
+            document.getElementById('learningPathFormContainer').classList.add('hidden');
+            document.getElementById('learningPathResult').classList.remove('hidden');
+            
+            // Simulate Gemini API call
+            setTimeout(() => {
+                // Create learning path based on user responses
+                const learningPath = createLearningPath(level, interests, hours, style, goals);
+                
+                // Display the learning path
+                displayLearningPath(learningPath);
+            }, 2000);
+        }
+        
+        // Create learning path based on user responses
+        function createLearningPath(level, interests, hours, style, goals) {
+            const steps = [];
+            
+            // Step 1: Fundamentals
+            steps.push({
+                title: "Endüstri Mühendisliği Temelleri",
+                description: "Sistem mühendisliği, süreç analizi ve temel optimizasyon kavramlarını öğrenin.",
+                resources: [
+                    "📚 Ders: Sistem Mühendisliğine Giriş",
+                    "🎬 Video: Süreç İyileştirme Teknikleri",
+                    "🧪 Simülasyon: Temel Üretim Hattı Modelleme"
+                ]
+            });
+            
+            // Step 2: Optimization
+            if (interests.includes("optimizasyon") || interests.includes("veri") || level === "intermediate" || level === "advanced") {
+                steps.push({
+                    title: "Optimizasyon Teknikleri",
+                    description: "Doğrusal programlama, tamsayılı programlama ve çok kriterli karar verme yöntemlerini uygulayın.",
+                    resources: [
+                        "📚 Ders: Doğrusal Programlama Temelleri",
+                        "💻 Proje: Kaynak Optimizasyonu Projesi",
+                        "📝 Test: Optimizasyon Problemleri"
+                    ]
+                });
+            }
+            
+            // Step 3: Supply Chain
+            if (interests.includes("tedarik") || interests.includes("lojistik") || goals.includes("tedarik")) {
+                steps.push({
+                    title: "Tedarik Zinciri Yönetimi",
+                    description: "Tedarik zinciri tasarımı, envanter yönetimi ve lojistik optimizasyonu konularını öğrenin.",
+                    resources: [
+                        "📚 Ders: Tedarik Zinciri Temelleri",
+                        "🧪 Simülasyon: Envanter Optimizasyonu",
+                        "📝 Makale: Global Tedarik Zinciri Trendleri"
+                    ]
+                });
+            }
+            
+            // Step 4: Quality Management
+            if (interests.includes("kalite") || interests.includes("iyileştirme") || level === "advanced") {
+                steps.push({
+                    title: "Kalite Yönetimi ve Altı Sigma",
+                    description: "Toplam kalite yönetimi ve Altı Sigma metodolojisi ile süreç iyileştirme tekniklerini uygulayın.",
+                    resources: [
+                        "📚 Ders: Altı Sigma DMAIC Süreci",
+                        "🎬 Video: Kalite Kontrol Araçları",
+                        "💻 Proje: Süreç İyileştirme Projesi"
+                    ]
+                });
+            }
+            
+            // Step 5: Data Analysis
+            if (interests.includes("veri") || interests.includes("analiz") || goals.includes("veri analisti")) {
+                steps.push({
+                    title: "Veri Analizi ve İş Zekası",
+                    description: "Endüstri mühendisliğinde veri analitiği uygulamalarını ve iş zekası araçlarını öğrenin.",
+                    resources: [
+                        "📚 Ders: Python ile Veri Analizi",
+                        "💻 Proje: Gerçek Veri Seti Analizi",
+                        "📝 Sertifika: SQL ve Veritabanı Yönetimi"
+                    ]
+                });
+            }
+            
+            return {
+                title: "Kişiselleştirilmiş Öğrenme Yolu",
+                description: "Gemini AI tarafından ilgi alanlarınıza ve seviyenize göre oluşturulmuş öğrenme yolunuz.",
+                steps: steps
+            };
+        }
+        
+        // Display learning path result
+        function displayLearningPath(pathData) {
+            const resultContainer = document.getElementById('learningPathResult');
+            
+            let html = `
+                <div class="learning-path-result">
+                    <h3>${pathData.title}</h3>
+                    <p>${pathData.description}</p>
+                    <div class="learning-path">
+            `;
+            
+            pathData.steps.forEach((step, index) => {
+                html += `
+                    <div class="path-step">
+                        <div class="step-header">
+                            <div class="step-number">${index + 1}</div>
+                            <h4 class="step-title">${step.title}</h4>
+                        </div>
+                        <p class="step-description">${step.description}</p>
+                        <div class="step-resources">
+                            <h5>Kaynaklar:</h5>
+                            <ul>
+                                ${step.resources.map(resource => `<li>${resource}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                    <button class="btn btn-ai" onclick="downloadLearningPath()" style="margin-top: 20px;">
+                        <i class="fas fa-download"></i> Yol Haritasını İndir
+                    </button>
+                </div>
+            `;
+            
+            resultContainer.innerHTML = html;
+        }
+        
+        // Download learning path
+        function downloadLearningPath() {
+            alert("Öğrenme yolu indiriliyor... Gerçek uygulamada bu özellik PDF oluşturup indirecektir.");
+        }
+        
+        // Generate project ideas with AI simulation
+        function generateProjectIdeas() {
+            const interest = document.getElementById('projeIlgiInput').value.toLowerCase();
+            const container = document.getElementById('projeFikirleriContainer');
+            
+            // Clear previous content
+            container.innerHTML = '';
+            
+            // Show loading
+            container.innerHTML = '<div class="spinner"></div><p>Gemini AI proje fikirlerini oluşturuyor...</p>';
+            
+            // Simulate AI response after a short delay
+            setTimeout(() => {
+                let projectsHTML = '';
+                
+                if (interest.includes('tedarik') || interest.includes('lojistik')) {
+                    projectsHTML = `
+                        <div class="proje-fikri">
+                            <h5>Akıllı Tedarik Zinciri Optimizasyonu</h5>
+                            <p>Tedarik zinciri ağında maliyet ve teslimat sürelerini optimize eden bir model geliştirin. Proje, tedarikçi seçimi, depo yerleşimi ve dağıtım rotalarının optimizasyonunu içerir.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">Doğrusal Programlama</span>
+                                <span class="tech-badge">Coğrafi Bilgi Sistemleri</span>
+                                <span class="tech-badge">Veri Analizi</span>
+                            </div>
+                        </div>
+                        
+                        <div class="proje-fikri">
+                            <h5>Gerçek Zamanlı Envanter Takip Sistemi</h5>
+                            <p>RFID ve IoT teknolojileri kullanarak gerçek zamanlı envanter takip sistemi geliştirin. Sistem, stok seviyelerini otomatik olarak izleyip sipariş süreçlerini yönetecek.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Arduino</span>
+                                <span class="tech-badge">RFID</span>
+                                <span class="tech-badge">IoT</span>
+                                <span class="tech-badge">Bulut Bilişim</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (interest.includes('verimlilik') || interest.includes('üretim')) {
+                    projectsHTML = `
+                        <div class="proje-fikri">
+                            <h5>Üretim Hattı Dengeleme Optimizasyonu</h5>
+                            <p>Mevcut bir üretim hattının iş istasyonlarını dengeleyerek verimliliği artıran bir model geliştirin. Proje, zaman etütleri, iş analizi ve simülasyon tekniklerini içerir.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Simülasyon</span>
+                                <span class="tech-badge">Zaman Etüdü</span>
+                                <span class="tech-badge">İş Analizi</span>
+                                <span class="tech-badge">Optimizasyon</span>
+                            </div>
+                        </div>
+                        
+                        <div class="proje-fikri">
+                            <h5>Otonom Malzeme Taşıma Robotu</h5>
+                            <p>Fabrika ortamında malzeme taşıma işlemlerini otomatikleştiren bir robot tasarlayın. Robot, çizgi izleme ve engelden kaçınma özelliklerine sahip olacak.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Arduino</span>
+                                <span class="tech-badge">Motor Sürücü</span>
+                                <span class="tech-badge">Ultrasonik Sensör</span>
+                                <span class="tech-badge">Kızılötesi Sensör</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    projectsHTML = `
+                        <div class="proje-fikri">
+                            <h5>Hastane Randevu Optimizasyon Sistemi</h5>
+                            <p>Hastane randevu sistemini optimize ederek hasta bekleme sürelerini azaltan ve kaynak kullanımını iyileştiren bir model geliştirin.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Kuyruk Teorisi</span>
+                                <span class="tech-badge">Simülasyon</span>
+                                <span class="tech-badge">Optimizasyon</span>
+                                <span class="tech-badge">Web Uygulaması</span>
+                            </div>
+                        </div>
+                        
+                        <div class="proje-fikri">
+                            <h5>Perakende Mağazası Raf Yerleşim Optimizasyonu</h5>
+                            <p>Bir perakende mağazasında ürün yerleşimini satış verilerine göre optimize eden bir sistem tasarlayın. Sistem, müşteri hareketlerini analiz ederek en karlı yerleşimi belirleyecek.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Veri Analizi</span>
+                                <span class="tech-badge">Makine Öğrenmesi</span>
+                                <span class="tech-badge">Optimizasyon</span>
+                                <span class="tech-badge">Python</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = projectsHTML;
+            }, 1000);
+        }
+        
+        // Generate development plan with AI simulation
+        function generateDevelopmentPlan() {
+            const idea = document.getElementById('projeFikirInput').value;
+            const container = document.getElementById('projeGelistirmeContainer');
+            
+            // Clear previous content
+            container.innerHTML = '';
+            
+            // Show loading
+            container.innerHTML = '<div class="spinner"></div><p>Gemini AI geliştirme planını oluşturuyor...</p>';
+            
+            // Simulate AI response after a short delay
+            setTimeout(() => {
+                let planHTML = `
+                    <div class="proje-fikri">
+                        <h5>"${idea}" Projesi Geliştirme Planı</h5>
+                        <p>Projeniz için aşağıdaki adımları takip edebilirsiniz:</p>
+                        
+                        <ol>
+                            <li><strong>Problem Tanımı:</strong> Projenin çözeceği problemi net bir şekilde tanımlayın ve kapsamını belirleyin.</li>
+                            <li><strong>Literatür Taraması:</strong> Benzer çalışmaları inceleyin ve mevcut çözümleri analiz edin.</li>
+                            <li><strong>Veri Toplama:</strong> Projeniz için gerekli verileri toplayın ve ön işlemeden geçirin.</li>
+                            <li><strong>Model Tasarımı:</strong> Problemi çözecek matematiksel veya simülasyon modelini tasarlayın.</li>
+                            <li><strong>Uygulama:</strong> Modeli uygulayın ve test edin.</li>
+                            <li><strong>Sonuç Analizi:</strong> Elde edilen sonuçları analiz edin ve iyileştirme fırsatlarını belirleyin.</li>
+                            <li><strong>Raporlama:</strong> Proje sürecini ve sonuçlarını belgeleyin.</li>
+                        </ol>
+                        
+                        <p><strong>Önerilen Kaynaklar:</strong></p>
+                        <ul>
+                            <li>📚 "Proje Yönetimi Temelleri" kitabı</li>
+                            <li>🎬 "Endüstri Mühendisliğinde Proje Geliştirme" video serisi</li>
+                            <li>💻 "Veri Toplama ve Analiz Teknikleri" eğitimi</li>
+                        </ul>
+                    </div>
+                `;
+                
+                container.innerHTML = planHTML;
+            }, 1000);
+        }
+        
+        // Handle file upload for PDF summary
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const fileName = document.getElementById('fileName');
+            fileName.textContent = file.name;
+            
+            // Simulate uploading and processing
+            setTimeout(() => {
+                const messages = document.getElementById('chatMessages');
+                messages.innerHTML += `
+                    <div class="user-message">
+                        <i class="fas fa-file-pdf"></i> ${file.name} dosyası yüklendi
+                    </div>
+                `;
+                
+                // Simulate Gemini processing
+                setTimeout(() => {
+                    messages.innerHTML += `
+                        <div class="ai-message">
+                            PDF dosyası başarıyla yüklendi. İçeriği analiz ediyorum...
+                        </div>
+                    `;
+                    
+                    // Simulate summary
+                    setTimeout(() => {
+                        messages.innerHTML += `
+                            <div class="ai-message">
+                                <strong>PDF Özeti:</strong><br>
+                                Bu PDF dokümanı endüstri mühendisliği optimizasyon tekniklerini içermektedir. 
+                                Ana başlıklar: Doğrusal programlama, tamsayılı programlama, ağ modelleri ve benzetim. 
+                                Dokümanda ayrıca 10 örnek vaka analizi bulunmaktadır.
+                            </div>
+                        `;
+                        messages.scrollTop = messages.scrollHeight;
+                    }, 2000);
+                }, 1000);
+                
+                messages.scrollTop = messages.scrollHeight;
+            }, 500);
+        }
+        
+        // AI Chat functions
+        function toggleAIChat() {
+            const chatPanel = document.getElementById('chatPanel');
+            chatPanel.classList.toggle('active');
+            document.getElementById('chatInput').focus();
+        }
+        
+        function closeChat() {
+            document.getElementById('chatPanel').classList.remove('active');
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            const userMsg = input.value.trim();
+            
+            if (userMsg !== "") {
+                // Add user message
+                messages.innerHTML += `<div class="user-message">${userMsg}</div>`;
+                input.value = "";
+                
+                // Add loading indicator
+                const loadingMsg = document.createElement('div');
+                loadingMsg.className = 'ai-message';
+                loadingMsg.innerHTML = '<div class="spinner" style="width:20px;height:20px;"></div> Cevap oluşturuluyor...';
+                messages.appendChild(loadingMsg);
+                messages.scrollTop = messages.scrollHeight;
+                
+                try {
+                    // Simulate Gemini API call
+                    setTimeout(() => {
+                        // Remove loading indicator
+                        messages.removeChild(loadingMsg);
+                        
+                        // Add AI response
+                        messages.innerHTML += `
+                            <div class="ai-message">
+                                <strong>Bumble Bee:</strong><br>
+                                ${generateAIResponse(userMsg)}
+                            </div>
+                        `;
+                        messages.scrollTop = messages.scrollHeight;
+                    }, 1500);
+                } catch (error) {
+                    messages.removeChild(loadingMsg);
+                    messages.innerHTML += `
+                        <div class="ai-message" style="color: var(--danger)">
+                            Hata: ${error.message}
+                        </div>
+                    `;
+                    messages.scrollTop = messages.scrollHeight;
+                }
+            }
+        }
+        
+        // Generate AI response based on user message
+        function generateAIResponse(userMsg) {
+            const lowerMsg = userMsg.toLowerCase();
+            
+            if (lowerMsg.includes("doğrusal") || lowerMsg.includes("programlama")) {
+                return "Doğrusal programlama, sınırlı kaynakların en uygun şekilde dağıtılması için kullanılan matematiksel modelleme tekniğidir. Amaç fonksiyonunu maksimize veya minimize ederken kısıtlar dahilinde çözüm arar. Temel bileşenleri: Karar değişkenleri, amaç fonksiyonu ve kısıtlardır.";
+            } else if (lowerMsg.includes("tedarik") || lowerMsg.includes("zinciri")) {
+                return "Tedarik zinciri yönetimi, hammaddeden nihai ürüne kadar olan tüm süreçlerin planlanması, yürütülmesi ve kontrolüdür. Temel amaçları: Maliyet minimizasyonu, teslimat sürelerinin kısaltılması, envanter optimizasyonu ve müşteri memnuniyetinin artırılmasıdır.";
+            } else if (lowerMsg.includes("altı") || lowerMsg.includes("sigma")) {
+                return "Altı Sigma, hata oranını milyonda 3.4'e düşürmeyi hedefleyen veriye dayalı bir iyileştirme metodolojisidir. DMAIC süreci: Tanımla (Define), Ölç (Measure), Analiz Et (Analyze), İyileştir (Improve), Kontrol Et (Control). Temel araçları: Pareto analizi, balık kılçığı diyagramı, kontrol çizelgeleri ve istatistiksel analizlerdir.";
+            } else if (lowerMsg.includes("proje") || lowerMsg.includes("fikir")) {
+                return "İşte size bir proje fikri: Hastane Acil Servis Optimizasyonu. Bu projede, acil servis süreçlerini analiz ederek hasta bekleme sürelerini azaltacak bir model geliştirebilirsiniz. Gerekli adımlar: Veri toplama, süreç haritalama, simülasyon modelleme ve iyileştirme önerileri geliştirme.";
+            } else {
+                return "Endüstri mühendisliği ile ilgili sorunuzu daha detaylı açıklayabilir misiniz? Size en iyi şekilde yardımcı olmak istiyorum.";
+            }
+        }
+        
+        // Close detail panel
+        function closeDetailPanel(panelId) {
+            document.getElementById(panelId).style.display = 'none';
+        }
+        
+        // Open simulation
+        function openSimulation(title, description, url) {
+            document.getElementById('simulationTitle').textContent = title;
+            document.getElementById('simulationDescription').textContent = description;
+            document.getElementById('simulationFrame').src = url;
+            document.getElementById('simulationViewer').classList.add('active');
+            
+            // Scroll to top
+            document.getElementById('simulations-tab').scrollTop = 0;
+        }
+        
+        // Get content recommendations
+        function getContentRecommendations() {
+            document.getElementById('contentRecommendationsDetail').style.display = 'block';
+        }
+        
+        // Launch code lab
+        function launchCodeLab() {
+            alert("Optimizasyon laboratuvarı başlatılıyor... Gerçek uygulamada bu özellik modelleme ortamı açacaktır.");
+        }
+        
+        // Start voice assistant
+        function startVoiceAssistant() {
+            alert("Sesli asistan başlatılıyor... Gerçek uygulamada bu özellik ses tanıma özelliğini aktif edecektir.");
+        }
+        
+        // Show gamification panel
+        function showGamificationPanel() {
+            alert("Oyunlaştırılmış öğrenme paneli başlatılıyor...");
+        }
+        
+        // Generate career path
+        function generateCareerPath() {
+            alert("Kariyer yol haritası oluşturuluyor...");
+        }
+        
+        // Refresh Gemini analysis
+        function refreshGeminiAnalysis() {
+            alert("Öğrenme analizi güncelleniyor...");
+        }
+    </script>
+</body>
+</html>

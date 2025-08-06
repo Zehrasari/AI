@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bilgisayar Mühendisliği Öğrenme Platformu</title>
+    <title>Bilgisayar Mühendisliği Öğrenme Platformu - Gemini AI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         :root {
-            --primary: #2563eb;
-            --secondary: #8b5cf6;
-            --accent: #7c3aed;
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #9b59b6;
             --light: #f8f9fa;
-            --dark: #1e293b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --info: #3b82f6;
-            --ai-blue: #4285f4;
-            --ai-green: #34a853;
+            --dark: #2d3748;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #1abc9c;
             --transition: all 0.3s ease;
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             --border-radius: 16px;
+            --ai-blue: #4285f4;
+            --ai-green: #34a853;
         }
 
         * {
@@ -31,7 +32,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
             color: var(--dark);
             min-height: 100vh;
             overflow-x: hidden;
@@ -122,7 +123,7 @@
         }
 
         /* Main Layout */
-        .bilgisayar-platform {
+        .platform-container {
             display: grid;
             grid-template-columns: 300px 1fr;
             gap: 30px;
@@ -187,7 +188,7 @@
         }
 
         .ana-konu-baslik:hover {
-            background: rgba(139, 92, 246, 0.1);
+            background: rgba(52, 152, 219, 0.1);
         }
 
         .ana-konu-baslik.active {
@@ -220,7 +221,7 @@
         }
 
         .alt-konu:hover {
-            background: rgba(139, 92, 246, 0.1);
+            background: rgba(52, 152, 219, 0.1);
         }
 
         .alt-konu.active {
@@ -284,7 +285,7 @@
         }
 
         .ai-ogren-btn:hover {
-            background: #7c3aed;
+            background: #2980b9;
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
@@ -422,7 +423,7 @@
         }
 
         .btn-primary:hover {
-            background: #1d4ed8;
+            background: #1a252f;
         }
 
         .btn-secondary {
@@ -431,7 +432,7 @@
         }
 
         .btn-secondary:hover {
-            background: #7c3aed;
+            background: #2980b9;
         }
 
         .btn-accent {
@@ -440,7 +441,7 @@
         }
 
         .btn-accent:hover {
-            background: #6d28d9;
+            background: #8e44ad;
         }
         
         .btn-ai {
@@ -529,22 +530,24 @@
             margin-bottom: 15px;
         }
 
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 10px;
+        .simulation-container {
+            background: #f0f7ff;
+            border-radius: var(--border-radius);
+            padding: 20px;
             margin: 20px 0;
+            text-align: center;
         }
 
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
+        .simulation-placeholder {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
+            background: #e6f7ff;
+            border-radius: 10px;
+            padding: 20px;
         }
 
         /* Level Test */
@@ -619,17 +622,17 @@
 
         .cevap-secenek.selected {
             border-color: var(--accent);
-            background: rgba(123, 97, 255, 0.05);
+            background: rgba(155, 89, 182, 0.05);
         }
 
         .cevap-secenek.correct {
             border-color: var(--success);
-            background: rgba(16, 185, 129, 0.05);
+            background: rgba(46, 204, 113, 0.05);
         }
 
         .cevap-secenek.incorrect {
             border-color: var(--danger);
-            background: rgba(239, 68, 68, 0.05);
+            background: rgba(231, 76, 60, 0.05);
         }
 
         .cevap-secenek::before {
@@ -705,7 +708,7 @@
         }
 
         .cozum-btn:hover {
-            background: #6d28d9;
+            background: #8e44ad;
         }
 
         .cozum {
@@ -800,7 +803,7 @@
         }
 
         .tech-badge {
-            background: rgba(123, 97, 255, 0.1);
+            background: rgba(155, 89, 182, 0.1);
             color: var(--accent);
             padding: 5px 12px;
             border-radius: 20px;
@@ -1112,7 +1115,31 @@
         }
 
         .send-btn:hover {
-            background: #6d28d9;
+            background: #8e44ad;
+        }
+
+        .file-upload-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .file-upload-btn {
+            background: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .file-name {
+            font-size: 0.8rem;
+            color: var(--dark);
         }
 
         /* New AI Features */
@@ -1320,7 +1347,7 @@
 
         /* Responsive Design */
         @media (max-width: 1200px) {
-            .bilgisayar-platform {
+            .platform-container {
                 grid-template-columns: 1fr;
             }
             
@@ -1389,26 +1416,487 @@
             opacity: 0.1;
         }
 
-        .circuit {
+        .code-icon {
             top: 10%;
             left: 5%;
             width: 100px;
             height: 100px;
         }
 
-        .resistor {
+        .database-icon {
             bottom: 10%;
             right: 5%;
             width: 80px;
             height: 80px;
         }
 
-        .capacitor {
+        .ai-icon {
             top: 40%;
             right: 10%;
             width: 70px;
             height: 70px;
         }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--accent);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* New Elements */
+        .simulation-viewer {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+        
+        .simulation-viewer.active {
+            display: block;
+        }
+        
+        .simulation-iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .simulation-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .simulation-btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        
+        .simulation-btn:hover {
+            background: #8e44ad;
+        }
+        
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .simulation-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .simulation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .simulation-thumbnail {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .simulation-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(44, 62, 80, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .simulation-card:hover .simulation-overlay {
+            opacity: 1;
+        }
+        
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .simulation-info {
+            padding: 20px;
+        }
+        
+        .simulation-info h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .simulation-info p {
+            color: var(--dark);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .simulation-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .simulation-tag {
+            background: rgba(155, 89, 182, 0.1);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .ai-detail-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .ai-detail-content {
+            background: white;
+            max-width: 1000px;
+            margin: 50px auto;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ai-detail-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .ai-detail-header h3 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .close-detail {
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-detail:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .ai-detail-body {
+            padding: 30px;
+            line-height: 1.7;
+        }
+        
+        .learning-path {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .path-step {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background: #f8fafc;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step-number {
+            min-width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-content h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .resources-list {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        
+        .resources-list li {
+            margin-bottom: 10px;
+        }
+        
+        .recommended-courses {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .course-card-mini {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .course-card-mini h5 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .course-progress {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .course-progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 30%;
+        }
+        
+        .ai-personality-card {
+    background: #f0f7ff;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}
+
+.code-editor-container {
+    margin: 20px 0;
+}
+
+.code-editor-container textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-family: monospace;
+    resize: vertical;
+}
+
+.ai-analysis-result {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.ai-recommendation-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Anket Formu Stilleri */
+.learning-path-form {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.learning-path-form h4 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--accent);
+    outline: none;
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+}
+
+/* Sonuç Göstergeci */
+.result-loader {
+    text-align: center;
+    padding: 30px;
+}
+
+.result-loader p {
+    margin-top: 15px;
+    font-size: 1.1rem;
+}
+
+/* Öğrenme Yolu Sonuçları */
+.learning-path-result {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+
+.path-step {
+    background: #f8fafc;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--secondary);
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--secondary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.step-title {
+    color: var(--primary);
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.step-description {
+    margin-bottom: 15px;
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.step-resources h5 {
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+
+.step-resources ul {
+    padding-left: 20px;
+}
+
+.step-resources li {
+    margin-bottom: 8px;
+    color: var(--dark);
+}
+
+/* AI Özellik Butonları */
+.ai-feature-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Gizleme Sınıfı */
+.hidden {
+    display: none;
+}
+
     </style>
 </head>
 <body>
@@ -1418,7 +1906,7 @@
             <div class="logo-icon">
                 <i class="fas fa-laptop-code"></i>
             </div>
-            <div class="logo-text">KOD AKADEMİ</div>
+            <div class="logo-text">BUMBLE BEE AKADEMİ</div>
         </div>
         
         <div class="nav-menu">
@@ -1432,39 +1920,62 @@
         <div class="user-profile">
             <div class="xp-badge">
                 <i class="fas fa-star"></i>
-                1,850 XP
+                1,890 XP
             </div>
             <div class="profile-pic">KA</div>
         </div>
     </header>
 
+    <!-- Game Elements -->
+    <svg class="game-element code-icon" viewBox="0 0 100 100">
+        <rect x="20" y="20" width="60" height="60" rx="10" fill="none" stroke="#2c3e50" stroke-width="2"/>
+        <path d="M30,35 L40,45 L30,55" fill="none" stroke="#2c3e50" stroke-width="3"/>
+        <path d="M50,35 L70,35" fill="none" stroke="#2c3e50" stroke-width="3"/>
+        <path d="M50,45 L65,45" fill="none" stroke="#2c3e50" stroke-width="3"/>
+        <path d="M50,55 L60,55" fill="none" stroke="#2c3e50" stroke-width="3"/>
+    </svg>
+    
+    <svg class="game-element database-icon" viewBox="0 0 80 80">
+        <ellipse cx="40" cy="20" rx="30" ry="10" fill="none" stroke="#2c3e50" stroke-width="2"/>
+        <path d="M10,20 C10,30 25,38 40,38 C55,38 70,30 70,20" fill="none" stroke="#2c3e50" stroke-width="2"/>
+        <path d="M10,20 L10,50 C10,60 25,68 40,68 C55,68 70,60 70,50 L70,20" fill="none" stroke="#2c3e50" stroke-width="2"/>
+        <path d="M10,35 L70,35" fill="none" stroke="#2c3e50" stroke-width="1" stroke-dasharray="5,5"/>
+    </svg>
+    
+    <svg class="game-element ai-icon" viewBox="0 0 70 70">
+        <circle cx="35" cy="25" r="15" fill="none" stroke="#2c3e50" stroke-width="2"/>
+        <path d="M20,50 Q35,65 50,50" fill="none" stroke="#2c3e50" stroke-width="2"/>
+        <circle cx="30" cy="20" r="3" fill="#2c3e50"/>
+        <circle cx="40" cy="20" r="3" fill="#2c3e50"/>
+    </svg>
+
     <!-- Main Platform -->
-    <div class="bilgisayar-platform">
+    <div class="platform-container">
         <!-- Left Panel - Topic List -->
         <div class="konu-paneli">
             <h3>Bilgisayar Mühendisliği Konuları <button class="refresh-btn"><i class="fas fa-sync-alt"></i></button></h3>
             
             <div class="ana-konu active">
                 <div class="ana-konu-baslik active">
-                    <span>Programlama</span>
+                    <span>Programlama Temelleri</span>
                     <span>▼</span>
                 </div>
                 <div class="alt-konular">
-                    <div class="alt-konu active">
-                        <i class="fas fa-code"></i> Algoritmalar ve Veri Yapıları
+                    <div class="alt-konu active" data-topic="algoritmalar">
+                        <i class="fas fa-code"></i> Algoritmalar
                         <span class="level-badge">Başlangıç</span>
                     </div>
-                    <div class="alt-konu">
+                    <div class="alt-konu" data-topic="veri-yapilari">
+                        <i class="fas fa-code"></i> Veri Yapıları
+                        <span class="level-badge">Başlangıç</span>
+                    </div>
+                    <div class="alt-konu" data-topic="nesne-yonelimli">
                         <i class="fas fa-code"></i> Nesne Yönelimli Programlama
                         <span class="level-badge">Orta</span>
                     </div>
-                    <div class="alt-konu">
+                    <div class="alt-konu" data-topic="fonksiyonel-programlama">
                         <i class="fas fa-code"></i> Fonksiyonel Programlama
-                        <span class="level-badge">İleri</span>
-                    </div>
-                    <div class="alt-konu">
-                        <i class="fas fa-code"></i> Tasarım Desenleri
-                        <span class="level-badge">İleri</span>
+                        <span class="level-badge">Orta</span>
                     </div>
                 </div>
             </div>
@@ -1475,20 +1986,41 @@
                     <span>▶</span>
                 </div>
                 <div class="alt-konular">
-                    <div class="alt-konu">
-                        <i class="fas fa-globe"></i> Frontend Teknolojileri
+                    <div class="alt-konu" data-topic="html-css">
+                        <i class="fab fa-html5"></i> HTML & CSS
+                        <span class="level-badge">Başlangıç</span>
+                    </div>
+                    <div class="alt-konu" data-topic="javascript">
+                        <i class="fab fa-js"></i> JavaScript
                         <span class="level-badge">Orta</span>
                     </div>
-                    <div class="alt-konu">
-                        <i class="fas fa-globe"></i> Backend Mimarileri
+                    <div class="alt-konu" data-topic="react">
+                        <i class="fab fa-react"></i> React.js
                         <span class="level-badge">İleri</span>
                     </div>
-                    <div class="alt-konu">
-                        <i class="fas fa-globe"></i> Veritabanı Yönetimi
+                    <div class="alt-konu" data-topic="nodejs">
+                        <i class="fab fa-node-js"></i> Node.js
+                        <span class="level-badge">İleri</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ana-konu">
+                <div class="ana-konu-baslik">
+                    <span>Veritabanı Sistemleri</span>
+                    <span>▶</span>
+                </div>
+                <div class="alt-konular">
+                    <div class="alt-konu" data-topic="sql">
+                        <i class="fas fa-database"></i> SQL
                         <span class="level-badge">Orta</span>
                     </div>
-                    <div class="alt-konu">
-                        <i class="fas fa-globe"></i> API Tasarımı
+                    <div class="alt-konu" data-topic="nosql">
+                        <i class="fas fa-database"></i> NoSQL
+                        <span class="level-badge">İleri</span>
+                    </div>
+                    <div class="alt-konu" data-topic="veritabani-tasarimi">
+                        <i class="fas fa-database"></i> Veritabanı Tasarımı
                         <span class="level-badge">İleri</span>
                     </div>
                 </div>
@@ -1500,45 +2032,16 @@
                     <span>▶</span>
                 </div>
                 <div class="alt-konular">
-                    <div class="alt-konu">
+                    <div class="alt-konu" data-topic="makine-ogrenmesi">
                         <i class="fas fa-brain"></i> Makine Öğrenmesi
                         <span class="level-badge">İleri</span>
                     </div>
-                    <div class="alt-konu">
+                    <div class="alt-konu" data-topic="derin-ogrenme">
                         <i class="fas fa-brain"></i> Derin Öğrenme
                         <span class="level-badge">İleri</span>
                     </div>
-                    <div class="alt-konu">
-                        <i class="fas fa-brain"></i> Doğal Dil İşleme
-                        <span class="level-badge">İleri</span>
-                    </div>
-                    <div class="alt-konu">
-                        <i class="fas fa-brain"></i> Bilgisayarlı Görü
-                        <span class="level-badge">İleri</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="ana-konu">
-                <div class="ana-konu-baslik">
-                    <span>Sistemler</span>
-                    <span>▶</span>
-                </div>
-                <div class="alt-konular">
-                    <div class="alt-konu">
-                        <i class="fas fa-server"></i> İşletim Sistemleri
-                        <span class="level-badge">Orta</span>
-                    </div>
-                    <div class="alt-konu">
-                        <i class="fas fa-server"></i> Bilgisayar Ağları
-                        <span class="level-badge">Orta</span>
-                    </div>
-                    <div class="alt-konu">
-                        <i class="fas fa-server"></i> Güvenlik ve Kriptografi
-                        <span class="level-badge">İleri</span>
-                    </div>
-                    <div class="alt-konu">
-                        <i class="fas fa-server"></i> Bulut Bilişim
+                    <div class="alt-konu" data-topic="dogal-dil-isleme">
+                        <i class="fas fa-language"></i> Doğal Dil İşleme
                         <span class="level-badge">İleri</span>
                     </div>
                 </div>
@@ -1550,7 +2053,7 @@
             <div class="icerik-header">
                 <h2><i class="fas fa-laptop-code"></i> Bilgisayar Mühendisliği Öğrenme Platformu</h2>
                 <button class="ai-ogren-btn" onclick="toggleAIChat()">
-                    <span>🤖</span> CodeBot ile Soru Sor
+                    <span>🤖</span> Bumble Bee AI
                 </button>
             </div>
             
@@ -1568,7 +2071,7 @@
             <div class="tab-content active" id="intro-tab">
                 <div class="intro-panel">
                     <h3>Bilgisayar Mühendisliği Öğrenme Yolculuğuna Hoş Geldiniz!</h3>
-                    <p>Bu platformda programlamadan yapay zekaya, sistemlerden web geliştirmeye kadar tüm alanları keşfedebilir, kişiselleştirilmiş dersler alabilir, projeler geliştirebilir ve kariyerinizi planlayabilirsiniz.</p>
+                    <p>Bu platformda programlamanın temellerinden ileri konulara kadar tüm alanları keşfedebilir, kişiselleştirilmiş dersler alabilir, projeler geliştirebilir ve kariyerinizi planlayabilirsiniz.</p>
                     
                     <div class="action-cards">
                         <div class="action-card">
@@ -1618,7 +2121,7 @@
                             </div>
                             <div>
                                 <h5>Algoritma Analizi ve Karmaşıklık</h5>
-                                <p>Big O notasyonu ve algoritma analizi</p>
+                                <p>Big O notasyonu ve algoritma verimliliği</p>
                             </div>
                         </div>
                         
@@ -1627,8 +2130,8 @@
                                 <i class="fas fa-book"></i>
                             </div>
                             <div>
-                                <h5>Web Geliştirme Temelleri</h5>
-                                <p>HTML, CSS ve JavaScript kılavuzu</p>
+                                <h5>Nesne Yönelimli Programlama Prensipleri</h5>
+                                <p>SOLID prensipleri ve tasarım desenleri</p>
                             </div>
                         </div>
                         
@@ -1637,8 +2140,8 @@
                                 <i class="fas fa-project-diagram"></i>
                             </div>
                             <div>
-                                <h5>Python ile Veri Analizi</h5>
-                                <p>Pandas ve NumPy ile veri manipülasyonu</p>
+                                <h5>Web API Projesi</h5>
+                                <p>Node.js ve Express ile RESTful API geliştirme</p>
                             </div>
                         </div>
                     </div>
@@ -1646,27 +2149,27 @@
                     <!-- Daily Life Information -->
                     <div class="daily-info">
                         <h3><i class="fas fa-lightbulb"></i> Günlük Hayatta Bilgisayar Mühendisliği</h3>
-                        <p>Bilgisayar mühendisliği sadece teorik bir disiplin değil, günlük hayatımızın her alanında karşımıza çıkan pratik uygulamalarla doludur:</p>
+                        <p>Bilgisayar mühendisliği günlük hayatımızın her alanında karşımıza çıkan pratik uygulamalarla doludur:</p>
                         
                         <div class="daily-info-grid">
                             <div class="info-card">
-                                <h4><i class="fas fa-mobile-alt"></i> Akıllı Telefonlar</h4>
-                                <p>Modern akıllı telefonlar, 1969'da Ay'a giden Apollo 11 bilgisayarından 100,000 kat daha güçlüdür ve saniyede milyarlarca işlem yapabilir.</p>
+                                <h4><i class="fas fa-mobile-alt"></i> Mobil Uygulamalar</h4>
+                                <p>Dünya çapında 3.5 milyar akıllı telefon kullanıcısı, günde ortalama 4 saat mobil uygulamalarda zaman geçiriyor.</p>
                             </div>
                             
                             <div class="info-card">
                                 <h4><i class="fas fa-cloud"></i> Bulut Bilişim</h4>
-                                <p>Dünyadaki tüm verilerin %60'ı bulut sunucularında saklanıyor. 2025 yılında bu oranın %75'e çıkması bekleniyor.</p>
+                                <p>2025 yılına kadar dünya verilerinin %80'i bulut platformlarında depolanacak ve işlenecek.</p>
                             </div>
                             
                             <div class="info-card">
                                 <h4><i class="fas fa-robot"></i> Yapay Zeka</h4>
-                                <p>Modern yapay zeka modelleri, insan seviyesinde metin üretebilir, görüntü tanıyabilir ve karmaşık problemleri çözebilir.</p>
+                                <p>Modern yapay zeka modelleri, insan beyninin saniyede 100 trilyon işlem kapasitesini aşabiliyor.</p>
                             </div>
                             
                             <div class="info-card">
                                 <h4><i class="fas fa-shield-alt"></i> Siber Güvenlik</h4>
-                                <p>Her 39 saniyede bir siber saldırı gerçekleşiyor. 2023'te siber suçların küresel maliyeti 8 trilyon doları aştı.</p>
+                                <p>2023'te siber saldırıların küresel ekonomiye maliyeti 8 trilyon doları aştı.</p>
                             </div>
                         </div>
                     </div>
@@ -1675,191 +2178,129 @@
             
             <!-- Lessons Panel -->
             <div class="tab-content" id="lessons-tab">
-                <div class="ders-icerik">
-                    <h3>Algoritmalar ve Veri Yapıları</h3>
-                    <p>Algoritmalar, bir problemi çözmek veya bir görevi tamamlamak için izlenen adımlar dizisidir. Veri yapıları ise verileri organize etme ve depolama yöntemleridir. Bu ikisi bilgisayar bilimlerinin temelini oluşturur.</p>
-                    
-                    <div class="visual-container">
-                        <div class="visual-item">
-                            <img src="https://images.unsplash.com/photo-1550439062-609e1531270e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Algoritma Akış Diyagramı">
-                            <p>Algoritma akış diyagramı örneği</p>
+                <div class="ders-icerik" id="lesson-content">
+                    <div id="algoritmalar" style="display: block;">
+                        <h3>Algoritmalar</h3>
+                        <p>Algoritma, bir problemi çözmek veya bir görevi gerçekleştirmek için tasarlanmış adım adım talimatlar dizisidir. Bilgisayar biliminin temelini oluşturur.</p>
+                        
+                        <div class="formula-box">
+                            <div class="formula">O(n) - Zaman Karmaşıklığı</div>
+                            <div class="variables">
+                                <div class="variable">
+                                    <span>O:</span>
+                                    <span>Büyük O notasyonu</span>
+                                </div>
+                                <div class="variable">
+                                    <span>n:</span>
+                                    <span>Girdi boyutu</span>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="visual-item">
-                            <img src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Veri Yapıları">
-                            <p>Temel veri yapıları görseli</p>
-                        </div>
-                    </div>
-                    
-                    <div class="formula-box">
-                        <div class="formula">O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)</div>
-                        <p>Bu sıralama algoritma karmaşıklıklarını gösterir:</p>
-                        <div class="variables">
-                            <div class="variable">
-                                <span>O(1):</span>
-                                <span>Sabit zamanlı</span>
-                            </div>
-                            <div class="variable">
-                                <span>O(log n):</span>
-                                <span>Logaritmik zamanlı</span>
-                            </div>
-                            <div class="variable">
-                                <span>O(n):</span>
-                                <span>Lineer zamanlı</span>
-                            </div>
-                            <div class="variable">
-                                <span>O(n²):</span>
-                                <span>Karesel zamanlı</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/8hly31xKli0" title="Algoritmalar ve Veri Yapıları" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    
-                    <p>Veri yapıları ve algoritmalar, programların performansını doğrudan etkiler. Doğru veri yapısı seçimi, büyük veri kümeleri üzerinde çalışırken performansı önemli ölçüde artırabilir.</p>
-                    
-                    <div class="visual-item">
-                        <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Kod Örneği">
-                        <p>Python'da bağlı liste uygulaması</p>
-                    </div>
-                    
-                    <!-- AI Enhanced Understanding -->
-                    <div class="ai-analysis-panel">
-                        <div class="ai-analysis-header">
-                            <i class="fas fa-brain" style="font-size: 2rem; color: var(--ai-green);"></i>
-                            <h3>AI Analizi: Öğrenme Durumunuz</h3>
-                        </div>
+                        <h4>Temel Algoritma Türleri</h4>
+                        <ul>
+                            <li><strong>Arama Algoritmaları:</strong> Doğrusal arama, ikili arama</li>
+                            <li><strong>Sıralama Algoritmaları:</strong> Kabarcık sıralama, birleştirme sıralama, hızlı sıralama</li>
+                            <li><strong>Graf Algoritmaları:</strong> Genişlik öncelikli arama, derinlik öncelikli arama</li>
+                            <li><strong>Matematiksel Algoritmalar:</strong> Öklid algoritması, asal sayı bulma</li>
+                        </ul>
                         
-                        <div class="ai-analysis-content">
-                            <div class="ai-analysis-card">
-                                <h4>Güçlü Yönleriniz</h4>
-                                <ul class="ai-skill-list">
-                                    <li>
-                                        <div>Temel Algoritmalar</div>
-                                        <div class="ai-skill-progress">
-                                            <div class="ai-skill-progress-bar" style="width: 85%"></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div>Dizi ve Listeler</div>
-                                        <div class="ai-skill-progress">
-                                            <div class="ai-skill-progress-bar" style="width: 78%"></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div>Yığın ve Kuyruk</div>
-                                        <div class="ai-skill-progress">
-                                            <div class="ai-skill-progress-bar" style="width: 92%"></div>
-                                        </div>
-                                    </li>
-                                </ul>
+                        <div class="visual-container">
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Algoritma+Karmaşıklık" alt="Algoritma Karmaşıklık">
+                                <p>Farklı algoritmaların zaman karmaşıklığı karşılaştırması</p>
+                            </div>
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Sıralama+Algoritmaları" alt="Sıralama Algoritmaları">
+                                <p>Farklı sıralama algoritmalarının performans karşılaştırması</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="veri-yapilari" style="display: none;">
+                        <h3>Veri Yapıları</h3>
+                        <p>Veri yapıları, verileri düzenlemek, depolamak ve verimli bir şekilde işlemek için kullanılan yapılardır. Doğru veri yapısı seçimi, program performansını büyük ölçüde etkiler.</p>
+                        
+                        <h4>Temel Veri Yapıları</h4>
+                        <ul>
+                            <li><strong>Diziler:</strong> Bellekte ardışık olarak depolanan veri koleksiyonu</li>
+                            <li><strong>Bağlı Listeler:</strong> Düğümlerden oluşan ve işaretçilerle birbirine bağlı veri yapısı</li>
+                            <li><strong>Yığınlar:</strong> LIFO (Son giren ilk çıkar) prensibiyle çalışan veri yapısı</li>
+                            <li><strong>Kuyruklar:</strong> FIFO (İlk giren ilk çıkar) prensibiyle çalışan veri yapısı</li>
+                            <li><strong>Ağaçlar:</strong> Hiyerarşik veri yapısı (İkili ağaç, AVL ağaç, B-ağaç)</li>
+                            <li><strong>Grafikler:</strong> Düğümler ve kenarlardan oluşan ağ yapısı</li>
+                        </ul>
+                        
+                        <div class="visual-container">
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=Bağlı+Liste" alt="Bağlı Liste">
+                                <p>Bağlı liste veri yapısının görselleştirilmesi</p>
+                            </div>
+                            <div class="visual-item">
+                                <img src="https://via.placeholder.com/300x200?text=İkili+Arama+Ağacı" alt="İkili Arama Ağacı">
+                                <p>İkili arama ağacı yapısı ve özellikleri</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="nesne-yonelimli" style="display: none;">
+                        <h3>Nesne Yönelimli Programlama (OOP)</h3>
+                        <p>Nesne yönelimli programlama, gerçek dünya varlıklarını modellemek için "nesneler" kullanan bir programlama paradigmasıdır. Dört temel prensibi vardır:</p>
+                        
+                        <div class="visual-container">
+                            <div class="visual-item">
+                                <h4>Kapsülleme (Encapsulation)</h4>
+                                <p>Verilerin ve veriler üzerinde işlem yapan fonksiyonların bir arada tutulması</p>
                             </div>
                             
-                            <div class="ai-analysis-card">
-                                <h4>Geliştirilecek Yönler</h4>
-                                <ul class="ai-skill-list">
-                                    <li>
-                                        <div>Ağaç Veri Yapıları</div>
-                                        <div class="ai-skill-progress">
-                                            <div class="ai-skill-progress-bar" style="width: 45%; background: var(--warning);"></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div>Graf Algoritmaları</div>
-                                        <div class="ai-skill-progress">
-                                            <div class="ai-skill-progress-bar" style="width: 38%; background: var(--warning);"></div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div>Dinamik Programlama</div>
-                                        <div class="ai-skill-progress">
-                                            <div class="ai-skill-progress-bar" style="width: 52%; background: var(--warning);"></div>
-                                        </div>
-                                    </li>
-                                </ul>
+                            <div class="visual-item">
+                                <h4>Kalıtım (Inheritance)</h4>
+                                <p>Mevcut sınıfların özelliklerini yeni sınıflara aktarma</p>
+                            </div>
+                            
+                            <div class="visual-item">
+                                <h4>Çok Biçimlilik (Polymorphism)</h4>
+                                <p>Aynı arayüzün farklı nesneler için farklı davranışlar sergilemesi</p>
+                            </div>
+                            
+                            <div class="visual-item">
+                                <h4>Soyutlama (Abstraction)</h4>
+                                <p>Karmaşık sistemlerin temel özelliklerini modelleme</p>
                             </div>
                         </div>
                         
-                        <div class="ai-recommendation">
-                            <h4>AI Önerileri</h4>
-                            <p>Ağaç veri yapıları konusunu daha iyi anlamanız için şu kaynakları öneriyoruz:</p>
-                            <ul>
-                                <li>İkili Arama Ağaçları - Video Ders</li>
-                                <li>Ağaç Gezme Algoritmaları - İnteraktif Simülasyon</li>
-                                <li>AVL Ağaçları Uygulaması - Kod Laboratuvarı</li>
-                            </ul>
-                        </div>
+                        <h4>OOP Dilleri</h4>
+                        <p>Java, C++, Python, C# gibi diller nesne yönelimli programlamayı destekler.</p>
                     </div>
                     
-                    <!-- Sample Questions -->
-                    <div class="ornek-sorular">
-                        <h3>Sınavda Çıkabilecek Örnek Sorular</h3>
+                    <div id="fonksiyonel-programlama" style="display: none;">
+                        <h3>Fonksiyonel Programlama</h3>
+                        <p>Fonksiyonel programlama, matematiksel fonksiyonlar kavramına dayanan bir programlama paradigmasıdır. Temel özellikleri:</p>
                         
-                        <div class="soru-ornek">
-                            <p><strong>Soru 1:</strong> Aşağıdaki veri yapılarından hangisi LIFO (Last In First Out) prensibiyle çalışır?</p>
-                            <button class="cozum-btn" onclick="toggleCozum(this)">
-                                <i class="fas fa-lightbulb"></i> Çözümü Göster
-                            </button>
-                            <div class="cozum">
-                                <p><strong>Çözüm:</strong></p>
-                                <p>LIFO (Last In First Out) prensibi Yığın (Stack) veri yapısının çalışma prensibidir. Son giren eleman ilk çıkar.</p>
+                        <ul>
+                            <li><strong>Değişmezlik (Immutability):</strong> Verilerin değiştirilemez olması</li>
+                            <li><strong>Saf Fonksiyonlar:</strong> Aynı girdi için her zaman aynı çıktıyı üreten ve yan etkisi olmayan fonksiyonlar</li>
+                            <li><strong>Fonksiyonların Birinci Sınıf Vatandaş Olması:</strong> Fonksiyonların değişken gibi kullanılabilmesi</li>
+                            <li><strong>Yüksek Dereceli Fonksiyonlar:</strong> Fonksiyonları parametre olarak alan veya fonksiyon döndüren fonksiyonlar</li>
+                        </ul>
+                        
+                        <div class="formula-box">
+                            <div class="formula">map, filter, reduce</div>
+                            <div class="variables">
+                                <div class="variable">
+                                    <span>map:</span>
+                                    <span>Koleksiyonun her elemanına fonksiyon uygular</span>
+                                </div>
+                                <div class="variable">
+                                    <span>filter:</span>
+                                    <span>Koşulu sağlayan elemanları seçer</span>
+                                </div>
+                                <div class="variable">
+                                    <span>reduce:</span>
+                                    <span>Koleksiyonu tek bir değere indirger</span>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="soru-ornek">
-                            <p><strong>Soru 2:</strong> Bir dizide eleman arama işleminin ortalama zaman karmaşıklığı nedir?</p>
-                            <button class="cozum-btn" onclick="toggleCozum(this)">
-                                <i class="fas fa-lightbulb"></i> Çözümü Göster
-                            </button>
-                            <div class="cozum">
-                                <p><strong>Çözüm:</strong></p>
-                                <p>Sıralı olmayan bir dizide eleman arama işleminin ortalama zaman karmaşıklığı O(n)'dir. En kötü durumda tüm elemanlar kontrol edilmelidir.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Understanding Test -->
-                    <div class="anlama-testi">
-                        <h3>Konuyu Anladınız mı?</h3>
-                        <p>Aşağıdaki soruları yanıtlayarak konuyu ne kadar anladığınızı test edin:</p>
-                        
-                        <div class="soru-ornek">
-                            <p>1. Hangisi FIFO (First In First Out) prensibiyle çalışır?</p>
-                            <div class="cevap-secenek" onclick="selectAnswer(this, 'b')">
-                                <div class="cevap-text">a) Yığın (Stack)</div>
-                            </div>
-                            <div class="cevap-secenek" onclick="selectAnswer(this, 'b')">
-                                <div class="cevap-text">b) Kuyruk (Queue)</div>
-                            </div>
-                            <div class="cevap-secenek" onclick="selectAnswer(this, 'b')">
-                                <div class="cevap-text">c) Bağlı Liste</div>
-                            </div>
-                            <div class="cevap-secenek" onclick="selectAnswer(this, 'b')">
-                                <div class="cevap-text">d) İkili Ağaç</div>
-                            </div>
-                        </div>
-                        
-                        <div class="soru-ornek">
-                            <p>2. İkili arama algoritmasının zaman karmaşıklığı nedir?</p>
-                            <div class="cevap-secenek" onclick="selectAnswer(this, 'c')">
-                                <div class="cevap-text">a) O(1)</div>
-                            </div>
-                            <div class="cevap-secenek" onclick="selectAnswer(this, 'c')">
-                                <div class="cevap-text">b) O(n)</div>
-                            </div>
-                            <div class="cevap-secenek" onclick="selectAnswer(this, 'c')">
-                                <div class="cevap-text">c) O(log n)</div>
-                            </div>
-                            <div class="cevap-secenek" onclick="selectAnswer(this, 'c')">
-                                <div class="cevap-text">d) O(n²)</div>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn-secondary" style="margin-top: 20px;">
-                            <i class="fas fa-check-circle"></i> Testi Tamamla
-                        </button>
                     </div>
                 </div>
             </div>
@@ -1871,7 +2312,7 @@
                     <p>İlgi alanlarınızı yazın, yapay zeka size özel proje fikirleri üretsin:</p>
                     
                     <div class="proje-input-container">
-                        <input type="text" class="proje-input" id="projeIlgiInput" placeholder="İlgi alanlarınızı yazın (örn: web geliştirme, yapay zeka, mobil uygulama, veri bilimi...)">
+                        <input type="text" class="proje-input" id="projeIlgiInput" placeholder="İlgi alanlarınızı yazın (örn: web geliştirme, yapay zeka, mobil uygulamalar...)">
                         <button class="btn btn-accent" onclick="generateProjectIdeas()">
                             <i class="fas fa-magic"></i> Fikir Üret
                         </button>
@@ -1894,6 +2335,128 @@
                         
                         <div class="proje-fikirleri" id="projeGelistirmeContainer">
                             <!-- AI generated development plan will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Simulations Panel -->
+            <div class="tab-content" id="simulations-tab">
+                <h3 style="padding: 20px 30px 0;">Bilgisayar Mühendisliği Simülasyonları</h3>
+                <p style="padding: 0 30px 20px;">Aşağıdaki simülasyonları kullanarak algoritmaları, veri yapılarını ve programlama kavramlarını görselleştirerek öğrenebilirsiniz.</p>
+                
+                <div class="simulation-viewer" id="simulationViewer">
+                    <h4 id="simulationTitle">Kod Editörü ve Çalıştırma Ortamı</h4>
+                    <p id="simulationDescription">Gerçek zamanlı kod yazın, derleyin ve çalıştırın.</p>
+                    <div class="code-editor-container">
+                        <textarea id="codeEditor" rows="10" placeholder="Kodunuzu buraya yazın...">function bubbleSort(arr) {
+  let len = arr.length;
+  for (let i = 0; i < len; i++) {
+    for (let j = 0; j < len - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+        // Elemanları değiştir
+        let temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
+    }
+  }
+  return arr;
+}
+
+// Test dizisi
+const arr = [64, 34, 25, 12, 22, 11, 90];
+console.log("Sıralanmamış dizi:", arr);
+console.log("Sıralanmış dizi:", bubbleSort(arr.slice()));</textarea>
+                    </div>
+                    <div class="simulation-controls">
+                        <button class="simulation-btn" onclick="runCode()">
+                            <i class="fas fa-play"></i> Kodu Çalıştır
+                        </button>
+                        <button class="simulation-btn" onclick="clearCode()">
+                            <i class="fas fa-redo"></i> Temizle
+                        </button>
+                    </div>
+                    <div class="ai-analysis-result" id="codeOutput">
+                        <h4>Çıktı:</h4>
+                        <div id="outputContent"></div>
+                    </div>
+                </div>
+                
+                <div class="simulation-grid">
+                    <div class="simulation-card" onclick="openSimulation('Algoritma Görselleştirici', 'Sıralama ve arama algoritmalarını görselleştirme', 'algoritma')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Algoritma+Görselleştirici');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Algoritma Görselleştirici</h4>
+                            <p>Sıralama ve arama algoritmalarını görselleştirme</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">Algoritma</span>
+                                <span class="simulation-tag">Görselleştirme</span>
+                                <span class="simulation-tag">Performans</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-card" onclick="openSimulation('Veritabanı Tasarımı', 'ER diyagramları ve SQL sorguları', 'veritabani')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Veritabanı+Tasarımı');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Veritabanı Tasarımı</h4>
+                            <p>ER diyagramları ve SQL sorguları</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">SQL</span>
+                                <span class="simulation-tag">ER Diyagramı</span>
+                                <span class="simulation-tag">Normalizasyon</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-card" onclick="openSimulation('Ağ Simülasyonu', 'TCP/IP ve OSI modeli simülasyonu', 'ag')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Ağ+Simülasyonu');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Ağ Simülasyonu</h4>
+                            <p>TCP/IP ve OSI modeli simülasyonu</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">Ağ</span>
+                                <span class="simulation-tag">TCP/IP</span>
+                                <span class="simulation-tag">OSI Modeli</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simulation-card" onclick="openSimulation('Yapay Zeka Modeli Eğitimi', 'Basit makine öğrenmesi modelleri eğitme', 'ai')">
+                        <div class="simulation-thumbnail" style="background-image: url('https://via.placeholder.com/600x400?text=Yapay+Zeka+Modeli+Eğitimi');">
+                            <div class="simulation-overlay">
+                                <div class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simulation-info">
+                            <h4>Yapay Zeka Modeli Eğitimi</h4>
+                            <p>Basit makine öğrenmesi modelleri eğitme</p>
+                            <div class="simulation-tags">
+                                <span class="simulation-tag">AI</span>
+                                <span class="simulation-tag">Makine Öğrenmesi</span>
+                                <span class="simulation-tag">Model Eğitimi</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1926,7 +2489,7 @@
                         
                         <div class="stat-card">
                             <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--accent);"></i>
-                            <div class="stat-value">#178</div>
+                            <div class="stat-value">#189</div>
                             <div class="stat-label">Genel Sıralama</div>
                         </div>
                     </div>
@@ -1938,28 +2501,28 @@
                                 <div class="badge">
                                     <i class="fas fa-code"></i>
                                 </div>
-                                <div class="badge-title">Python Uzmanı</div>
+                                <div class="badge-title">Kod Ustası</div>
                             </div>
                             
                             <div>
                                 <div class="badge">
                                     <i class="fas fa-brain"></i>
                                 </div>
-                                <div class="badge-title">Algoritma Şampiyonu</div>
+                                <div class="badge-title">Problem Çözücü</div>
                             </div>
                             
                             <div>
                                 <div class="badge">
                                     <i class="fas fa-database"></i>
                                 </div>
-                                <div class="badge-title">Veritabanı Ustası</div>
+                                <div class="badge-title">Veri Uzmanı</div>
                             </div>
                             
                             <div>
                                 <div class="badge">
-                                    <i class="fas fa-cloud"></i>
+                                    <i class="fab fa-python"></i>
                                 </div>
-                                <div class="badge-title">Bulut Mimarı</div>
+                                <div class="badge-title">Python Uzmanı</div>
                             </div>
                         </div>
                     </div>
@@ -1974,24 +2537,24 @@
                         
                         <div class="ai-analysis-content">
                             <div class="ai-analysis-card">
-                                <h4><i class="fas fa-laptop-code"></i> Full Stack Geliştirici</h4>
-                                <p>Güçlü yönleriniz: JavaScript, React, Node.js, Veritabanı Yönetimi</p>
+                                <h4><i class="fas fa-laptop-code"></i> Yazılım Geliştirme</h4>
+                                <p>Güçlü yönleriniz: Algoritma, veri yapıları, programlama dilleri</p>
                                 <p>Önerilen adımlar:</p>
                                 <ul>
-                                    <li>Modern Frontend Frameworkler kursu</li>
-                                    <li>RESTful API Tasarımı projesi</li>
-                                    <li>CI/CD ve DevOps uygulamaları</li>
+                                    <li>Full Stack Web Geliştirme kursu</li>
+                                    <li>Mobil Uygulama Projesi</li>
+                                    <li>Git ve GitHub Uzmanlığı</li>
                                 </ul>
                             </div>
                             
                             <div class="ai-analysis-card">
-                                <h4><i class="fas fa-robot"></i> Veri Bilimcisi</h4>
-                                <p>Güçlü yönleriniz: Python, Veri Analizi, İstatistik, Makine Öğrenmesi</p>
+                                <h4><i class="fas fa-brain"></i> Veri Bilimi</h4>
+                                <p>Güçlü yönleriniz: Veri analizi, istatistik, makine öğrenmesi</p>
                                 <p>Önerilen adımlar:</p>
                                 <ul>
-                                    <li>Derin Öğrenme ve NLP kursu</li>
-                                    <li>Büyük Veri Analizi projesi</li>
-                                    <li>Veri Görselleştirme teknikleri</li>
+                                    <li>Python ile Veri Analizi kursu</li>
+                                    <li>Makine Öğrenmesi Projesi</li>
+                                    <li>Büyük Veri ve Hadoop Sertifikası</li>
                                 </ul>
                             </div>
                         </div>
@@ -2001,27 +2564,27 @@
                         <h4><i class="fas fa-book"></i> Tamamlanan Dersler</h4>
                         <div class="course-list">
                             <div class="course-card">
-                                <h4>Python Programlama</h4>
-                                <p>Tamamlanma Tarihi: 15 Eylül 2023</p>
+                                <h4>Algoritmalar ve Veri Yapıları</h4>
+                                <p>Tamamlanma Tarihi: 15 Ağustos 2023</p>
                                 <p>Başarı Puanı: 95/100</p>
                             </div>
                             
                             <div class="course-card">
-                                <h4>Veri Yapıları ve Algoritmalar</h4>
-                                <p>Tamamlanma Tarihi: 5 Ekim 2023</p>
-                                <p>Başarı Puanı: 88/100</p>
-                            </div>
-                            
-                            <div class="course-card">
                                 <h4>Web Geliştirme Temelleri</h4>
-                                <p>Tamamlanma Tarihi: 20 Ekim 2023</p>
+                                <p>Tamamlanma Tarihi: 22 Ağustos 2023</p>
                                 <p>Başarı Puanı: 92/100</p>
                             </div>
                             
                             <div class="course-card">
-                                <h4>Makine Öğrenmesine Giriş</h4>
-                                <p>Tamamlanma Tarihi: 10 Kasım 2023</p>
-                                <p>Başarı Puanı: 85/100</p>
+                                <h4>Veritabanı Sistemleri</h4>
+                                <p>Tamamlanma Tarihi: 5 Eylül 2023</p>
+                                <p>Başarı Puanı: 90/100</p>
+                            </div>
+                            
+                            <div class="course-card">
+                                <h4>Python ile Programlama</h4>
+                                <p>Tamamlanma Tarihi: 18 Eylül 2023</p>
+                                <p>Başarı Puanı: 96/100</p>
                             </div>
                         </div>
                     </div>
@@ -2032,7 +2595,7 @@
             <div class="tab-content" id="ai-tab">
                 <div class="intro-panel">
                     <h3><i class="fas fa-robot"></i> Yapay Zeka Destekli Öğrenme Deneyimi</h3>
-                    <p>Platformumuzdaki gelişmiş AI özellikleri ile bilgisayar mühendisliğini daha etkili öğrenin. Kişiselleştirilmiş yol haritaları, anında geri bildirimler ve akıllı önerilerle öğrenme sürecinizi optimize edin.</p>
+                    <p>Platformumuzdaki gelişmiş AI özellikleri ile bilgisayar mühendisliğini daha etkili öğrenin. Gemini entegrasyonu sayesinde kişiselleştirilmiş yol haritaları, anında geri bildirimler ve akıllı önerilerle öğrenme sürecinizi optimize edin.</p>
                     
                     <div class="ai-features-section">
                         <div class="ai-feature-grid">
@@ -2041,10 +2604,13 @@
                                     <i class="fas fa-user-graduate"></i>
                                 </div>
                                 <h4>Kişiselleştirilmiş Öğrenme Yolu</h4>
-                                <p>AI teknolojisi, seviyenize ve öğrenme stilinize uygun kişiselleştirilmiş bir müfredat oluşturur. Zayıf olduğunuz konulara otomatik odaklanarak verimliliğinizi artırır.</p>
-                                <button class="btn btn-ai">
-                                    <i class="fas fa-road"></i> Öğrenme Yolumu Görüntüle
+                                <p>Gemini AI, seviyenize ve öğrenme stilinize uygun kişiselleştirilmiş bir müfredat oluşturur. Zayıf olduğunuz konulara otomatik odaklanarak verimliliğinizi artırır.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="startLearningPathQuestionnaire()">
+                                    <i class="fas fa-road"></i> Yolu Oluştur
                                 </button>
+                                <div id="learningPathContainer" class="hidden">
+                                    <!-- Öğrenme yolu sonuçları buraya gelecek -->
+                                </div>
                             </div>
                             
                             <div class="ai-feature-card">
@@ -2052,10 +2618,11 @@
                                     <i class="fas fa-lightbulb"></i>
                                 </div>
                                 <h4>Akıllı İçerik Önerileri</h4>
-                                <p>İlgi alanlarınıza ve öğrenme geçmişinize göre özel olarak seçilmiş makaleler, videolar ve proje fikirleri ile kendinizi geliştirin.</p>
-                                <button class="btn btn-ai">
-                                    <i class="fas fa-book-open"></i> Önerilerimi Görüntüle
+                                <p>Gemini'nin analizleriyle ilgi alanlarınıza ve öğrenme geçmişinize göre özel olarak seçilmiş makaleler, videolar ve proje fikirleri.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="getContentRecommendations()">
+                                    <i class="fas fa-book-open"></i> Önerileri Göster
                                 </button>
+                                <div id="recommendationsContainer" class="hidden"></div>
                             </div>
                             
                             <div class="ai-feature-card">
@@ -2063,10 +2630,11 @@
                                     <i class="fas fa-code"></i>
                                 </div>
                                 <h4>Gerçek Zamanlı Kod Analizi</h4>
-                                <p>Yazdığınız kodları ve çizdiğiniz diyagramları AI ile analiz edin. Hata tespiti, optimizasyon önerileri ve alternatif çözümlerle becerilerinizi geliştirin.</p>
-                                <button class="btn btn-ai">
-                                    <i class="fas fa-flask"></i> Kod Laboratuvarına Git
+                                <p>Gemini ile yazdığınız kodları analiz edin. Hata tespiti, optimizasyon önerileri ve alternatif çözümler.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="launchCodeLab()">
+                                    <i class="fas fa-flask"></i> Laboratuvara Git
                                 </button>
+                                <div class="code-lab-feedback hidden" id="codeFeedback"></div>
                             </div>
                             
                             <div class="ai-feature-card">
@@ -2074,12 +2642,13 @@
                                     <i class="fas fa-microphone"></i>
                                 </div>
                                 <h4>Sesli Asistan Desteği</h4>
-                                <p>Sesli komutlarla sorular sorun, konu anlatımı isteyin veya proje önerileri alın. Öğrenmenin en doğal yoluyla bilgiye erişin.</p>
+                                <p>Gemini sesli asistan ile sorular sorun, konu anlatımı isteyin veya proje önerileri alın.</p>
                                 <div class="ai-voice-controls">
-                                    <button class="voice-btn" id="voiceBtn">
+                                    <button class="voice-btn" id="voiceBtn" onclick="startVoiceAssistant()">
                                         <i class="fas fa-microphone"></i>
                                     </button>
                                     <span>Sesli komut için tıklayın</span>
+                                    <div class="voice-status" id="voiceStatus"></div>
                                 </div>
                             </div>
                             
@@ -2088,10 +2657,11 @@
                                     <i class="fas fa-gamepad"></i>
                                 </div>
                                 <h4>Oyunlaştırılmış Öğrenme</h4>
-                                <p>AI tarafından kişiye özel olarak hazırlanan meydan okumalar, seviyeler ve rozetlerle öğrenmeyi eğlenceli hale getirin.</p>
-                                <button class="btn btn-ai">
-                                    <i class="fas fa-play"></i> Oyunları Keşfet
+                                <p>Gemini tarafından kişiye özel hazırlanan meydan okumalar, seviyeler ve rozetlerle öğrenin.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="showGamificationPanel()">
+                                    <i class="fas fa-play"></i> Oyunları Başlat
                                 </button>
+                                <div class="game-levels hidden" id="gameLevels"></div>
                             </div>
                             
                             <div class="ai-feature-card">
@@ -2099,10 +2669,11 @@
                                     <i class="fas fa-briefcase"></i>
                                 </div>
                                 <h4>Kariyer Yol Haritası</h4>
-                                <p>Yetkinlik analizinize göre en uygun kariyer yollarını belirleyin, eksiklerinizi tamamlayın ve iş fırsatlarıyla eşleşin.</p>
-                                <button class="btn btn-ai">
-                                    <i class="fas fa-road"></i> Kariyer Yolumu Görüntüle
+                                <p>Gemini'nin yetkinlik analizine göre en uygun kariyer yollarını keşfedin.</p>
+                                <button class="btn btn-ai ai-feature-btn" onclick="generateCareerPath()">
+                                    <i class="fas fa-road"></i> Kariyer Yolumu Göster
                                 </button>
+                                <div class="career-path hidden" id="careerPath"></div>
                             </div>
                         </div>
                     </div>
@@ -2110,33 +2681,112 @@
                     <div class="ai-analysis-panel">
                         <div class="ai-analysis-header">
                             <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--ai-green);"></i>
-                            <h3>Öğrenme Performans Analizi</h3>
+                            <h3>Gemini Öğrenme Performans Analizi</h3>
                         </div>
                         
                         <div class="ai-analysis-content">
                             <div class="ai-analysis-card">
                                 <h4>Öğrenme Stiliniz</h4>
-                                <p>Analiz sonuçlarınıza göre öğrenme stiliniz: <strong>Görsel ve Uygulamalı</strong></p>
-                                <p>Bu stile uygun öneriler:</p>
-                                <ul>
-                                    <li>Diğer öğrenme stillerine göre %30 daha fazla görsel içerik</li>
-                                    <li>Karmaşık konular için simülasyonlar ve animasyonlar</li>
-                                    <li>Pratik projelerle teoriyi pekiştirme</li>
-                                </ul>
+                                <div id="learningStyleAnalysis">
+                                    <p>Gemini analizine göre öğrenme stiliniz: <strong id="learningStyle">Hesaplanıyor...</strong></p>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="learningStyleProgress"></div>
+                                    </div>
+                                    <div id="learningStyleRecommendations"></div>
+                                </div>
                             </div>
                             
                             <div class="ai-analysis-card">
                                 <h4>Öğrenme Verimliliği</h4>
-                                <p>En verimli öğrenme saatleriniz: <strong>10:00 - 12:00</strong></p>
-                                <p>Önerilen çalışma planı:</p>
-                                <ul>
-                                    <li>Zor konuları sabah saatlerine planlayın</li>
-                                    <li>Öğleden sonra tekrar ve proje çalışmaları</li>
-                                    <li>Akşam hafif tekrarlar ve testler</li>
-                                </ul>
+                                <div id="efficiencyAnalysis">
+                                    <p>Gemini'nin belirlediği verimli saatler: <strong id="efficientHours">Hesaplanıyor...</strong></p>
+                                    <div class="heatmap" id="learningHeatmap"></div>
+                                    <div id="efficiencyRecommendations"></div>
+                                </div>
                             </div>
                         </div>
+                        
+                        <div class="ai-update-section">
+                            <button class="btn btn-refresh" onclick="refreshGeminiAnalysis()">
+                                <i class="fas fa-sync-alt"></i> Analizi Güncelle
+                            </button>
+                            <p class="last-updated">Son güncelleme: <span id="lastUpdated">-</span></p>
+                        </div>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Level Test Module -->
+            <div class="seviye-test-modul" id="seviyeTesti">
+                <h3>Bilgisayar Mühendisliği Seviye Belirleme Testi</h3>
+                <div class="test-info">
+                    <div>
+                        <p><strong>Soru: <span id="currentQuestion">1</span>/20</strong> | <strong>Kalan Süre:</strong> 25:00</p>
+                    </div>
+                    <div>
+                        <p><strong>Zorluk:</strong> Orta</p>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="testProgress"></div>
+                </div>
+                
+                <div class="soru-container active" id="question1">
+                    <div class="soru">1. Hangisi FIFO (İlk giren ilk çıkar) prensibiyle çalışan veri yapısıdır?</div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'b', 1)">
+                        <div class="cevap-text">a) Yığın (Stack)</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'b', 1)">
+                        <div class="cevap-text">b) Kuyruk (Queue)</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'b', 1)">
+                        <div class="cevap-text">c) Bağlı Liste (Linked List)</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'b', 1)">
+                        <div class="cevap-text">d) Ağaç (Tree)</div>
+                    </div>
+                    
+                    <button class="cozum-btn" id="solutionBtn1" onclick="toggleTestSolution(1)">
+                        <i class="fas fa-lightbulb"></i> Soru Çözümünü Gör
+                    </button>
+                    <div class="cozum" id="solution1">
+                        <p><strong>Çözüm:</strong></p>
+                        <p>FIFO (First In First Out) prensibi, ilk eklenen elemanın ilk çıkarılacağı anlamına gelir. Bu özellik kuyruk (queue) veri yapısına aittir. Yığın (stack) ise LIFO (Last In First Out) prensibiyle çalışır.</p>
+                    </div>
+                </div>
+                
+                <div class="soru-container" id="question2">
+                    <div class="soru">2. Bir algoritmanın zaman karmaşıklığı O(n log n) ise, hangi sıralama algoritması olabilir?</div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">a) Kabarcık Sıralama (Bubble Sort)</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">b) Seçmeli Sıralama (Selection Sort)</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">c) Birleştirmeli Sıralama (Merge Sort)</div>
+                    </div>
+                    <div class="cevap-secenek" onclick="selectTestAnswer(this, 'c', 2)">
+                        <div class="cevap-text">d) Eklemeli Sıralama (Insertion Sort)</div>
+                    </div>
+                    
+                    <button class="cozum-btn" id="solutionBtn2" onclick="toggleTestSolution(2)">
+                        <i class="fas fa-lightbulb"></i> Soru Çözümünü Gör
+                    </button>
+                    <div class="cozum" id="solution2">
+                        <p><strong>Çözüm:</strong></p>
+                        <p>Birleştirmeli Sıralama (Merge Sort) algoritmasının zaman karmaşıklığı O(n log n)'dir. Diğer seçeneklerdeki algoritmaların zaman karmaşıklığı O(n²)'dir.</p>
+                    </div>
+                </div>
+                
+                <div class="test-navigation">
+                    <button class="test-btn" disabled>
+                        <i class="fas fa-arrow-left"></i> Önceki Soru
+                    </button>
+                    <button class="test-btn btn-primary" onclick="nextQuestion()">
+                        Sonraki Soru <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -2146,18 +2796,162 @@
     <div class="chat-panel" id="chatPanel">
         <div class="chat-header">
             <div class="chat-title">
-                <i class="fas fa-robot"></i> CodeBot AI Asistan
+                <i class="fas fa-robot"></i> CodeMaster AI Asistan (Gemini)
             </div>
             <button class="close-chat" onclick="closeChat()">×</button>
         </div>
         <div class="chat-messages" id="chatMessages">
-            <div class="ai-message">Merhaba! Ben CodeBot, bilgisayar mühendisliği ile ilgili aklına takılan herhangi bir konuda bana soru sorabilirsin. Nasıl yardımcı olabilirim?</div>
+            <div class="ai-message">Merhaba! Ben CodeMaster AI, Gemini teknolojisi ile çalışıyorum. Bilgisayar Mühendisliği ile ilgili aklına takılan herhangi bir konuda bana soru sorabilirsin. Nasıl yardımcı olabilirim?</div>
         </div>
         <div class="chat-input-area">
             <input type="text" id="chatInput" class="chat-input" placeholder="Mesajınızı yazın..." onkeypress="if(event.key === 'Enter') sendMessage()">
             <button class="send-btn" onclick="sendMessage()">
                 <i class="fas fa-paper-plane"></i>
             </button>
+        </div>
+        <div class="file-upload-container">
+            <input type="file" id="fileUpload" accept=".pdf" style="display: none;" onchange="handleFileUpload(this)">
+            <button class="file-upload-btn" onclick="document.getElementById('fileUpload').click()">
+                <i class="fas fa-file-pdf"></i> PDF Yükle
+            </button>
+            <span class="file-name" id="fileName"></span>
+        </div>
+    </div>
+    
+    <!-- AI Detail Panels -->
+    <div class="ai-detail-panel" id="learningPathDetail">
+        <div class="ai-detail-content">
+            <div class="ai-detail-header">
+                <h3><i class="fas fa-road"></i> Kişiselleştirilmiş Öğrenme Yolunuz</h3>
+                <div class="close-detail" onclick="closeDetailPanel('learningPathDetail')">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="ai-detail-body">
+                <div id="learningPathFormContainer">
+                    <div class="learning-path-form">
+                        <h4>Öğrenme Yolu Anketi</h4>
+                        <p>Lütfen aşağıdaki soruları cevaplayın. Cevaplarınıza göre Gemini AI sizin için özel bir öğrenme yolu oluşturacaktır.</p>
+                        
+                        <div class="form-group">
+                            <label for="level">Mevcut Bilgi Seviyeniz:</label>
+                            <select id="level" class="form-control">
+                                <option value="beginner">Başlangıç (Temel kavramları öğreniyorum)</option>
+                                <option value="intermediate">Orta (Temel konuları biliyorum)</option>
+                                <option value="advanced">İleri (Karmaşık konulara hakimim)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interests">İlgi Alanlarınız:</label>
+                            <input type="text" id="interests" class="form-control" placeholder="Web geliştirme, veri bilimi, yapay zeka...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="hours">Haftalık Çalışma Süresi:</label>
+                            <select id="hours" class="form-control">
+                                <option value="1-3">1-3 saat</option>
+                                <option value="4-6">4-6 saat</option>
+                                <option value="7-10">7-10 saat</option>
+                                <option value="10+">10 saat ve üzeri</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="style">Öğrenme Stiliniz:</label>
+                            <select id="style" class="form-control">
+                                <option value="visual">Görsel (Diğramlar, animasyonlar)</option>
+                                <option value="auditory">İşitsel (Sesli anlatımlar)</option>
+                                <option value="kinesthetic">Uygulamalı (Projeler, simülasyonlar)</option>
+                                <option value="reading">Okuyarak (Dokümanlar, kitaplar)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="goals">Hedefleriniz:</label>
+                            <textarea id="goals" class="form-control" rows="3" placeholder="Örnek: Web geliştirme öğrenmek, veri bilimci olmak..."></textarea>
+                        </div>
+                        
+                        <button class="btn btn-ai" onclick="generateLearningPath()">
+                            <i class="fas fa-cogs"></i> Öğrenme Yolumu Oluştur
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="learningPathResult" class="hidden">
+                    <div class="result-loader">
+                        <div class="spinner"></div>
+                        <p>Gemini AI öğrenme yolunuzu oluşturuyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Content Recommendations Panel -->
+    <div class="ai-detail-panel" id="contentRecommendationsDetail">
+        <div class="ai-detail-content">
+            <div class="ai-detail-header">
+                <h3><i class="fas fa-lightbulb"></i> İçerik Önerileriniz</h3>
+                <div class="close-detail" onclick="closeDetailPanel('contentRecommendationsDetail')">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="ai-detail-body">
+                <p>Öğrenme geçmişinize ve ilgi alanlarınıza göre özel olarak seçilmiş içerikler:</p>
+                
+                <div class="ai-recommendation-item" style="margin-top: 20px;">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div>
+                        <h5>Algoritma Analizi ve Karmaşıklık</h5>
+                        <p>Big O notasyonu ve algoritma verimliliği detaylı anlatım</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-play"></i> İzle
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-recommendation-item">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <h5>Nesne Yönelimli Programlama Prensipleri</h5>
+                        <p>SOLID prensipleri ve tasarım desenleri kılavuzu</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-book-open"></i> Oku
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-recommendation-item">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div>
+                        <h5>Web API Projesi</h5>
+                        <p>Node.js ve Express ile RESTful API geliştirme adımları</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-download"></i> Proje Dosyalarını İndir
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="ai-recommendation-item">
+                    <div class="ai-recommendation-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div>
+                        <h5>Veri Analizi Temelleri</h5>
+                        <p>Python Pandas kütüphanesi ile veri manipülasyonu</p>
+                        <button class="btn btn-ai" style="margin-top: 10px;">
+                            <i class="fas fa-file-pdf"></i> Makaleyi Oku
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2169,6 +2963,9 @@
     <script>
         // Initialize the platform
         document.addEventListener('DOMContentLoaded', function() {
+            // Hide level test initially
+            document.getElementById('seviyeTesti').style.display = 'none';
+            
             // Set up tab switching
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => {
@@ -2188,6 +2985,29 @@
                     document.getElementById(`${tabId}-tab`).classList.add('active');
                 });
             });
+            
+            // Set up topic selection
+            document.querySelectorAll('.alt-konu').forEach(konu => {
+                konu.addEventListener('click', function() {
+                    document.querySelectorAll('.alt-konu').forEach(k => k.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show lessons tab
+                    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                    document.querySelector('.tab[data-tab="lessons"]').classList.add('active');
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById('lessons-tab').classList.add('active');
+                    
+                    // Load lesson content for selected topic
+                    const topic = this.getAttribute('data-topic');
+                    showLessonContent(topic);
+                });
+            });
+            
+            // Pre-load lesson content
+            preloadLessonContent();
         });
 
         // Topic list interaction
@@ -2200,20 +3020,23 @@
             });
         });
         
-        // Sub-topic selection
-        document.querySelectorAll('.alt-konu').forEach(konu => {
-            konu.addEventListener('click', function() {
-                document.querySelectorAll('.alt-konu').forEach(k => k.classList.remove('active'));
-                this.classList.add('active');
-                // Show lessons tab
-                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-                document.querySelector('.tab[data-tab="lessons"]').classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                document.getElementById('lessons-tab').classList.add('active');
+        // Pre-load lesson content
+        function preloadLessonContent() {
+            // Content for all lessons is already in the HTML
+            // We just need to show the active one
+            showLessonContent('algoritmalar');
+        }
+        
+        // Show lesson content
+        function showLessonContent(topic) {
+            // Hide all lesson content
+            document.querySelectorAll('#lesson-content > div').forEach(div => {
+                div.style.display = 'none';
             });
-        });
+            
+            // Show selected lesson
+            document.getElementById(topic).style.display = 'block';
+        }
         
         // Start level test
         function startSeviyeTesti() {
@@ -2257,6 +3080,12 @@
                 '<i class="fas fa-lightbulb"></i> Çözümü Göster';
         }
         
+        // Toggle test solution
+        function toggleTestSolution(questionNum) {
+            const solution = document.getElementById(`solution${questionNum}`);
+            solution.classList.toggle('show');
+        }
+        
         // Select answer in lessons
         function selectAnswer(element, correctAnswer) {
             const options = element.parentElement.querySelectorAll('.cevap-secenek');
@@ -2277,86 +3106,359 @@
             }
         }
         
-        // Generate project ideas with AI
+        // Select answer in test
+        function selectTestAnswer(element, correctAnswer, questionNum) {
+            const options = element.parentElement.querySelectorAll('.cevap-secenek');
+            const selectedAnswer = element.querySelector('.cevap-text').textContent.trim().charAt(0);
+            
+            options.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+                
+                const answerChar = opt.querySelector('.cevap-text').textContent.trim().charAt(0);
+                if (answerChar === correctAnswer) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            element.classList.add('selected');
+            if (selectedAnswer !== correctAnswer) {
+                element.classList.add('incorrect');
+            }
+            
+            // Show solution button
+            document.getElementById(`solutionBtn${questionNum}`).classList.add('active');
+        }
+        
+        // Next question in test
+        function nextQuestion() {
+            const currentQuestion = parseInt(document.getElementById('currentQuestion').textContent);
+            const nextQuestion = currentQuestion + 1;
+            
+            if (nextQuestion <= 20) {
+                document.getElementById('currentQuestion').textContent = nextQuestion;
+                document.querySelectorAll('.soru-container').forEach(container => {
+                    container.style.display = 'none';
+                });
+                document.getElementById(`question${nextQuestion}`).style.display = 'block';
+                
+                // Update progress bar
+                const progress = (nextQuestion / 20) * 100;
+                document.getElementById('testProgress').style.width = `${progress}%`;
+            }
+        }
+
+        // Start learning path questionnaire
+        function startLearningPathQuestionnaire() {
+            document.getElementById('learningPathDetail').style.display = 'block';
+            document.getElementById('learningPathFormContainer').classList.remove('hidden');
+            document.getElementById('learningPathResult').classList.add('hidden');
+        }
+        
+        // Generate learning path with Gemini AI
+        function generateLearningPath() {
+            // Get form values
+            const level = document.getElementById('level').value;
+            const interests = document.getElementById('interests').value;
+            const hours = document.getElementById('hours').value;
+            const style = document.getElementById('style').value;
+            const goals = document.getElementById('goals').value;
+            
+            // Show loading
+            document.getElementById('learningPathFormContainer').classList.add('hidden');
+            document.getElementById('learningPathResult').classList.remove('hidden');
+            
+            // Simulate Gemini API call
+            setTimeout(() => {
+                // Create learning path based on user responses
+                const learningPath = createLearningPath(level, interests, hours, style, goals);
+                
+                // Display the learning path
+                displayLearningPath(learningPath);
+            }, 2000);
+        }
+        
+        // Create learning path based on user responses
+        function createLearningPath(level, interests, hours, style, goals) {
+            const steps = [];
+            
+            // Step 1: Fundamentals
+            steps.push({
+                title: "Programlama Temelleri",
+                description: "Algoritmalar, veri yapıları ve temel programlama kavramlarını öğrenin. Python veya JavaScript ile başlangıç projeleri yapın.",
+                resources: [
+                    "📚 Ders: Algoritmalar ve Veri Yapıları",
+                    "🎬 Video: Programlamaya Giriş",
+                    "🧪 Simülasyon: Kodlama Laboratuvarı"
+                ]
+            });
+            
+            // Step 2: Web Development
+            if (interests.includes("web") || interests.includes("geliştirme") || goals.includes("web")) {
+                steps.push({
+                    title: "Web Geliştirme",
+                    description: "HTML, CSS ve JavaScript ile modern web uygulamaları geliştirin. React veya Angular gibi framework'lerle ileri düzey projeler yapın.",
+                    resources: [
+                        "📚 Ders: Modern Web Geliştirme",
+                        "💻 Proje: Kişisel Portfolyo Sitesi",
+                        "📝 Test: Web Geliştirme Becerileri"
+                    ]
+                });
+            }
+            
+            // Step 3: Databases
+            if (interests.includes("veri") || interests.includes("database") || goals.includes("veri")) {
+                steps.push({
+                    title: "Veritabanı Sistemleri",
+                    description: "SQL ve NoSQL veritabanlarını öğrenin. Veritabanı tasarımı ve optimizasyonu konularında uzmanlaşın.",
+                    resources: [
+                        "📚 Ders: SQL ve Veritabanı Yönetimi",
+                        "🧪 Simülasyon: Veritabanı Tasarım Aracı",
+                        "💻 Proje: E-ticaret Veritabanı"
+                    ]
+                });
+            }
+            
+            // Step 4: AI/ML
+            if (interests.includes("yapay zeka") || interests.includes("makine") || goals.includes("yapay zeka")) {
+                steps.push({
+                    title: "Yapay Zeka ve Makine Öğrenmesi",
+                    description: "Python ile makine öğrenmesi modelleri geliştirin. Derin öğrenme ve doğal dil işleme konularını öğrenin.",
+                    resources: [
+                        "📚 Ders: Makine Öğrenmesi Temelleri",
+                        "🧪 Simülasyon: Model Eğitim Ortamı",
+                        "💻 Proje: Görüntü Tanıma Sistemi"
+                    ]
+                });
+            }
+            
+            return {
+                title: "Kişiselleştirilmiş Öğrenme Yolu",
+                description: "Gemini AI tarafından ilgi alanlarınıza ve seviyenize göre oluşturulmuş öğrenme yolunuz.",
+                steps: steps
+            };
+        }
+        
+        // Display learning path result
+        function displayLearningPath(pathData) {
+            const resultContainer = document.getElementById('learningPathResult');
+            
+            let html = `
+                <div class="learning-path-result">
+                    <h3>${pathData.title}</h3>
+                    <p>${pathData.description}</p>
+                    <div class="learning-path">
+            `;
+            
+            pathData.steps.forEach((step, index) => {
+                html += `
+                    <div class="path-step">
+                        <div class="step-header">
+                            <div class="step-number">${index + 1}</div>
+                            <h4 class="step-title">${step.title}</h4>
+                        </div>
+                        <p class="step-description">${step.description}</p>
+                        <div class="step-resources">
+                            <h5>Kaynaklar:</h5>
+                            <ul>
+                                ${step.resources.map(resource => `<li>${resource}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                    <button class="btn btn-ai" onclick="downloadLearningPath()" style="margin-top: 20px;">
+                        <i class="fas fa-download"></i> Yol Haritasını İndir
+                    </button>
+                </div>
+            `;
+            
+            resultContainer.innerHTML = html;
+        }
+        
+        // Download learning path
+        function downloadLearningPath() {
+            alert("Öğrenme yolu indiriliyor... Gerçek uygulamada bu özellik PDF oluşturup indirecektir.");
+        }
+        
+        // Generate project ideas with AI simulation
         function generateProjectIdeas() {
-            const interest = document.getElementById('projeIlgiInput').value || 'bilgisayar mühendisliği';
+            const interest = document.getElementById('projeIlgiInput').value.toLowerCase();
             const container = document.getElementById('projeFikirleriContainer');
             
             // Clear previous content
             container.innerHTML = '';
             
-            // Sample project ideas based on interest
-            const projects = [
-                {
-                    title: 'Akıllı Ev Otomasyon Sistemi',
-                    desc: `Bu projeyi geliştirmek için Raspberry Pi veya Arduino kullanarak ev otomasyon sistemi oluşturabilirsiniz. Sensörlerle sıcaklık, nem, aydınlatma gibi değerleri ölçebilir ve IoT teknolojileriyle uzaktan kontrol sağlayabilirsiniz.`,
-                    tech: ['Raspberry Pi', 'Python', 'IoT', 'React']
-                },
-                {
-                    title: 'Makine Öğrenmesi ile Hastalık Tahmini',
-                    desc: `Bu projede Python ve scikit-learn kullanarak tıbbi veriler üzerinde makine öğrenmesi modelleri geliştirebilirsiniz. Veri ön işleme, model eğitimi ve değerlendirme adımlarını uygulayarak hastalık tahmini yapabilirsiniz.`,
-                    tech: ['Python', 'Scikit-learn', 'Pandas', 'NumPy']
-                },
-                {
-                    title: 'Blockchain Tabanlı Oylama Sistemi',
-                    desc: `Bu projede blockchain teknolojisini kullanarak güvenli ve şeffaf bir oylama sistemi geliştirebilirsiniz. Akıllı kontratlar ve merkeziyetsiz uygulamalar (dApps) ile oylama süreçlerini dijitalleştirebilirsiniz.`,
-                    tech: ['Blockchain', 'Solidity', 'Web3.js', 'Ethereum']
-                }
-            ];
+            // Show loading
+            container.innerHTML = '<div class="spinner"></div><p>Gemini AI proje fikirlerini oluşturuyor...</p>';
             
-            // Add projects to container
-            projects.forEach(project => {
-                const projectEl = document.createElement('div');
-                projectEl.className = 'proje-fikri';
-                projectEl.innerHTML = `
-                    <h5>${project.title}</h5>
-                    <p><strong>Nasıl Geliştirebilirsiniz:</strong> ${project.desc}</p>
-                    <div class="tech-list">
-                        ${project.tech.map(tech => `<div class="tech-badge">${tech}</div>`).join('')}
-                    </div>
-                `;
-                container.appendChild(projectEl);
-            });
+            // Simulate AI response after a short delay
+            setTimeout(() => {
+                let projectsHTML = '';
+                
+                if (interest.includes('web') || interest.includes('geliştirme')) {
+                    projectsHTML = `
+                        <div class="proje-fikri">
+                            <h5>E-ticaret Platformu</h5>
+                            <p>React ve Node.js kullanarak tam kapsamlı bir e-ticaret platformu geliştirin. Ürün listeleme, sepet yönetimi, ödeme entegrasyonu ve kullanıcı profili gibi özellikler içersin.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">React</span>
+                                <span class="tech-badge">Node.js</span>
+                                <span class="tech-badge">MongoDB</span>
+                                <span class="tech-badge">Stripe API</span>
+                            </div>
+                        </div>
+                        
+                        <div class="proje-fikri">
+                            <h5>Hava Durumu Uygulaması</h5>
+                            <p>OpenWeather API kullanarak gerçek zamanlı hava durumu bilgisi sunan bir web uygulaması geliştirin. Kullanıcılar konumlarına göre hava durumu bilgilerini görüntüleyebilir.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">JavaScript</span>
+                                <span class="tech-badge">API Entegrasyonu</span>
+                                <span class="tech-badge">CSS Animasyonlar</span>
+                                <span class="tech-badge">Geolocation API</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (interest.includes('yapay') || interest.includes('makine')) {
+                    projectsHTML = `
+                        <div class="proje-fikri">
+                            <h5>Görüntü Tanıma Sistemi</h5>
+                            <p>Python ve TensorFlow kullanarak görüntüleri sınıflandıran bir makine öğrenmesi modeli geliştirin. Farklı nesneleri tanıyabilen ve doğruluk oranını artıran bir sistem oluşturun.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">TensorFlow</span>
+                                <span class="tech-badge">OpenCV</span>
+                                <span class="tech-badge">CNN</span>
+                            </div>
+                        </div>
+                        
+                        <div class="proje-fikri">
+                            <h5>Metin Duygu Analizi</h5>
+                            <p>Doğal dil işleme teknikleri kullanarak metinlerdeki duyguyu analiz eden bir sistem geliştirin. Kullanıcılar metin girdiğinde pozitif, negatif veya nötr duygu durumunu belirleyin.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">Python</span>
+                                <span class="tech-badge">NLTK</span>
+                                <span class="tech-badge">Scikit-learn</span>
+                                <span class="tech-badge">Flask</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    projectsHTML = `
+                        <div class="proje-fikri">
+                            <h5>Kişisel Portfolyo Sitesi</h5>
+                            <p>HTML, CSS ve JavaScript kullanarak kişisel bir portfolyo sitesi oluşturun. Projelerinizi sergileyin, becerilerinizi listeleyin ve iletişim bilgilerinizi paylaşın.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">HTML5</span>
+                                <span class="tech-badge">CSS3</span>
+                                <span class="tech-badge">JavaScript</span>
+                                <span class="tech-badge">Responsive Tasarım</span>
+                            </div>
+                        </div>
+                        
+                        <div class="proje-fikri">
+                            <h5>Görev Yönetim Uygulaması</h5>
+                            <p>Kullanıcıların görevlerini ekleyebileceği, düzenleyebileceği ve takip edebileceği bir uygulama geliştirin. LocalStorage kullanarak verileri tarayıcıda saklayın.</p>
+                            <div class="tech-list">
+                                <span class="tech-badge">JavaScript</span>
+                                <span class="tech-badge">LocalStorage</span>
+                                <span class="tech-badge">DOM Manipülasyonu</span>
+                                <span class="tech-badge">Bootstrap</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = projectsHTML;
+            }, 1000);
         }
         
-        // Generate development plan with AI
+        // Generate development plan with AI simulation
         function generateDevelopmentPlan() {
-            const idea = document.getElementById('projeFikirInput').value || 'bilgisayar mühendisliği projesi';
+            const idea = document.getElementById('projeFikirInput').value;
             const container = document.getElementById('projeGelistirmeContainer');
             
             // Clear previous content
             container.innerHTML = '';
             
-            const planEl = document.createElement('div');
-            planEl.className = 'proje-fikri';
-            planEl.innerHTML = `
-                <h5>${idea} Geliştirme Planı</h5>
-                <p><strong>Adım 1: Araştırma ve Planlama</strong></p>
-                <p>Projenizin temel konseptini belirleyin ve benzer projeleri araştırın. Gerekli teknolojilerin listesini çıkarın ve bir zaman çizelgesi oluşturun.</p>
+            // Show loading
+            container.innerHTML = '<div class="spinner"></div><p>Gemini AI geliştirme planını oluşturuyor...</p>';
+            
+            // Simulate AI response after a short delay
+            setTimeout(() => {
+                let planHTML = `
+                    <div class="proje-fikri">
+                        <h5>"${idea}" Projesi Geliştirme Planı</h5>
+                        <p>Projeniz için aşağıdaki adımları takip edebilirsiniz:</p>
+                        
+                        <ol>
+                            <li><strong>Konsept ve Tasarım:</strong> Proje amacını ve kapsamını belirleyin. Kullanıcı arayüzü tasarımı oluşturun.</li>
+                            <li><strong>Teknoloji Seçimi:</strong> Projeye uygun programlama dilleri, framework'ler ve araçları seçin.</li>
+                            <li><strong>Veritabanı Tasarımı:</strong> Gerekli verileri modelleyin ve veritabanı şeması oluşturun.</li>
+                            <li><strong>Backend Geliştirme:</strong> Sunucu tarafı mantığını ve API'leri geliştirin.</li>
+                            <li><strong>Frontend Geliştirme:</strong> Kullanıcı arayüzünü ve kullanıcı deneyimini geliştirin.</li>
+                            <li><strong>Test ve Hata Ayıklama:</strong> Fonksiyonel ve birim testleri yapın, hataları giderin.</li>
+                            <li><strong>Dağıtım ve Yayınlama:</strong> Projeyi bir sunucuya veya bulut platformuna dağıtın.</li>
+                            <li><strong>Dokümantasyon:</strong> Proje sürecini ve sonuçlarını belgeleyin.</li>
+                        </ol>
+                        
+                        <p><strong>Önerilen Kaynaklar:</strong></p>
+                        <ul>
+                            <li>📚 "Clean Code" kitabı</li>
+                            <li>🎬 "Modern Web Geliştirme" video serisi</li>
+                            <li>💻 "GitHub ile Sürüm Kontrolü" kursu</li>
+                        </ul>
+                    </div>
+                `;
                 
-                <p><strong>Adım 2: Mimari Tasarım</strong></p>
-                <p>Proje mimarisini tasarlayın. Kullanılacak teknolojileri, veritabanı yapısını ve kullanıcı arayüzünü planlayın.</p>
+                container.innerHTML = planHTML;
+            }, 1000);
+        }
+        
+        // Handle file upload for PDF summary
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const fileName = document.getElementById('fileName');
+            fileName.textContent = file.name;
+            
+            // Simulate uploading and processing
+            setTimeout(() => {
+                const messages = document.getElementById('chatMessages');
+                messages.innerHTML += `
+                    <div class="user-message">
+                        <i class="fas fa-file-pdf"></i> ${file.name} dosyası yüklendi
+                    </div>
+                `;
                 
-                <p><strong>Adım 3: Geliştirme Ortamı Kurulumu</strong></p>
-                <p>Gerekli yazılım ve kütüphaneleri yükleyin. Geliştirme ortamını hazır hale getirin.</p>
+                // Simulate Gemini processing
+                setTimeout(() => {
+                    messages.innerHTML += `
+                        <div class="ai-message">
+                            PDF dosyası başarıyla yüklendi. İçeriği analiz ediyorum...
+                        </div>
+                    `;
+                    
+                    // Simulate summary
+                    setTimeout(() => {
+                        messages.innerHTML += `
+                            <div class="ai-message">
+                                <strong>PDF Özeti:</strong><br>
+                                Bu PDF dokümanı bilgisayar mühendisliği temel kavramlarını içermektedir. 
+                                Ana başlıklar: Algoritmalar, veri yapıları, programlama paradigmaları. 
+                                Dokümanda ayrıca 15 örnek problem ve çözümü bulunmaktadır.
+                            </div>
+                        `;
+                        messages.scrollTop = messages.scrollHeight;
+                    }, 2000);
+                }, 1000);
                 
-                <p><strong>Adım 4: Temel Fonksiyonların Geliştirilmesi</strong></p>
-                <p>Projenin temel fonksiyonlarını geliştirin. Modüler şekilde çalışarak her bir bileşeni ayrı ayrı test edin.</p>
-                
-                <p><strong>Adım 5: Entegrasyon ve Test</strong></p>
-                <p>Bileşenleri birleştirin ve entegre edin. Kapsamlı testler yaparak hataları giderin.</p>
-                
-                <p><strong>Adım 6: Dağıtım ve Dokümantasyon</strong></p>
-                <p>Projeyi canlı ortama taşıyın. Kullanım kılavuzu ve teknik dokümantasyon hazırlayın.</p>
-                
-                <div class="tech-list">
-                    <div class="tech-badge">Proje Planlama</div>
-                    <div class="tech-badge">Mimari Tasarım</div>
-                    <div class="tech-badge">Geliştirme</div>
-                    <div class="tech-badge">Test ve Entegrasyon</div>
-                </div>
-            `;
-            container.appendChild(planEl);
+                messages.scrollTop = messages.scrollHeight;
+            }, 500);
         }
         
         // AI Chat functions
@@ -2370,7 +3472,7 @@
             document.getElementById('chatPanel').classList.remove('active');
         }
         
-        function sendMessage() {
+        async function sendMessage() {
             const input = document.getElementById('chatInput');
             const messages = document.getElementById('chatMessages');
             const userMsg = input.value.trim();
@@ -2380,38 +3482,143 @@
                 messages.innerHTML += `<div class="user-message">${userMsg}</div>`;
                 input.value = "";
                 
-                // Simulate AI response
-                setTimeout(() => {
-                    const konu = document.querySelector('.alt-konu.active') ? 
-                        document.querySelector('.alt-konu.active').textContent.replace(/\s+/g, ' ').trim() : 
-                        "bilgisayar mühendisliği";
-                    
-                    // Sample responses
-                    const responses = [
-                        `"${konu}" konusunda şu açıklamayı yapabilirim: Algoritmalar ve veri yapıları bilgisayar bilimlerinin temelini oluşturur. Verimli algoritmalar geliştirmek büyük veri kümeleri üzerinde çalışırken kritik öneme sahiptir.`,
-                        `"${konu}" ile ilgili sorunuzu şöyle cevaplayabilirim: Nesne yönelimli programlama (OOP), programları nesneler olarak düzenleme yaklaşımıdır. Temel prensipleri kapsülleme, kalıtım, çok biçimlilik ve soyutlamadır.`,
-                        `"${konu}" hakkında bilgi veriyorum: Makine öğrenmesi, bilgisayarların veriden öğrenmesini sağlayan bir yapay zeka dalıdır. Denetimli öğrenme, denetimsiz öğrenme ve pekiştirmeli öğrenme olmak üzere üç ana kategoride incelenir.`
-                    ];
-                    
-                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                    messages.innerHTML += `<div class="ai-message">${randomResponse}</div>`;
-                    messages.scrollTop = messages.scrollHeight;
-                }, 1000);
-                
+                // Add loading indicator
+                const loadingMsg = document.createElement('div');
+                loadingMsg.className = 'ai-message';
+                loadingMsg.innerHTML = '<div class="spinner" style="width:20px;height:20px;"></div> Cevap oluşturuluyor...';
+                messages.appendChild(loadingMsg);
                 messages.scrollTop = messages.scrollHeight;
+                
+                try {
+                    // Simulate Gemini API call
+                    setTimeout(() => {
+                        // Remove loading indicator
+                        messages.removeChild(loadingMsg);
+                        
+                        // Add AI response
+                        messages.innerHTML += `
+                            <div class="ai-message">
+                                <strong>CodeMaster AI:</strong><br>
+                                ${generateAIResponse(userMsg)}
+                            </div>
+                        `;
+                        messages.scrollTop = messages.scrollHeight;
+                    }, 1500);
+                } catch (error) {
+                    messages.removeChild(loadingMsg);
+                    messages.innerHTML += `
+                        <div class="ai-message" style="color: var(--danger)">
+                            Hata: ${error.message}
+                        </div>
+                    `;
+                    messages.scrollTop = messages.scrollHeight;
+                }
             }
         }
         
-        // Voice control for AI
-        const voiceBtn = document.getElementById('voiceBtn');
-        voiceBtn.addEventListener('click', function() {
-            this.classList.toggle('listening');
+        // Generate AI response based on user message
+        function generateAIResponse(userMsg) {
+            const lowerMsg = userMsg.toLowerCase();
             
-            if (this.classList.contains('listening')) {
-                // Start voice recognition
-                alert("Ses tanıma özelliği aktif edildi. 'Algoritma nedir?' gibi sorular sorabilirsiniz.");
+            if (lowerMsg.includes("algoritma") || lowerMsg.includes("karmaşıklık")) {
+                return "Algoritma karmaşıklığı, bir algoritmanın performansını ölçmek için kullanılır. Büyük O notasyonu (Big O) ile ifade edilir. Örneğin, doğrusal arama O(n), ikili arama O(log n), kabarcık sıralama O(n²) karmaşıklığına sahiptir.";
+            } else if (lowerMsg.includes("oop") || lowerMsg.includes("nesne")) {
+                return "Nesne Yönelimli Programlama (OOP) dört temel prensibe dayanır: Kapsülleme (Encapsulation), Kalıtım (Inheritance), Çok Biçimlilik (Polymorphism) ve Soyutlama (Abstraction). Bu prensipler kodun daha düzenli, yeniden kullanılabilir ve bakımı kolay olmasını sağlar.";
+            } else if (lowerMsg.includes("veri") || lowerMsg.includes("yapı")) {
+                return "Veri yapıları, verileri düzenlemek ve depolamak için kullanılan yapılardır. Temel veri yapıları: Diziler, Bağlı Listeler, Yığınlar, Kuyruklar, Ağaçlar ve Grafikler. Her veri yapısının farklı kullanım senaryoları ve performans özellikleri vardır.";
+            } else if (lowerMsg.includes("proje") || lowerMsg.includes("fikir")) {
+                return "İşte size bir proje fikri: Akıllı Bütçe Takip Uygulaması. Kullanıcıların gelir ve giderlerini takip edebileceği, otomatik kategori tanıma özelliği olan ve bütçe analizi sunan bir mobil uygulama. Teknolojiler: React Native, Node.js, MongoDB.";
+            } else {
+                return "Bilgisayar mühendisliği ile ilgili sorunuzu daha detaylı açıklayabilir misiniz? Size en iyi şekilde yardımcı olmak istiyorum.";
             }
-        });
+        }
+        
+        // Close detail panel
+        function closeDetailPanel(panelId) {
+            document.getElementById(panelId).style.display = 'none';
+        }
+        
+        // Open simulation
+        function openSimulation(title, description, type) {
+            document.getElementById('simulationTitle').textContent = title;
+            document.getElementById('simulationDescription').textContent = description;
+            document.getElementById('simulationViewer').classList.add('active');
+            
+            // Scroll to top
+            document.getElementById('simulations-tab').scrollTop = 0;
+        }
+        
+        // Run code in simulation
+        function runCode() {
+            const code = document.getElementById('codeEditor').value;
+            const output = document.getElementById('outputContent');
+            
+            // Clear previous output
+            output.innerHTML = '<div class="spinner"></div><p>Kod çalıştırılıyor...</p>';
+            
+            // Simulate code execution
+            setTimeout(() => {
+                try {
+                    // Create a function to capture console.log output
+                    const logs = [];
+                    const originalLog = console.log;
+                    console.log = function(message) {
+                        logs.push(message);
+                        originalLog.apply(console, arguments);
+                    };
+                    
+                    // Execute the code
+                    eval(code);
+                    
+                    // Restore console.log
+                    console.log = originalLog;
+                    
+                    // Display the output
+                    output.innerHTML = `<h5>Çıktı:</h5>`;
+                    logs.forEach(log => {
+                        output.innerHTML += `<p>${log}</p>`;
+                    });
+                } catch (error) {
+                    output.innerHTML = `<h5 style="color: var(--danger)">Hata:</h5><p>${error.message}</p>`;
+                }
+            }, 1000);
+        }
+        
+        // Clear code editor
+        function clearCode() {
+            document.getElementById('codeEditor').value = '';
+            document.getElementById('outputContent').innerHTML = '';
+        }
+        
+        // Get content recommendations
+        function getContentRecommendations() {
+            document.getElementById('contentRecommendationsDetail').style.display = 'block';
+        }
+        
+        // Launch code lab
+        function launchCodeLab() {
+            openSimulation('Kod Laboratuvarı', 'Kodunuzu yazın ve gerçek zamanlı olarak çalıştırın', 'code');
+        }
+        
+        // Start voice assistant
+        function startVoiceAssistant() {
+            alert("Sesli asistan başlatılıyor... Gerçek uygulamada bu özellik ses tanıma özelliğini aktif edecektir.");
+        }
+        
+        // Show gamification panel
+        function showGamificationPanel() {
+            alert("Oyunlaştırılmış öğrenme paneli başlatılıyor...");
+        }
+        
+        // Generate career path
+        function generateCareerPath() {
+            alert("Kariyer yol haritası oluşturuluyor...");
+        }
+        
+        // Refresh Gemini analysis
+        function refreshGeminiAnalysis() {
+            alert("Öğrenme analizi güncelleniyor...");
+        }
     </script>
 </body>
 </html>

@@ -136,3 +136,5 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+CORS_ALLOW_ALL_ORIGINS = True  # Sadece development için
+CORS_ALLOW_CREDENTIALS = True

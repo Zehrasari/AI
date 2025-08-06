@@ -9,7 +9,6 @@ import json
 
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
-
 @csrf_exempt
 def gemini_chat(request):
     if request.method == "POST":
@@ -32,13 +31,72 @@ def gemini_chat(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
         
-    
     return JsonResponse({"error": "POST method required"}, status=400)
 
+@csrf_exempt
+def gemini_learning_path(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            prompt = f"""
+            Kullanıcı için kişiselleştirilmiş bir elektrik mühendisliği öğrenme yolu oluştur:
+            Seviye: {data.get('level')}
+            İlgi Alanları: {data.get('interests')}
+            Haftalık Çalışma Süresi: {data.get('hours')} saat
+            Öğrenme Stili: {data.get('style')}
+            
+            Çıktıyı JSON formatında ver:
+            - title: Yolun başlığı
+            - description: Kısa açıklama
+            - steps: Adımlar listesi (her adımda title, description ve resources)
+            """
+            
+            model = genai.GenerativeModel("gemini-2.0-flash")
+            response = model.generate_content(prompt)
+            
+            if response and hasattr(response, 'text'):
+                return JsonResponse(json.loads(response.text))
+            return JsonResponse({"error": "Invalid API response"}, status=500)
+            
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+        
+    return JsonResponse({"error": "POST method required"}, status=400)
+
+@csrf_exempt
+def gemini_code_analysis(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            code = data.get("code", "")
+            
+            if not code:
+                return JsonResponse({"error": "Code is required"}, status=400)
+                
+            prompt = f"""
+            Aşağıdaki kodu analiz et ve şu bilgileri JSON formatında döndür:
+            - errors: Bulunan hatalar
+            - optimizations: Performans iyileştirme önerileri
+            - alternatives: Alternatif çözümler
+            
+            Kod:
+            {code}
+            """
+            
+            model = genai.GenerativeModel("gemini-2.0-flash")
+            response = model.generate_content(prompt)
+            
+            if response and hasattr(response, 'text'):
+                return JsonResponse(json.loads(response.text))
+            return JsonResponse({"error": "Invalid API response"}, status=500)
+            
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+        
+    return JsonResponse({"error": "POST method required"}, status=400)
 
 def anasayfa(request):
     return render(request, 'home/anasayfa.html')
-
 
 def giris(request):
     ctx= {
@@ -54,8 +112,6 @@ def baslat(request):
     }
     return render(request, 'home/baslat.html', ctx)
 
-
-
 def elektrik(request):
     ctx = {'title': 'Elektrik', 'description': 'Elektrik mühendisliği içerikleri'}
     return render(request, 'home/elektrik.html', ctx)
@@ -68,10 +124,9 @@ def bilgisayar(request):
     ctx = {'title': 'Bilgisayar', 'description': 'Bilgisayar mühendisliği içerikleri'} 
     return render(request, 'home/bilgisayar.html', ctx)
 
-def endustri(request):  # Eksikse ekleyin
+def endustri(request):
     ctx = {'title': 'endustri', 'description': 'Endustri mühendisliği içerikleri'}
     return render(request, 'home/endustri.html', ctx)
-
 
 def hakkimizda(request):
     ctx = {

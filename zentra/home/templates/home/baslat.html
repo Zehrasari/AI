@@ -212,11 +212,11 @@
         border-radius: 0 32px 32px 0;
     }
 
-    /* Üst Bar */
+    /* Üst Bar - Güncellendi */
     .top-bar {
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
         margin-bottom: 32px;
     }
 
@@ -236,10 +236,10 @@
         box-shadow: 0 4px 12px rgba(109,40,217,0.1);
     }
 
-    /* AI Sohbet Butonu */
+    /* AI Sohbet Butonu - Güncellendi */
     .ai-chat-btn {
-        background: #f3f3f8;
-        color: #623a75;
+        background: linear-gradient(90deg, #ff9e42 0%, #6d28d9 100%);
+        color: #fff;
         padding: 12px 24px;
         border-radius: 16px;
         cursor: pointer;
@@ -247,16 +247,18 @@
         transition: all 0.3s;
         border: none;
         font-size: 1.08rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .ai-chat-btn:hover {
-        background: #e6e6f0;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     }
 
-    /* Sohbet Paneli */
+    /* Sohbet Paneli - Modernleştirildi */
     .chat-panel {
         position: fixed;
         right: -400px;
@@ -264,12 +266,13 @@
         width: 380px;
         height: 100vh;
         background: white;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        box-shadow: -5px 0 25px rgba(0,0,0,0.15);
         transition: right 0.3s ease;
         z-index: 1000;
         display: flex;
         flex-direction: column;
         border-radius: 32px 0 0 32px;
+        overflow: hidden;
     }
 
     .chat-panel.active {
@@ -285,6 +288,32 @@
         justify-content: space-between;
         align-items: center;
         border-radius: 32px 0 0 0;
+        transition: background 0.3s;
+    }
+
+    /* Farklı bağlamlar için renk temaları */
+    .chat-header.chat-theme-play {
+        background: linear-gradient(90deg, #ff9e42 0%, #e67a1b 100%);
+    }
+    
+    .chat-header.chat-theme-support {
+        background: linear-gradient(90deg, #1a73e8 0%, #0d5ec1 100%);
+    }
+
+    .chat-header-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .chat-header-icon {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.2);
     }
 
     .close-chat {
@@ -294,10 +323,17 @@
         font-size: 24px;
         cursor: pointer;
         transition: transform 0.2s;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .close-chat:hover {
-        transform: scale(1.2);
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(90deg);
     }
 
     .chat-messages {
@@ -305,6 +341,9 @@
         padding: 20px;
         overflow-y: auto;
         background: #f9f9f9;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
 
     .chat-input-area {
@@ -313,57 +352,104 @@
         gap: 10px;
         background: white;
         border-radius: 0 0 0 32px;
+        border-top: 1px solid #eee;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
     }
 
     .chat-input-area input {
         flex: 1;
-        padding: 12px 16px;
+        padding: 14px 18px;
         border: 1px solid #ddd;
-        border-radius: 12px;
+        border-radius: 16px;
         font-size: 1rem;
         outline: none;
         transition: all 0.3s;
+        background: #f8f8f8;
     }
 
     .chat-input-area input:focus {
         border-color: #6d28d9;
-        box-shadow: 0 0 0 2px rgba(109,40,217,0.2);
+        box-shadow: 0 0 0 3px rgba(109,40,217,0.1);
     }
 
     .chat-input-area button {
-        padding: 12px 20px;
+        padding: 14px 20px;
         background: #6d28d9;
         color: white;
         border: none;
-        border-radius: 12px;
+        border-radius: 16px;
         cursor: pointer;
         font-weight: 600;
         transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Farklı bağlamlar için buton renkleri */
+    .chat-input-area button.chat-theme-play {
+        background: linear-gradient(90deg, #ff9e42 0%, #e67a1b 100%);
+    }
+    
+    .chat-input-area button.chat-theme-support {
+        background: linear-gradient(90deg, #1a73e8 0%, #0d5ec1 100%);
     }
 
     .chat-input-area button:hover {
-        background: #5a1fc7;
+        opacity: 0.9;
         transform: translateY(-2px);
     }
 
     /* Mesaj Stilleri */
     .user-message {
         background: #e6f7ff;
-        padding: 12px 16px;
-        border-radius: 16px 16px 0 16px;
-        margin-bottom: 12px;
-        max-width: 80%;
+        padding: 14px 18px;
+        border-radius: 18px 18px 0 18px;
+        margin-bottom: 8px;
+        max-width: 85%;
         align-self: flex-end;
         word-wrap: break-word;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        position: relative;
+    }
+
+    .user-message::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: -10px;
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-left-color: #e6f7ff;
+        border-right: 0;
+        border-bottom: 0;
+        margin-bottom: 10px;
     }
 
     .ai-message {
         background: #f0f0f0;
-        padding: 12px 16px;
-        border-radius: 16px 16px 16px 0;
-        margin-bottom: 12px;
-        max-width: 80%;
+        padding: 14px 18px;
+        border-radius: 18px 18px 18px 0;
+        margin-bottom: 8px;
+        max-width: 85%;
         word-wrap: break-word;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        position: relative;
+    }
+
+    .ai-message::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: -10px;
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-right-color: #f0f0f0;
+        border-left: 0;
+        border-bottom: 0;
+        margin-bottom: 10px;
     }
 
     /* Mühendislik Kartları */
@@ -433,27 +519,27 @@
 
     /* Devam Butonu */
     .continue-btn {
-    padding: 12px 32px;
-    background: #ff6f1a;
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-size: 1.08rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 2px 12px rgba(109,40,217,0.1);
-    text-decoration: none; /* Link alt çizgisini kaldırır */
-    display: inline-block; /* Padding'in doğru uygulanması için */
-    text-align: center;
-}
+        padding: 12px 32px;
+        background: #ff6f1a;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.08rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 2px 12px rgba(109,40,217,0.1);
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
 
-.continue-btn:hover {
-    background: #ff9e42;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(109,40,217,0.2);
-    color: #fff; /* Link renginin değişmemesi için */
-}
+    .continue-btn:hover {
+        background: #ff9e42;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(109,40,217,0.2);
+        color: #fff;
+    }
 
     /* Responsive Tasarım */
     @media (max-width: 1100px) {
@@ -517,27 +603,43 @@
     }
 
     /* Hata mesajları için ek stil */
-.ai-message.error {
-    background: #ffebee;
-    color: #c62828;
-    border-left: 4px solid #c62828;
-}
+    .ai-message.error {
+        background: #ffebee;
+        color: #c62828;
+        border-left: 4px solid #c62828;
+    }
 
-/* Yükleme göstergesi */
-.loading-dots {
-    display: inline-block;
-}
-.loading-dots::after {
-    content: '.';
-    animation: dots 1.5s steps(5, end) infinite;
-}
-@keyframes dots {
-    0%, 20% { content: '.'; }
-    40% { content: '..'; }
-    60% { content: '...'; }
-    80%, 100% { content: ''; }
-}
+    /* Yükleme göstergesi */
+    .loading-dots {
+        display: inline-block;
+    }
+    .loading-dots::after {
+        content: '.';
+        animation: dots 1.5s steps(5, end) infinite;
+    }
+    @keyframes dots {
+        0%, 20% { content: '.'; }
+        40% { content: '..'; }
+        60% { content: '...'; }
+        80%, 100% { content: ''; }
+    }
 
+    /* Spinner için stil */
+    .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(109, 40, 217, 0.3);
+        border-radius: 50%;
+        border-top-color: #6d28d9;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
 </style>
 
 <!-- Ana Yapı -->
@@ -578,145 +680,283 @@
             <span class="badge">Problem Çözücü</span>
         </div>
         
-        <button class="ai-play-btn">AI ile Oyna</button>
+        <button class="ai-play-btn" onclick="startAIGame()">AI ile Oyna</button>        
         
         <div class="support-box">
             <div class="support-title">7/24 Destek</div>
-            <button class="support-btn">Başla</button>
+            <button class="support-btn" onclick="startSupportChat()">Başla</button>
         </div>
     </div>
     
     <!-- İçerik Alanı -->
     <div class="content-area">
         <div class="top-bar">
-            <button class="ai-chat-btn" onclick="toggleAIChat()">Bumble Bee</button>
+            <input type="text" class="search-bar" placeholder="Arama yapın...">
+            <button class="ai-chat-btn" onclick="toggleAIChat('chat')">
+                <span>🤖</span> Bumble Bee AI 
+            </button>
         </div>
         
         <div class="engineer-grid">
-    <!-- Elektrik Mühendisliği Kartı -->
-    <div class="engineer-card">
-        <span class="engineer-icon">⚡</span>
-        <div class="engineer-title">Elektrik Mühendisliği</div>
-        <div class="engineer-desc">Enerji ile dünyayı aydınlatın, yenilikçi projelerle geleceği şekillendirin!</div>
-        <a href="{% url 'elektrik' %}" class="continue-btn">Devam Et</a>
+            <!-- Elektrik Mühendisliği Kartı -->
+            <div class="engineer-card">
+                <span class="engineer-icon">⚡</span>
+                <div class="engineer-title">Elektrik Mühendisliği</div>
+                <div class="engineer-desc">Enerji ile dünyayı aydınlatın, yenilikçi projelerle geleceği şekillendirin!</div>
+                <a href="{% url 'elektrik' %}" class="continue-btn">Devam Et</a>
+            </div>
+            
+            <!-- Makine Mühendisliği Kartı -->
+            <div class="engineer-card">
+                <span class="engineer-icon">⚙️</span>
+                <div class="engineer-title">Makine Mühendisliği</div>
+                <div class="engineer-desc">Hareketi ve gücü kontrol edin, teknolojiyi şekillendirin!</div>
+                <a href="{% url 'makine' %}" class="continue-btn">Devam Et</a>
+            </div>
+            
+            <!-- Yazılım Mühendisliği Kartı -->
+            <div class="engineer-card">
+                <span class="engineer-icon">💻</span>
+                <div class="engineer-title">Bilgisayar Mühendisliği</div>
+                <div class="engineer-desc">Kodlarla dünyayı kontrol edin, dijital geleceğin mimarı olun!</div>
+                <a href="{% url 'bilgisayar' %}" class="continue-btn">Devam Et</a>
+            </div>
+            
+            <!-- Endüstri Mühendisliği Kartı -->
+            <div class="engineer-card">
+                <span class="engineer-icon">🏭</span>
+                <div class="engineer-title">Endüstri Mühendisliği</div>
+                <div class="engineer-desc">Verimlilik ve yenilik merkezi, süreçleri optimize edin!</div>
+                <a href="{% url 'endustri' %}" class="continue-btn">Devam Et</a>
+            </div>
+        </div>
     </div>
     
-    <!-- Makine Mühendisliği Kartı -->
-    <div class="engineer-card">
-        <span class="engineer-icon">⚙️</span>
-        <div class="engineer-title">Makine Mühendisliği</div>
-        <div class="engineer-desc">Hareketi ve gücü kontrol edin, teknolojiyi şekillendirin!</div>
-        <a href="{% url 'makine' %}" class="continue-btn">Devam Et</a>
-    </div>
-    
-    <!-- Yazılım Mühendisliği Kartı -->
-    <div class="engineer-card">
-        <span class="engineer-icon">💻</span>
-        <div class="engineer-title">Yazılım Mühendisliği</div>
-        <div class="engineer-desc">Kodlarla dünyayı kontrol edin, dijital geleceğin mimarı olun!</div>
-        <a href="{% url 'bilgisayar' %}" class="continue-btn">Devam Et</a>
-    </div>
-    
-    <!-- endustri Mühendisliği Kartı -->
-    <div class="engineer-card">
-        <span class="engineer-icon">🏭</span>
-        <div class="engineer-title">Endustri Mühendisliği</div>
-        <div class="engineer-desc">Verimlilik ve yenilik merkezi, süreçleri optimize edin!</div>
-        <a href="{% url 'endustri' %}" class="continue-btn">Devam Et</a>
-    </div>
-</div>
-    
-    <!-- AI Sohbet Paneli -->
+    <!-- AI Sohbet Paneli - Güncellendi -->
     <div class="chat-panel" id="chatPanel">
-        <div class="chat-header">
-            <span>Bumble Bee AI</span>
+        <div class="chat-header" id="chatHeader">
+            <div class="chat-header-title">
+                <div class="chat-header-icon">🤖</div>
+                <span id="chatTitle">Bumble Bee AI</span>
+            </div>
             <button class="close-chat" onclick="closeChat()">×</button>
         </div>
         <div class="chat-messages" id="chatMessages">
             <div class="ai-message">Merhaba! Size nasıl yardımcı olabilirim?</div>
         </div>
         <div class="chat-input-area">
+            <input type="hidden" id="chatContext" value="chat">
             <input type="text" id="chatInput" placeholder="Mesajınızı yazın...">
-            <button onclick="sendMessage()">Gönder</button>
+            <button id="sendButton" onclick="sendMessage()">Gönder</button>
         </div>
     </div>
 </div>
 
-<!-- JavaScript Fonksiyonları -->
+<!-- JavaScript Fonksiyonları - Güncellendi -->
 <script>
+    // Mesaj geçmişini saklamak için global bir dizi
+    let messageHistory = [];
+    let currentChatTheme = 'default';
 
-    
     // AI sohbet panelini açıp kapama
-   // AI sohbet panelini açıp kapama
-function toggleAIChat() {
-    const chatPanel = document.getElementById('chatPanel');
-    chatPanel.classList.toggle('active');
-    document.getElementById('chatInput').focus();
-}
-
-// Sohbet panelini kapatma
-function closeChat() {
-    document.getElementById('chatPanel').classList.remove('active');
-}
-
-// Mesaj gönderme fonksiyonu (Gerçek API entegrasyonlu)
-async function sendMessage() {
-    const input = document.getElementById('chatInput');
-    const messages = document.getElementById('chatMessages');
-    const userMsg = input.value.trim();
-    
-    if (userMsg !== "") {
-        // Kullanıcı mesajını ekle
-        messages.innerHTML += `<div class="user-message">${userMsg}</div>`;
-        input.value = "";
+    function toggleAIChat(context = "chat") {
+        const chatPanel = document.getElementById('chatPanel');
+        const isActive = chatPanel.classList.contains('active');
+        const currentContext = document.getElementById('chatContext').value;
         
-        try {
-            // Django backend'e istek gönder
-            const response = await fetch('/gemini-chat/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: JSON.stringify({ prompt: userMsg })
-            });
-            
-            const data = await response.json();
-            
-            if (data.response) {
-                messages.innerHTML += `<div class="ai-message">${data.response}</div>`;
-            } else if (data.error) {
-                messages.innerHTML += `<div class="ai-message error">Hata: ${data.error}</div>`;
-            }
-        } catch (error) {
-            messages.innerHTML += `<div class="ai-message error">Bağlantı hatası: ${error.message}</div>`;
+        // Eğer panel zaten açıksa ve aynı bağlamdaysa kapat
+        if (isActive && currentContext === context) {
+            closeChat();
+            return;
         }
         
-        messages.scrollTop = messages.scrollHeight;
-    }
-}
-
-// CSRF Token almak için yardımcı fonksiyon
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
+        // Panel açık değilse aç
+        if (!isActive) {
+            chatPanel.classList.add('active');
+        }
+        
+        // Bağlamı güncelle
+        document.getElementById('chatContext').value = context;
+        
+        // Temayı güncelle
+        updateChatTheme(context);
+        
+        // Başlığı güncelle
+        const title = document.getElementById('chatTitle');
+        if (context === "play") {
+            title.textContent = "AI Oyun Asistanı";
+        } else if (context === "support") {
+            title.textContent = "7/24 Destek";
+        } else {
+            title.textContent = "Bumble Bee AI";
+        }
+        
+        // Eğer farklı bir bağlama geçiş yapılıyorsa mesajları temizle
+        if (currentContext !== context) {
+            const messages = document.getElementById('chatMessages');
+            messages.innerHTML = '';
+            messageHistory = [];
+            
+            // Yeni bağlam için başlangıç mesajı ekle
+            if (context === "play") {
+                messages.innerHTML = `<div class="ai-message">Merhaba! Hadi bir mühendislik oyunu oynayalım. Hangisini tercih edersin?<br><br>
+                1. Elektrik Mühendisliği Bilgi Yarışması<br>
+                2. Makine Mühendisliği Bulmacası<br>
+                3. Yazılım Mühendisliği Kodlama Oyunu</div>`;
+                messageHistory.push({role: "assistant", content: messages.innerHTML});
+            } else if (context === "support") {
+                messages.innerHTML = `<div class="ai-message">Merhaba! Zentra teknik destek ekibine hoş geldiniz. Size nasıl yardımcı olabilirim?<br><br>
+                - Uygulama kullanımıyla ilgili sorun<br>
+                - Mühendislik konularında yardım<br>
+                - Hesap ayarları<br>
+                - Diğer sorular</div>`;
+                messageHistory.push({role: "assistant", content: messages.innerHTML});
+            } else {
+                messages.innerHTML = `<div class="ai-message">Merhaba! Size nasıl yardımcı olabilirim?</div>`;
+                messageHistory.push({role: "assistant", content: "Merhaba! Size nasıl yardımcı olabilirim?"});
             }
         }
+        
+        document.getElementById('chatInput').focus();
     }
-    return cookieValue;
-}
 
-// Enter tuşu ile mesaj gönderme
-document.getElementById('chatInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        sendMessage();
+    // Sohbet temasını güncelleme
+    function updateChatTheme(context) {
+        const chatHeader = document.getElementById('chatHeader');
+        const sendButton = document.getElementById('sendButton');
+        
+        // Tüm temaları kaldır
+        chatHeader.classList.remove(
+            'chat-theme-default', 
+            'chat-theme-play', 
+            'chat-theme-support'
+        );
+        
+        sendButton.classList.remove(
+            'chat-theme-default', 
+            'chat-theme-play', 
+            'chat-theme-support'
+        );
+        
+        // Yeni temayı uygula
+        if (context === "play") {
+            chatHeader.classList.add('chat-theme-play');
+            sendButton.classList.add('chat-theme-play');
+        } else if (context === "support") {
+            chatHeader.classList.add('chat-theme-support');
+            sendButton.classList.add('chat-theme-support');
+        } else {
+            chatHeader.classList.add('chat-theme-default');
+            sendButton.classList.add('chat-theme-default');
+        }
+        
+        currentChatTheme = context;
     }
-});
+
+    // Sohbet panelini kapatma
+    function closeChat() {
+        document.getElementById('chatPanel').classList.remove('active');
+    }
+
+    // Mesaj gönderme fonksiyonu
+    async function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const context = document.getElementById('chatContext').value;
+        const messages = document.getElementById('chatMessages');
+        const userMsg = input.value.trim();
+        
+        if (userMsg !== "") {
+            // Kullanıcı mesajını ekle
+            messages.innerHTML += `<div class="user-message">${userMsg}</div>`;
+            
+            // Mesaj geçmişine ekle (kullanıcı rolü ile)
+            messageHistory.push({role: "user", content: userMsg});
+            
+            input.value = "";
+            
+            // Yükleniyor göstergesi ekle
+            const loadingMsg = document.createElement('div');
+            loadingMsg.className = 'ai-message';
+            loadingMsg.innerHTML = '<div class="spinner"></div> Cevap oluşturuluyor...';
+            messages.appendChild(loadingMsg);
+            messages.scrollTop = messages.scrollHeight;
+            
+            try {
+                // Tüm mesaj geçmişini API'ye gönder
+                const response = await fetch('/api/gemini-chat/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({
+                        prompt: userMsg,
+                        history: messageHistory // Tüm geçmişi gönder
+                    })
+                });
+                
+                const data = await response.json();
+                
+                // Yükleniyor göstergesini kaldır
+                messages.removeChild(loadingMsg);
+                
+                if (data.response) {
+                    // Gemini'den gelen gerçek yanıtı ekle
+                    messages.innerHTML += `
+                        <div class="ai-message">
+                            ${data.response.replace(/\n/g, '<br>')}
+                        </div>
+                    `;
+                    
+                    // Mesaj geçmişine ekle (asistan rolü ile)
+                    messageHistory.push({role: "assistant", content: data.response});
+                } else {
+                    throw new Error(data.error || 'Bilinmeyen hata');
+                }
+            } catch (error) {
+                messages.removeChild(loadingMsg);
+                messages.innerHTML += `
+                    <div class="ai-message error">
+                        Hata: ${error.message}
+                    </div>
+                `;
+            }
+            
+            messages.scrollTop = messages.scrollHeight;
+        }
+    }
+
+    // AI ile Oyun Başlatma
+    function startAIGame() {
+        toggleAIChat("play");
+    }
+
+    // Destek Sohbeti Başlatma
+    function startSupportChat() {
+        toggleAIChat("support");
+    }
+
+    // CSRF Token almak için yardımcı fonksiyon
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Enter tuşu ile mesaj gönderme
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
 </script>
 {% endblock %}

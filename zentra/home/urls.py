@@ -11,16 +11,17 @@ from . import views
 from .views import gemini_chat
 
 
-urlpatterns = [
-path('gemini-chat/', views.gemini_chat, name='gemini_chat'),
-path("", anasayfa),#tırnak içindeki boşluk anasayfa.html dosyasını bulur
-path("giris/", giris),
-path("hakkimizda/", hakkimizda),
-path("baslat/", baslat), 
-path('bilgisayar/', views.bilgisayar, name='bilgisayar'),
-path('elektrik/', views.elektrik, name='elektrik'),
-path('makine/', views.makine, name='makine'), 
-path('endustri/', views.endustri, name='endustri'), 
-path('gemini-chat/', gemini_chat, name='gemini-chat'),
 
+urlpatterns = [
+    path("", anasayfa, name="anasayfa"),
+    path("giris/", giris, name="giris"),
+    path("hakkimizda/", hakkimizda, name="hakkimizda"),
+    path("baslat/", baslat, name="baslat"), 
+    path('bilgisayar/', bilgisayar, name='bilgisayar'),
+    path('elektrik/', elektrik, name='elektrik'),
+    path('makine/', makine, name='makine'), 
+    path('endustri/', endustri, name='endustri'), 
+    path('api/gemini-chat/', gemini_chat, name='gemini_chat'),  
+    path('learning-path/', views.gemini_learning_path, name='gemini_learning_path'),
+    path('code-analysis/', views.gemini_code_analysis, name='gemini_code_analysis'),
 ]
